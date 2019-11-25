@@ -1,0 +1,262 @@
+﻿<div id="InforThuaDat" class="detail-property1 detail-property-collapse">
+    <div class="toggle-detail-property">
+        <span><i class="fa fa-times-circle" title="Đóng" aria-hidden="true"></i></span>
+    </div>
+    <div class="detail-property-header">
+        <span>Thông tin thửa đất</span>
+    </div>
+    <div class="detail-property-body">
+        <div id="PropertyLoading" class="loading" style="display: none;">
+            <img src="~/Content/AdminLTE/dist/img/loading.gif" />
+        </div>
+        <div class="detail-property-content">
+            <div class="conntent-warning">
+                @*<label>Dân số đã vượt với quy hoạch</label>*@
+            </div>
+            <div class="toa-nha">
+                @*<h3 class="title1">Thông số tòa nhà</h3>*@
+                <div class="section section-info">
+                    <div class="row">
+                        <div class="form-group col-md-12 form-common-infor">
+                            <label class="col-md-6">Số hiệu tờ bản đồ:</label>
+                            <span class="col-md-6"><span class="SoToBD">0</span></span>
+                        </div>
+                        <div class="form-group col-md-12 form-common-infor">
+                            <label class="col-md-6">Số thửa:</label>
+                            <span class="col-md-6"><span class="SoThuaBD">0</span></span>
+                        </div>
+                        <div class="form-group col-md-12 form-common-infor">
+                            <label class="col-md-6">Tờ bản đồ cũ:</label>
+                            <span class="col-md-6"><span class="SoToOld">0</span></span>
+                        </div>
+                        <div class="form-group col-md-12 form-common-infor">
+                            <label class="col-md-6">Thửa cũ:</label>
+                            <span class="col-md-6"><span class="SoThuaOld">0</span></span>
+                        </div>
+                        <div class="form-group col-md-12 form-common-infor">
+                            <label class="col-md-6">Diện tích :</label>
+                            <span class="col-md-6"><span class="DientichBD">0</span> m<sup>2</sup></span>
+                        </div>
+                        <div class="form-group col-md-12 form-common-infor">
+                            <label class="col-md-6">Diện tích pháp lý:</label>
+                            <span class="col-md-6"><span class="DientichPL">0</span> m<sup>2</sup></span>
+                        </div>
+                        <div class="form-group col-md-12 form-common-infor">
+                            <label class="col-md-6">Ký hiệu mục đích sử dụng:</label>
+                            <span class="col-md-6"><span class="MucDichSuDung">0</span></span>
+                        </div>
+                        <div class="form-group col-md-12 form-common-infor">
+                            <label class="col-md-6">Mục đích sử dụng:</label>
+                            <span class="col-md-6"><span class="NameMucDichSuDung">0</span></span>
+                        </div>
+                        <div class="form-group col-md-12 form-common-infor">
+                            <label class="col-md-6">Ký hiệu đối tượng:</label>
+                            <span class="col-md-6"><span class="KHDTC">0</span></span>
+                        </div>
+                        <div class="form-group col-md-12 form-common-infor">
+                            <label class="col-md-6">Tên chủ:</label>
+                            <span class="col-md-6"><span class="TenChu">0</span></span>
+                        </div>
+                        <div class="form-group col-md-12 form-common-infor">
+                            <label class="col-md-6">Địa chỉ</label>
+                            <span class="col-md-6"><span class="DiaChi">0</span></span>
+                        </div>
+                        <div class="form-group col-md-12 form-common-infor">
+                            <label class="col-md-6">Mã hành chính xã</label>
+                            <span class="col-md-6"><span class="MaXa">0</span></span>
+                        </div>
+                    </div>
+
+                    <div class="row tool-map">
+                        <h3 class="title1">Công cụ bản đồ</h3>
+                        @*<div class="tool-map-button">
+                            <button type="button" class="btn btn-primary"><i class="fa fa-file-code-o" aria-hidden="true"></i></button><label>Trích xuất KML</label>
+                        </div>*@
+                        <div class="tool-map-button">
+                            <button type="button" class="btn btn-primary btn-export-file"><i class="fa fa-file-archive-o" aria-hidden="true"></i></button><label>Trích xuất file</label>
+                        </div>
+                        <div class="tool-map-button">
+                            <button type="button" class="btn btn-primary btn-print"><i class="fa fa-print" aria-hidden="true"></i></button><label>In ấn</label>
+                        </div>
+                        <div class="tool-map-button">
+                            <button type="button" class="btn btn-primary btn-update-file"><i class="fa fa-upload" aria-hidden="true"></i></button><label>Nhập dữ liệu từ textfile</label>
+                        </div>
+                         <div class="tool-map-button">
+                            <button type="button" class="btn btn-primary btn-update-shape"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button><label>Cập nhập thuộc tính thửa đất</label>
+                        </div>
+                    </div>
+                    @*<div class="row tool-map">
+                        <h3 class="title1">C</h3>
+                        <div class="tool-map-button">
+                            <button type="button" class="btn btn-primary"><i class="fa fa-file-code-o" aria-hidden="true"></i></button><label>Trích xuất KML</label>
+                        </div>
+                        <div class="tool-map-button">
+                            <button type="button" class="btn btn-primary"><i class="fa fa-file-code-o" aria-hidden="true"></i></button><label>Trích xuất shapefile</label>
+                        </div>
+                        <div class="tool-map-button">
+                            <button type="button" class="btn btn-primary"><i class="fa fa-file-code-o" aria-hidden="true"></i></button><label>In ấn</label>
+                        </div>
+                        <div class="tool-map-button">
+                            <button type="button" class="btn btn-primary"><i class="fa fa-file-code-o" aria-hidden="true"></i></button><label>Nhập dữ liệu từ textfile</label>
+                        </div>
+                    </div>*@
+                </div>
+
+            </div>
+            <!--Section info-->
+            @*<h3 class="title1">Thông tin tiêu chí quy hoạch</h3>
+                <div class="section section-info">
+                    <div class="row">
+                        <div class="form-group col-md-12 form-common-infor">
+                            <label class="col-md-6">Diện tích:</label>
+                            <span class="col-md-6"><span class="DientichQH">100</span>m<sup>2</sup></span>
+                        </div>
+                        <div class="form-group col-md-12 form-common-infor">
+                            <label class="col-md-6">Hệ số sử dụng đất:</label>
+                            <span class="col-md-6"><span class="HSSDQH">100</span></span>
+                        </div>
+                        <div class="form-group col-md-12 form-common-infor">
+                            <label class="col-md-6">Quy định chiều cao:</label>
+                            <span class="col-md-6"><span class="ChieuCaoQH">100</span>m</span>
+                        </div>
+                        <div class="form-group col-md-12 form-common-infor">
+                            <label class="col-md-6">Mật độ xây dựng</label>
+                            <span class="col-md-6"><span class="MatDoQH">100</span>%</span>
+                        </div>
+                        <div class="form-group col-md-12 form-common-infor">
+                            <label class="col-md-6">Dân số</label>
+                            <span class="col-md-6"><span class="DanSoQH">100</span></span>
+                        </div>
+                        <div class="form-group col-md-12 form-common-infor">
+                            <label class="col-md-6">Kí hiệu</label>
+                            <span class="col-md-6"><span class="KiHieuQH">L1</span></span>
+                        </div>
+                    </div>
+                </div>
+                <!--End navigation section-->
+                <h3 class="title1">Thông tin tiêu chí hiện trạng</h3>
+                <div class="section section-info">
+                    <div class="row">
+                        <div class="row">
+                            <div class="form-group col-md-12 form-common-infor">
+                                <label class="col-md-6">Diện tích:</label>
+                                <span class="col-md-6"><span class="Dientich">0</span>m<sup>2</sup></span>
+                            </div>
+                            <div class="form-group col-md-12 form-common-infor">
+                                <label class="col-md-6">Hệ số sử dụng đất:</label>
+                                <span class="col-md-6"><span class="HSSD">0</span></span>
+                            </div>
+                            <div class="form-group col-md-12 form-common-infor">
+                                <label class="col-md-6">Quy định chiều cao:</label>
+                                <span class="col-md-6"><span class="ChieuCao">0</span>m</span>
+                            </div>
+                            <div class="form-group col-md-12 form-common-infor">
+                                <label class="col-md-6">Mật độ xây dựng</label>
+                                <span class="col-md-6"><span class="MatDo">0</span>%</span>
+                            </div>
+                            <div class="form-group col-md-12 form-common-infor">
+                                <label class="col-md-6">Dân số</label>
+                                <span class="col-md-6"><span class="DanSo">0</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+</div>
+
+<style>
+    .infor-area-item .item {
+        padding: 5px 0px;
+        border-bottom: none
+    }
+
+        .infor-area-item .item > div {
+            padding-bottom: 5px;
+        }
+
+    .detail-button {
+        position: absolute;
+        bottom: 1px;
+        width: 100%;
+    }
+
+        .detail-button #btnDetailBuilding, .detail-button #btnDetailShape {
+            width: 100%;
+            padding: 0px;
+        }
+
+            .detail-button #btnDetailBuilding button, .detail-button #btnDetailShape button {
+                width: 100%;
+                background-color: #fff;
+                border-color: #fff;
+                color: #337ab7;
+                font-size: 16px;
+            }
+
+    /*.detail-property-body {
+        height: calc(100% - 76px);
+    }*/
+
+    .common-infor-home {
+        display: inline-block;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        box-shadow: none;
+        background: #FFFFFF;
+    }
+
+        .common-infor-home .item {
+            display: inline-block;
+            width: 100%;
+            border-top: 1px solid #E0E0E0;
+            float: left;
+            padding-top: 12px;
+            padding-bottom: 2px;
+        }
+
+            .common-infor-home .item:first-child {
+                border-top: 0px;
+            }
+
+            .common-infor-home .item .item-left {
+                color: #323958;
+                font-size: 14px;
+                font-weight: 600;
+                padding-left: 15px;
+                width: 145px;
+                float: left;
+                display: inline-block;
+            }
+
+            .common-infor-home .item .item-right {
+                display: inline-block;
+                width: calc(100% - 145px);
+                float: left;
+                padding-left: 10px;
+                color: #7E93A8;
+            }
+
+    .form-common-infor {
+        margin-bottom: 3px;
+        padding: 0px;
+    }
+
+    .section-info .row {
+        margin: 0px;
+    }
+
+    .tool-map button {
+        width: 50px;
+        background-color: #2198F1;
+        border-color: #2198F1;
+    }
+    .tool-map-button{
+        margin-bottom:5px;
+    }
+    .tool-map-button label{
+        margin-left:10px;
+    }
+</style>
+

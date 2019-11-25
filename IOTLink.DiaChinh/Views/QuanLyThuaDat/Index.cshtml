@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="mapObject" id="map">
+     <div class="map-control">
+        <div class="bar1">
+            <button class="btn-control btn-turn-right tooltip-btn">
+                <span class="tooltiptext-btn">Quay phải</span>
+            </button>
+            <button class="btn-control btn-turn-left tooltip-btn">
+                <span class="tooltiptext-btn">Quay trái</span>
+            </button>
+            <button class="btn-control btn-locate tooltip-btn ">
+                <span class="tooltiptext-btn">Vị trí hiện tại</span>
+            </button>
+            <button class="btn-control tooltip-btn btn-3d">
+                <span class="tooltiptext-btn">Trạng thái</span>
+            </button>
+            <div class="bar2">
+                <button class="btn-control btn-direct tooltip-btn"><span class="tooltiptext-btn">Điều hướng</span><div style="transform: rotate(0deg);"></div></button>
+                <button class="btn-control btn-zoom-out tooltip-btn"><span class="tooltiptext-btn">Thu nhỏ</span></button>
+                <div class="bar3">
+                    <button class="btn-control btn-up tooltip-btn"><span class="tooltiptext-btn">Nghiêng lên</span></button>
+                    <button class="btn-control btn-down tooltip-btn"><span class="tooltiptext-btn">Nghiêng xuống</span></button>
+                    <button class="btn-control btn-zoom-in tooltip-btn"><span class="tooltiptext-btn">Phóng to</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .content{
+        padding:0px;
+    }
+    .mapObject {
+        width: 100%;
+        height:calc(100vh - 50px);
+    }
+</style>
+<link href="~/css/mapcontrol.css" rel="stylesheet" />
+@section scripts{
+    <script src="https://land.map4d.vn/js/map4dsdk@1.3.3.prod.js"></script>
+    <script type="text/javascript">
+        var ViewMap = {
+            GLOBAL: {
+            },
+            CONSTS: {
+            },
+            SELECTORS: {
+            },
+            init: function () {
+                map = new map4d.Map(document.getElementById("map"), {
+                    zoom: 16,
+                    center: { lat: 16.074340234841884, lng: 108.2358471048052 },
+                    geolocate: true,
+                    minZoom: 3,
+                    maxZoom: 22,
+                    tilt: 0,
+                    controls: true,
+                    controlOptions: map4d.ControlOptions.BOTTOM_RIGHT,
+                    accessKey: "208e1c99aa440d8bc2847aafa3bc0669"
+                });
+                map.setPlacesEnabled(false);
+                map.setSwitchMode(map4d.SwitchMode.Manual)
+                ViewMap.GetThuaDat();
+            },
+            DrawThuaDat: function (jsonThuaDat) {
+                features = map.data.addGeoJson(JSON.stringify(jsonThuaDat));
+            },
+            GetThuaDat: function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/QuanLyThuaDat/GetThuaDat",
+                    dataType: 'json',
+                    success: function (data) {
+                        var listThuaDat = []
+                        $(data).each(function (i, obj) {
+                            if (ViewMap.checkJson(obj.geo)) {
+                                let a = JSON.parse(obj.geo);
+                                listThuaDat.push(a);
+                            }
+                        });
+                        let list = {
+                            type: "FeatureCollection",
+                            features: listThuaDat
+                        };
+                        ViewMap.DrawThuaDat(list);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        let messageErorr = AppCommon.getMessageErrorReuqest(jqXHR, errorThrown);
+                        console.log(messageErorr);
+                    }
+                });
+            },
+            checkJson: function (obj) {
+                try {
+                    jsonResult = JSON.parse(obj);
+                    return true;
+                }
+                catch (e) {
+                    return false;
+                }
+            },
+        };
+        $(function () {
+            ViewMap.init();
+        })
+    </script>
+}

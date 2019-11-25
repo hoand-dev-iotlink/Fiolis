@@ -1,0 +1,673 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="mapObject" id="map">
+    <div class="input-box text-center clearable-input">
+        <button type="button" class="button-search tooltip-setting" id="tooltip-searchsetting"></button><span class="tooltiptextsetting">Tìm kiếm nâng cao</span>
+        <input class="search-text" id="id-search-text" placeholder="Số thửa, Số tờ" maxlength="11" type="text" oninput="this.value = this.value.replace(/[^0-9,]/g, '').replace(/(\..*)\./g, '$1');">
+        <span data-clear-input id="clear-input-id" class="glyphicon glyphicon-remove-circle"></span>
+        <button type="button" class="button-search tooltip-search" id="tooltip-search"></button><span class="tooltiptext">Tìm kiếm</span>
+    </div>
+    <div class="tab-pane active" id="advSearch">
+        <div class="form">
+            <div class="note">
+                <p>Tìm kiếm nâng cao</p>
+            </div>
+
+            <div class="form-content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="number" id="text-search-soTo" class="form-control form-style" placeholder="Số hiệu tờ bản đồ" value="" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="number" id="text-search-soThua" class="form-control form-style" placeholder="Số thứ tự thửa" value="" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="text" id="text-search-MDSuDung" class="form-control form-style" placeholder="Ký hiệu mục đích sử dụng" value="" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="text" id="text-search-chuNha" class="form-control form-style" placeholder="Tên chủ sở hữu" value="" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="text" id="text-search-diaChi" class="form-control form-style" placeholder="Địa chỉ" value="" />
+                        </div>
+                    </div>
+                </div>
+                <center><button type="button" class="btnSubmit" id="tooltip-search-adv">Tìm kiếm</button></center>
+            </div>
+            <div id="list-search-adv">
+            </div>
+        </div>
+    </div>
+    <div class="menu-right">
+        <div class="building-ui vertical menu">
+            <div class="link item" onclick="GetAllShapOnWardLatLng()">Xem lô đất ở phường</div>
+        </div>
+    </div>
+    <div class="location-click">
+        <div class="image-click"></div>
+        <div class="content-location">
+            <div class="address-menu-click" style="font-weight: bold;"></div>
+            <div class="location-menu-click"></div>
+            <div class="location-menu-click-vn2000"></div>
+        </div>
+        <div class="close-content">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+    </div>
+    <partial name="_ChuGiai" />
+    <partial name="_ToolRule" />
+</div>
+<div id="loading-map" class="loading-map" style="display: none;">
+    <img src="~/images/loading.gif" />
+</div>
+<partial name="_DetailProperty" />
+
+@section Stylesheet
+    {
+    <link href="~/css/DetailObjectProperties.css" rel="stylesheet" />
+    <link href="~/css/ChuGiai.css" rel="stylesheet" />
+    <style>
+        .content-wrapper .container-fluid {
+            position: relative;
+        }
+
+        .content {
+            padding: 0px;
+        }
+
+        .mapObject {
+            width: 100%;
+            height: calc(100vh - 50px);
+            position: relative;
+        }
+
+        .menu-right {
+            width: 169px;
+            position: absolute;
+            z-index: 999;
+            display: none;
+        }
+
+        .building-ui.vertical.menu {
+            display: block;
+            font-size: 14px;
+            background: #fff;
+            font-weight: 400;
+            border: 1px solid rgba(34, 36, 38, .15);
+            border-radius: .28571429rem;
+        }
+
+        .building-ui.menu .item {
+            position: relative;
+            line-height: 1em;
+            padding: 1em 1em;
+            cursor: pointer;
+        }
+
+        .building-ui.menu .link:hover {
+            background-color: rgba(0, 174, 237, 0.63);
+            color: #000000;
+        }
+
+        .location-click {
+            position: absolute;
+            left: 50%;
+            bottom: 10px;
+            transition: bottom 0.1s linear,margin-bottom 0.1s linear;
+            transform: translateX(-50%);
+            z-index: 10;
+            background-color: #fff;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 12px;
+            display: none;
+        }
+
+        .content-location {
+            padding: 7px;
+            line-height: 18px;
+        }
+
+        .close-content {
+            padding: 5px;
+            right: 0px;
+            top: 0px;
+        }
+
+            .close-content i {
+                cursor: pointer;
+            }
+
+        .image-click {
+            background-image: url('../../images/no_street_view_1x_080615.png');
+            height: 60px;
+            width: 90px;
+            margin: 4px;
+            position: relative;
+            background-size: 96px 64px;
+        }
+
+        .loading-map {
+            position: absolute;
+            z-index: 100000;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            background-color: #000;
+            opacity: 0.4;
+            top: 0;
+            left: 0;
+        }
+
+            .loading-map > img {
+                width: 80px;
+                margin-top: 20%;
+            }
+
+        .detail-property1 {
+            display: block;
+            position: absolute;
+            z-index: 99999;
+            right: 0px;
+            height: calc(100% - 5px);
+            background-color: #fff;
+            width: 372px;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            animation: movein 1s;
+            top: 1px;
+        }
+
+            .detail-property1.detail-property-collapse {
+                animation: moveout 1s;
+                right: -400px;
+            }
+
+            .detail-property1 .toggle-detail-property {
+                left: 5px;
+            }
+
+        @@keyframes moveout {
+            from {
+                right: 0px;
+            }
+
+            to {
+                right: -400px;
+            }
+        }
+
+        @@keyframes movein {
+            from {
+                right: -400px;
+            }
+
+            to {
+                right: 0px;
+            }
+        }
+
+        .detail-property-footer {
+            position: absolute;
+            bottom: 10px;
+            border-top: none;
+            height: 38px;
+            box-shadow: none;
+            display: flex;
+            width: 100%;
+            justify-content: center;
+        }
+
+            .detail-property-footer > button {
+                margin: 0 10px;
+            }
+
+        .detail-property-content, .detail-property-content .toa-nha, .detail-property-content .toa-nha .section-info {
+            height: 100%;
+        }
+
+            .detail-property-content .section-info {
+                margin: 0px;
+            }
+    </style>
+    <style>
+        /*style text search*/
+        .text-center {
+            position: absolute;
+            z-index: 999;
+            padding: 5px;
+            text-align: center;
+        }
+
+        input.search-text {
+            margin-bottom: 0;
+            display: inline-block;
+            width: 90%;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.15);
+            background-color: #ffffff;
+            height: 3.0rem;
+            padding: 18px;
+            font-size: 1.5rem;
+            padding-left: 35px;
+            padding-right: 45px;
+            -webkit-appearance: none;
+            float: left;
+            /*background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAYAAABX5MJvAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAMDSURBVHgBzVdbbtNAFD0zLkL8dQeYFdDuIF1BY1WAQlUlXgGwgqY7YAdjUzUFlcrxB9+kK2jYgZfQP0TBM9xJ0uAZjx3nodAjRXI8M/eeuW8zNIA4v2p5T3YOFdCChA+G3cmCwh1jGNP/cf77TxqevBphBbC6RXFx3eOcn9Kjj2bIpJRn4fFRhCXgJCEuE58zJHTTPayGTAIHYSfImmzm9ot4kHa5wu0aBDT0JW7F4Gu7yWaDxOQQk9Hc5w8g31M8RFIhoBu+6HYCpn9SYl+/g1JxSbLCLmdeEn9Ju1iAuTsmLtAWsAgohqH6iTAMg7s6QdPzqg/GupaGOyK6X+eanYcHMsl3mwAd/kCHP6IBZkp6RCYjWaf/bqEtQvEF7FednbhDZwFKGUBR/rYZAYtMX5M3XlJ8zXRUk5ilYeEMom7nqI8VoclT/Rgaiiwdxpo4T1qwrEAkzrAmcoojHdCFV764vGq59nJ4qm0RiJrmdx10IEuo1FCmPGfKco+xlwYJhRQbgzRcwixdcxLKLkoKGTYF5o1N0e7yz+20DI+DMTYEh1t9OEk8AnArgnFx/e05NgRxkdj9J4OThLVw/+u+srItDZb7xt8qEpRGN8ZGhkNsCB7zDFm5lDeufRSYzEojtIVIdrEmdEOjbOhZ6oauvZwieISimajheM8gsCa8YhObIqvKvEl2SKtMU+1oi8H1e6yI+DI9ta0ga1rBfJ6IB4meJfYshv2TTrBUH4k/p++gpNF9idCo1wkOqs7M5wnJENhDDbHvfyLf5nSLRf1Ex5F2o1Ky1B8WtQJj0KVg6tHtRcXGKFd5Srck374ezxT7eJrv6SzQLiyNhUVw3uu+OYwrZJsQg6Q9IVIncFVUECmVbRpIhuQaXbAyrAgdA85AlDJyDb71Hz9T9zT++NHK1TR+RoXzZfdaFmFNhJOwFvX8tqJ5gE0J+bOljKbxMcXDD3oePSh3XKSWSCMS62IRka20crJQRDESlhZm9WRr84STiJpm4FaHmgKRTM8xpe+T/4m/Q5lCUSkjNDAAAAAASUVORK5CYII=);
+            background-position: 14px 11px;
+            background-repeat: no-repeat;
+            background-color: #fff;
+            background-size: 15px 15px;*/
+        }
+
+        #advSearch {
+            position: absolute;
+            background: beige;
+            top: 45px;
+            left: 5px;
+            padding: 5px;
+            width: 25%;
+            z-index:10;
+            display:none;
+        }
+
+        .advSearchIndex {
+            display: block!important;
+        }
+
+        button.button-search.tooltip-search {
+            position: absolute;
+            top: 15px;
+            right: 38px;
+            height: 15px;
+            width: 15px;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAYAAABX5MJvAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAMDSURBVHgBzVdbbtNAFD0zLkL8dQeYFdDuIF1BY1WAQlUlXgGwgqY7YAdjUzUFlcrxB9+kK2jYgZfQP0TBM9xJ0uAZjx3nodAjRXI8M/eeuW8zNIA4v2p5T3YOFdCChA+G3cmCwh1jGNP/cf77TxqevBphBbC6RXFx3eOcn9Kjj2bIpJRn4fFRhCXgJCEuE58zJHTTPayGTAIHYSfImmzm9ot4kHa5wu0aBDT0JW7F4Gu7yWaDxOQQk9Hc5w8g31M8RFIhoBu+6HYCpn9SYl+/g1JxSbLCLmdeEn9Ju1iAuTsmLtAWsAgohqH6iTAMg7s6QdPzqg/GupaGOyK6X+eanYcHMsl3mwAd/kCHP6IBZkp6RCYjWaf/bqEtQvEF7FednbhDZwFKGUBR/rYZAYtMX5M3XlJ8zXRUk5ilYeEMom7nqI8VoclT/Rgaiiwdxpo4T1qwrEAkzrAmcoojHdCFV764vGq59nJ4qm0RiJrmdx10IEuo1FCmPGfKco+xlwYJhRQbgzRcwixdcxLKLkoKGTYF5o1N0e7yz+20DI+DMTYEh1t9OEk8AnArgnFx/e05NgRxkdj9J4OThLVw/+u+srItDZb7xt8qEpRGN8ZGhkNsCB7zDFm5lDeufRSYzEojtIVIdrEmdEOjbOhZ6oauvZwieISimajheM8gsCa8YhObIqvKvEl2SKtMU+1oi8H1e6yI+DI9ta0ga1rBfJ6IB4meJfYshv2TTrBUH4k/p++gpNF9idCo1wkOqs7M5wnJENhDDbHvfyLf5nSLRf1Ex5F2o1Ky1B8WtQJj0KVg6tHtRcXGKFd5Srck374ezxT7eJrv6SzQLiyNhUVw3uu+OYwrZJsQg6Q9IVIncFVUECmVbRpIhuQaXbAyrAgdA85AlDJyDb71Hz9T9zT++NHK1TR+RoXzZfdaFmFNhJOwFvX8tqJ5gE0J+bOljKbxMcXDD3oePSh3XKSWSCMS62IRka20crJQRDESlhZm9WRr84STiJpm4FaHmgKRTM8xpe+T/4m/Q5lCUSkjNDAAAAAASUVORK5CYII=);
+            background-size: cover;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        button.button-search.tooltip-setting {
+            position: absolute;
+            top: 9px;
+            left: 7px;
+            height: 30px;
+            width: 30px;
+            background-image: url('data:image/png;base64,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');
+            background-size: cover;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        span.tooltiptext {
+            visibility: hidden;
+            position: absolute;
+            top: 100%;
+            left: 80%;
+            /*z-index: 1;*/
+            -webkit-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            transform: translateX(-50%);
+            background-color: #4a4a4a;
+            border-radius: 2px;
+            color: #fff;
+            padding: 3px 12px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        span.tooltiptextsetting {
+            visibility: hidden;
+            position: absolute;
+            top: 100%;
+            left: 20%;
+            z-index: 1;
+            -webkit-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            transform: translateX(-50%);
+            background-color: #4a4a4a;
+            border-radius: 2px;
+            color: #fff;
+            padding: 3px 12px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        /* css advance search*/
+        .note {
+            text-align: center;
+            height: 60px;
+            background: -webkit-linear-gradient(left, #0072ff, #8811c5);
+            color: #fff;
+            font-weight: bold;
+            line-height: 60px;
+        }
+
+        .form-content {
+            padding: 5%;
+            border: 1px solid #ced4da;
+            margin-bottom: 2%;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        @@media only screen and (max-height: 1023px), screen and (min-height: 961px) {
+            #style-3 {
+                max-height: 500px !important;
+            }
+        }
+
+        @@media only screen and (max-height: 930px) {
+            #style-3 {
+                max-height: 400px !important;
+            }
+        }
+
+        @@media only screen and (max-height: 900px) {
+            #style-3 {
+                max-height: 395px !important;
+            }
+        }
+
+        @@media only screen and (max-height: 805px) {
+            #style-3 {
+                max-height: 315px !important;
+            }
+        }
+
+        @@media only screen and (max-height: 720px) {
+            #style-3 {
+                max-height: 270px !important;
+            }
+        }
+
+        #style-3::-webkit-scrollbar {
+            width: 6px;
+            background-color: #F5F5F5;
+        }
+
+        #style-3::-webkit-scrollbar-thumb {
+            background-color: #000000;
+        }
+
+        .form-style {
+            border-radius: 1.5rem;
+        }
+
+        .btnSubmit {
+            border: none;
+            border-radius: 1.5rem;
+            padding: 2%;
+            width: 35%;
+            cursor: pointer;
+            background: #0062cc;
+            color: #fff;
+        }
+
+        .clearable-input > [data-clear-input] {
+            display: none;
+            position: absolute;
+            z-index: 4;
+            top: 14px;
+            right: 53px;
+            font-weight: bold;
+            font-size: 1.3em;
+            padding: 0 0.2em;
+            line-height: 1em;
+            cursor: pointer;
+            color: #ccc;
+        }
+
+        .clearable-input > input::-ms-clear {
+            display: none;
+        }
+
+        /*stylebuttonSweetAlert*/
+        .swal-button--cancel {
+            margin-right: 140px;
+            background-color: #808080;
+            color: #faf9f9;
+        }
+
+        .swal-button--danger {
+            background-color: #7cd1f9
+        }
+
+        .swal-button {
+            padding: 5px 15px;
+        }
+
+        .swal-title {
+            font-size: 18px;
+        }
+
+        .swal-button-container {
+            text-align: right;
+            width: 210px;
+        }
+
+        .swal-text {
+            text-align: center !important;
+        }
+
+        .small-3 {
+            width: 20%;
+            padding: 1.75rem;
+            float: left;
+        }
+
+        .small-9 {
+            float: right;
+            width: 80%;
+            padding: 1.75rem;
+        }
+
+        .route-no {
+            color: blue;
+            font-size: 2.2rem !important;
+            border-radius: 30px !important;
+            background-color: #00c0ef;
+            padding: 5px;
+        }
+
+        .line {
+            width: 90%;
+            height: 1px;
+            background-color: burlywood;
+            position: absolute;
+            bottom: 10px;
+            left: 16px;
+        }
+
+        .row-item {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0px;
+        }
+
+        .form-content .row-item:not(:last-child) {
+            border-bottom: 1px solid darkgray;
+        }
+
+        /*modal*/
+        #close-modal {
+            position: relative;
+            transform: translateY(-120%);
+            color: #fff;
+            right: 0;
+        }
+
+        .modal-header {
+            background: #2198F1;
+            color: #fff;
+        }
+
+        h4.modal-title{
+            text-align: center;
+        }
+
+        #KH-listselectid {
+            border-radius: 1.5rem;
+            width: 100%;
+            height: 34px;
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+
+        option {
+            padding: 10px;
+        }
+    </style>
+
+}
+@section scripts{
+    @*<script src="https://land.map4d.vn/js/map4dsdk@1.3.3.prod.js"></script>*@
+    <script src="~/SDK_Map/map4dsdk@1.3.4.prod.js"></script>
+    <script src="~/js/jquery.nicescroll.min.js"></script>
+    <script src="~/js/ToolShape.js"></script>
+    <script src="~/js/ThuaDat.js"></script>
+    <script src="~/js/sweetalert.min.js"></script>
+    <script src="~/js/ChuGiai.js"></script>
+    <script src="~/js/UpdateThuaDat.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            ViewMap.init();
+            //ViewMap.searchText();
+            ToolShape.init();
+            UpdateThuaDat.init();
+        })
+        function GetAllShapOnWardLatLng() {
+            ViewMap.showThuaDatSelectSubdistrict();
+        }
+    </script>
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header" style="padding-bottom:0;">
+                    <h4 class="modal-title">Cập nhật thông tin thửa đất</h4>
+                    <button type="button" id="close-modal" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row form-group">
+                        <label class="control-label col-md-4 col-xs-12 required">Số hiệu tờ bản đồ</label>
+                        <div class="col-md-8 col-xs-12">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type="number" id="text-update-soTo" class="form-control form-style" placeholder="Số hiệu tờ bản đồ" value="0" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="control-label col-md-4 col-xs-12 required">Số thứ tự thửa</label>
+                        <div class="col-md-8 col-xs-12">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type="number" id="text-update-soThua" class="form-control form-style" placeholder="Số thứ tự thửa" value="0" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="control-label col-md-4 col-xs-12 required">Tờ bản đồ cũ</label>
+                        <div class="col-md-8 col-xs-12">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type="number" id="text-update-soTo-old" class="form-control form-style" placeholder="Tờ bản đồ cũ" value="0" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="control-label col-md-4 col-xs-12 required">Thửa cũ</label>
+                        <div class="col-md-8 col-xs-12">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type="number" id="text-update-soThua-old" class="form-control form-style" placeholder="Thửa cũ" value="0" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="control-label col-md-4 col-xs-12 required">Diện tích</label>
+                        <div class="col-md-8 col-xs-12">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type="text" id="text-update-dienTich" class="form-control form-style" placeholder="Diện tích" value="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="control-label col-md-4 col-xs-12 required">Diện tích pháp lý</label>
+                        <div class="col-md-8 col-xs-12">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type="text" id="text-update-dienTichPhapLy" class="form-control form-style" placeholder="Diện tích pháp lý" value="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="control-label col-md-4 col-xs-12 required">Mục đích sử dụng</label>
+                        <div class="col-md-8 col-xs-12">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    @Html.DropDownList("KH", new List<SelectListItem>(ViewBag.listofitem)@*, "--Chọn mục đích sử dụng--"*@, new { @id = "KH-listselectid", @class = "KH-select", autocomplete = "off" })
+                                    @*<select multiple="multiple" class="multi-select" id="my_multi_select1" asp-items="(List<SelectListItem>)ViewBag.listofitem"></select>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="control-label col-md-4 col-xs-12 required">Tên chủ</label>
+                        <div class="col-md-8 col-xs-12">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type="text" id="text-update-chuNha" class="form-control form-style" placeholder="Tên chủ sở hữu" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="control-label col-md-4 col-xs-12 required">Địa chỉ</label>
+                        <div class="col-md-8 col-xs-12">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type="text" id="text-update-diaChi" class="form-control form-style" placeholder="Địa chỉ" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" id="btn-update-thua-dat" class="btn btn-primary">Save</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}

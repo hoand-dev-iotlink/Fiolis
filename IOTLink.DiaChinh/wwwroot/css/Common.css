@@ -1,0 +1,9 @@
+﻿.main-sidebar{
+    display:none;
+}
+.content-wrapper, .main-footer{
+    margin-left:0px;
+}
+.navbar-static-top a{
+    display:none;
+}

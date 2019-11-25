@@ -1,0 +1,218 @@
+.mapObject .mapgl .ui {
+    display: none;
+}
+
+.mapObject .map-control .bar1 {
+    position: absolute;
+    right: 5px;
+    bottom: 19px;
+    display: -ms-flexbox;
+    display: flex;
+    z-index: 2;
+}
+
+.mapObject .map-control .bar2 {
+    position: absolute;
+    bottom: 100%;
+    right: 0px;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.mapObject .map-control .bar3 {
+    position: absolute;
+    bottom: 100%;
+    right: 0px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+        flex-direction: column;
+}
+
+.mapObject .map-control .btn-control {
+    width: 29px;
+    height: 29px;
+    border: none;
+    margin: 3px;
+    background-size: cover;
+    background-repeat: none;
+    background-position: center;
+    cursor: pointer;
+    background-color: transparent;
+    -webkit-box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.15);
+            box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.15);
+}
+
+.mapObject .map-control .btn-turn-right {
+    background-image: url(./img/btnTurnRight.png);
+}
+
+.mapObject .map-control .btn-turn-left {
+    background-image: url(./img/btnTurnLeft.png);
+}
+
+.mapObject .map-control .btn-locate {
+    background-image: url(./img/btnLocate.png);
+}
+
+.mapObject .map-control .btn-2d {
+    background-image: url(./img/btn2D.png);
+}
+
+.mapObject .map-control .btn-3d {
+    background-image: url(./img/btn3D.png);
+}
+
+.mapObject .map-control .btn-direct div {
+    background-image: url(./img/btnDirect.png);
+    background-size: contain;
+    width: 100%;
+    height: 100%;
+}
+
+.mapObject .map-control .btn-direct {
+    padding: 0;
+    background: #FFFFFF;
+}
+
+.mapObject .map-control .btn-zoom-out {
+    /*background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAAA6CAYAAADhu0ooAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAALdSURBVHgB7ZrBTxNBFIdfjbH1INREpFUSlCaSXlQ8iJoIgaQX1AtEDyR4kL/Hk3oyGKIJF8NRDpq0oZdSL8Ue2GhCCgRSCCauerA96fy2mWVqyrbQt2QznS9p2Da7ZL6+N++9bRv6K6AO4BR1CEZUN4yobhhR3TCiumFEdcOI6oYR1Y3T5DOlzR0qfFmj0tY22fZv57VIJEzx3guUHEw4j2j3OfKbkF833hDMZFecv824d/smjY0OUyQcJr/wRTSXX6WlT9kjXRPt7qLZp1O+RZddNJPNU1o8JEjTuyJit64nKRrtcl6rVKpU3tunQtESaW255/opyypq//xFz1/Mu8+TgwM0+SjlyB6G9XWdlj5mxbW1/Xu1/zI9m5kiblir7tzbRfcYktOPH3pK1s5L1J3nFK+iRdywiWKBMipIwYnUaMvXxmM9NDYy7D7P5QvEDZsoWohk6Ab249H2GSqvjGp577uzhzlh66O7YnESpK1E9s7DiJw947aVIVGwcp9XnWNkSLy3h7hgE1UjIBdo26I4vZz3vO5Kfx/NzkzWrosdiKEycxLYEZBblC2i2F9ycZVq1U1HRMwLjIKSHyID1P/HCZsoFizHvfLuvuiHfc6AINOyFTY2t93jSzG+/QnYUleNXEaZjFoFw4Y6F8cuBlQU7UGCBZeU6LRCevngzTlOe2oGm6icaSUL7z+4A0QzkAHqNDR+/w5xw1p1x8V0IwdyFKZXrxfcvtgIpOubd4t1NwGgUFwjbtjvXtA758Ti1WhiJMSwjj4pqzOGea97Vbxp6ljYLr7cjzaSPQ6csiE/v9rHvksvr3gKo1pPpEbI+rbesFpzyYZO4jcM6KsbWzv0R6Qsoo3+el48ktcG6gYD7NVGstNPHohzE9QOoaD9WON/WbQa3Ly3S+BmXTVVuSRB4CIqQVXGpw9cBFaUG/OVhG4YUd0worphRHXDiOqGEdUNI6obRlQ3Okb0H+xvLgcbOwA8AAAAAElFTkSuQmCC);*/
+    background-image:url(../images/in.png);
+}
+
+.mapObject .map-control .btn-up {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAAA6CAYAAADhu0ooAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGCSURBVHgB7ZhNSgNBEIWrcwCZI+QIHsGcILlR8ASeQBcKWQR0If6AgoEsFF1lF3SR6EJEdDHGTWY1Vg0J6DBoh3Q1+KY+KHoomoGP6n6LdlQiz/MtXtpcHa4m/S9Gi9p2zj1W7mDBhGsnx0FckqWfW0ryMuDaJCxkui2ebtpYNLqEJymIk7iR42k2eZ0SNi2ZaJfw6Ygo4pEt05ajm1MNaFBNMFE0TBQNE0XDRNEwUS3SjxntHRzSPMsoJtFFe/0Tmj4909HxJcUkquj5xZBeXt+L7/H9hAbDW4pFNFGRur4b/ehdce+m1NMiiuj4YVJIVXFWTPmNtFEXlfD56z72+qe875M0URUVyd19Tth55rdPMYlVRSVhfSflM/l1UBP9nrC+aCaximhVwvqilcTBRX9LWF80kjioaMh7FjqJg4n6JuzK/wuUxMFEV0lYX0KekGAP2Gk6Iy2SZIPWxV7q0TBRNEwUDRNFw0TRMFE0TBQNE0XDRNEwUTRMFA0TRaM2ol+n6IWuZXE84QAAAABJRU5ErkJggg==);
+}
+
+.mapObject .map-control .btn-down {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAAA6CAYAAADhu0ooAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFVSURBVHgB7doxS8NQGIXhUxHsYo2g2K4uUge1i6JgRaEBiy6Ki+CiP1Rwc3FwUBycRfAH1Km9SZcOl5I235fh9DyLU0te8J7cobVhgAWwhAWhUDYKZaNQNgplo1A2CmWjUDYKZaNQNgplswwjzy+veHv/gLX1tQYeH25Rllno8eEBPr++8fP7BytJiLy5TmHB7F+3Xl/B/d1VeLhVWMm/L7H5PtMzmiSN/OGy6LIu0y5azQ1YMR+jVnMT/fQUZZx3j3ASjoIll9Xt7O3mDzuP9s42Lub87DRur5fsYTv77Zk+Mx6fHjy4vkf7vXDOtoqdsyzyKbxGLM53jGvoLEtsubAx7jejIktsvbAxlVwBpy2xx8LGVHbXjS2x18LGVHqpn1xiz4WNMbvrFpUt8WDwH/6euS1sTE2/YSCjUDYKZaNQNgplo1A2CmWjUDYKZaNQNgplMwLDEDQipyyCKgAAAABJRU5ErkJggg==);
+}
+
+.mapObject .map-control .btn-zoom-in {
+    background-image: url(../images/out.png);
+}
+
+.mapObject .map-control .has-background {
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+}
+
+.mapObject .map-control .btn {
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.mapObject .map-control .btn:focus {
+    outline: none;
+}
+
+.mapObject .map-control .bar4 {
+    z-index: 10;
+    position: absolute;
+    right: 0px;
+    bottom: 1px;
+    display: -ms-flexbox;
+    display: flex;
+    background-color: #ffffff;
+    font-size: 10px;
+}
+
+.mapObject .map-control .bar4 .link {
+    color: #656A70;
+    text-decoration: underline;
+}
+
+.mapObject .map-control .bar4 .calendar {
+    display: -ms-flexbox;
+    display: flex;
+    border-left: 0.5px solid #BEC6D2;
+    width: 80px;
+    -ms-flex-align: center;
+        align-items: center;
+    height: 13px;
+    -ms-flex-pack: center;
+        justify-content: center;
+}
+
+.mapObject .map-control .bar4 .calendar .btn-set-time {
+    width: 12px;
+    height: 8px;
+    /*background-image: url(./img/btnSetDate.png);*/
+    margin-right: 10px;
+}
+
+.mapObject .map-control .bar4 .map-data {
+    display: -ms-flexbox;
+    display: flex;
+    border-left: 0.5px solid #BEC6D2;
+    width: 140px;
+    -ms-flex-align: center;
+        align-items: center;
+    height: 13px;
+    -ms-flex-pack: center;
+        justify-content: center;
+}
+
+.mapObject .map-control .bar4 .open-street-map {
+    display: -ms-flexbox;
+    display: flex;
+    border-left: 0.5px solid #BEC6D2;
+    width: 140px;
+    -ms-flex-align: center;
+        align-items: center;
+    height: 13px;
+    -ms-flex-pack: center;
+        justify-content: center;
+}
+
+.mapObject .map-setting .disable-opstions .control {
+    cursor: not-allowed !important;
+}
+
+.mapObject .map-setting .disable-opstions .control > button {
+    cursor: not-allowed !important;
+}
+
+.mapObject .map-setting .disable-opstions .control > div {
+    color: #c0b9b9 !important;
+}
+
+.mapObject .map-control  .tooltip-btn{
+    position: relative;
+}
+.mapObject .map-control .tooltip-btn .tooltiptext-btn{
+    visibility: hidden;
+    position: absolute;
+    top: 14%;
+    left: -160%;
+    z-index: 1;
+    -webkit-transform: translateX(-50%);
+        -ms-transform: translateX(-50%);
+            transform: translateX(-50%);
+    background-color: #4A4A4A;
+    border-radius: 2px;
+    color: #FFFFFF;
+    padding: 3px 12px;
+    font-size: 10px;
+    white-space:nowrap;
+}
+.mapObject .map-control  .tooltip-btn .tooltiptext-btn::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    /* border-style: solid;
+    border-color: transparent transparent black transparent; */
+}
+.mapObject .map-control .tooltip-btn:hover .tooltiptext-btn {
+    visibility: visible;
+}
+
+
+// WEBPACK FOOTER //
+// ./src/components/mapcontrol/mapcontrol.css

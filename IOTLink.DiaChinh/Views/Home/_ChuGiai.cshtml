@@ -1,0 +1,472 @@
+﻿<button type="button" class="dieuKhienChuGiai"><i class="fa fa-file-text-o"></i> Chú giải</button>
+<button type="button" class="btn_loaisudung"><i class="fa fa-filter"></i> Bộ lọc</button>
+<div class="chuGiai">
+    <div class="phanTop">
+        <h5 class="tieuDe">Phân loại chức năng sử dụng đất</h5>
+        <button type="button" class="close tatChuGiai">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="noiDung">
+        @*<div class="chuThich">
+            <h5 class="tieuDeChuThich"></h5>
+        </div>*@
+        <div class="listChuGiai">
+            @*<div class="contentChuGiai">*@
+                <div class="item">
+                    <div class="viewColor" style="background-color: #6EFF64; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất có rừng tự nhiên đặc dụng</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #CDAACD; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất bãi thải, xử lý chất thải</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #ff870f; border:1px solid #ff962d"></div>
+                    <div class="name">Đất ở hiện hữu</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFF0B4; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất bằng trồng cây hàng năm khác</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFAAA0; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất xây dựng cơ sở dịch vụ xã hội</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #B4FFFF; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất có mặt nước chuyên dùng</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFFF64; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất trồng lúa nước còn lại</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #faaaa0; border:1px solid #6e6e6e"></div>
+                    <div class="name">Đất cơ sở sản xuất phi nông nghiệp</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #B4FFFF; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất mặt nước ven biển có mục đích khác</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #BEFF1E; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất khoanh nuôi phục hồi rừng phòng hộ</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFFCB4; border:1px solid #000"></div>
+                    <div class="name">Đất trồng lúa nương</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #6EFF64; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất trồng rừng đặc dụng</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFAAA0; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất công trình bưu chính, viễn  thông</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #AAFFFF; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất nuôi trồng thuỷ sản</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #B4FFFF; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất có mặt nước ven biển</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFD2A0; border:1px solid #000"></div>
+                    <div class="name">Đất trồng cây lâu năm</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFD7AA; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất trồng cây ăn quả lâu năm</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFFFFE; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất đồi núi chưa sử dụng</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFAAA0; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất xây dựng cơ sở khoa học và công nghệ</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #B4FFFF; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất mặt nước ven biển có rừng ngập mặn</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #7f7f00; border:1px solid #7f7f00"></div>
+                    <div class="name">Đất Quân đội</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFAAA0; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất phi nông nghiệp khác</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFFC78; border:1px solid #000"></div>
+                    <div class="name">Đất trồng cây hàng năm</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #ff0000; border:1px solid #ff0000"></div>
+                    <div class="name">Đất công trình dich vụ công cộng</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #B4FFB4; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất trồng rừng sản xuất</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #AAFFFF; border:1px solid #AAFFFF"></div>
+                    <div class="name">Đất thuỷ lợi</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #5200a5; border:1px solid #5200a5"></div>
+                    <div class="name">Đất khu công nghiệp</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFFF64; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất chuyên trồng lúa nước</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #6EFF64; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất có rừng trồng đặc dụng</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFFFFE; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất chưa sử dụng</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #ff0000; border:1px solid #ff0000"></div>
+                    <div class="name">Đất quy hoạch cở sở giáo dục - đào tạo</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFAAA0; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất trụ sở khác</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #AAFF32; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất lâm nghiệp</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #6EFF64; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất khoanh nuôi phục hồi rừng đặc dụng</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #ffdf7f; border:1px solid #ffdf7f"></div>
+                    <div class="name">Đất nhóm nhà ở xây dựng mới</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFF0B4; border:1px solid #000"></div>
+                    <div class="name">Đất trồng cây hàng năm khác</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FF5046; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất an ninh</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #E6E6C8; border:1px solid #6E6E6E"></div>
+                    <div class="name">Núi đá không có rừng cây</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #CDAACD; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất sản xuất vật liệu xây dựng, làm đồ gốm</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #7f3f00; border:1px solid #7f3f00"></div>
+                    <div class="name">Đất xây dựng trụ sở cơ quan</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #BEFF1E; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất trồng rừng phòng hộ</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #B4FFB4; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất khoanh nuôi phục hồi rừng sản xuất</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #AAFFFF; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất nuôi trồng thuỷ sản nước lợ, mặn</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFAAA0; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất công trình năng lượng</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #bf7fff; border:1px solid #bf7fff"></div>
+                    <div class="name">Đất bãi xe</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #a52900; border:1px solid #6e6e6e"></div>
+                    <div class="name">Đất xây dựng cơ sở y tế</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #B4FFB4; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất rừng sản xuất</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFA0AA; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất sản xuất, kinh doanh phi nông nghiệp</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #B4FFB4; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất có rừng trồng sản xuất</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #E6E682; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất cỏ dùng vào chăn nuôi</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #B4FFB4; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất có rừng tự nhiên sản xuất</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFAAA0; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất xây dựng cơ sở văn hóa</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #ff6450; border:1px solid #6e6e6e"></div>
+                    <div class="name">Đất quốc phòng</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFF0B4; border:1px solid #000"></div>
+                    <div class="name">Đất nương rẫy trồng cây hàng năm khác</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #ffff00; border:1px solid #ffff00"></div>
+                    <div class="name">Đất ở</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFFC6E; border:1px solid #000"></div>
+                    <div class="name">SXN</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFFFFE; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất làm muối</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFD0FF; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất ở tại nông thôn</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #BEFF1E; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất có rừng trồng phòng hộ</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFAAA0; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất cơ sở  tôn giáo</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #ff7f9f; border:1px solid #ff7f9f"></div>
+                    <div class="name">Đất hỗn hợp (CT TMDV CC + ở)</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #AAFFFF; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất tôn giáo, tín ngưỡng</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFFFFE; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất bằng chưa sử dụng</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #D2D2D2; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất nghĩa trang, nghĩa địa, nhà tang lễ, nhà hỏa táng</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFFC82; border:1px solid #000"></div>
+                    <div class="name">Đất trồng lúa</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFD7AA; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất trồng cây công nghiệp lâu năm</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #B4FFFF; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất mặt nước ven biển nuôi trồng thuỷ sản</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFAA32; border:1px solid #FFAA32"></div>
+                    <div class="name">Đất giao thông</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFA0AA; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất trụ sở cơ quan, công trình sự nghiệp</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFAAA0; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất chợ</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #CDAACD; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất sử dụng cho hoạt động khoáng sản</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #0000ff; border:1px solid #0000ff"></div>
+                    <div class="name">Đất xây dựng cơ sở giáo dục - đào tạo</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #BEFF1E; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất rừng phòng hộ</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #00a500; border:1px solid #00a500"></div>
+                    <div class="name">Đất cây xanh</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFD7AA; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất trồng cây lâu năm khác</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFAAA0; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất có di tích</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #ffa0ff; border:1px solid #6e6e6e"></div>
+                    <div class="name">Đất ở tại đô thị</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFFF64; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất phi nông nghiệp</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFAAA0; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất cơ sở  tín ngưỡng</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFAAA0; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất xây dựng cơ sở thể dục - thể thao</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #6EFF64; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất rừng đặc dụng</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #A0FFFF; border:1px solid #A0FFFF"></div>
+                    <div class="name">Đất sông, ngòi, kênh, rạch, suối</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFFFB4; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất nông nghiệp khác</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #BEFF1E; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất có rừng tự nhiên phòng hộ</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #FFAAA0; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất sử dụng vào mục đích công cộng</div>
+                </div>
+
+                <div class="item">
+                    <div class="viewColor" style="background-color: #AAFFFF; border:1px solid #6E6E6E"></div>
+                    <div class="name">Đất nuôi trồng thuỷ sản nước ngọt</div>
+                </div>
+            <div class="item">
+                    
+                </div>
+            @*</div>*@
+        </div>
+    </div>
+</div>
+<div class="loaisudung">
+    <div class="phanTop">
+        <h5 class="tieuDe">Bộ lọc</h5>
+        <button type="button" class="close tatChuGiai">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="noiDung">
+        <div class="view-layer-all">
+            <h5 class="tieuDeChuThich">Phân loại lớp đất</h5>
+            <div class="listLopDat list"></div>
+        </div>
+        <div class="chuThich">
+            <h5 class="tieuDeChuThich">Phân loại chức năng sử dụng đất</h5>
+            <div class="listLoaiSuDung list"></div>
+        </div>
+        <div class="footer-loaisudung">
+            <button class="btn btn-default btn-filter-loaisudung">Lọc loại sử dụng đất</button>
+        </div>
+    </div>
+</div>

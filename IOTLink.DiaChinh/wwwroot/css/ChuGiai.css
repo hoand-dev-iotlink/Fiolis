@@ -1,0 +1,119 @@
+﻿.content-wrapper {
+    position: relative;
+}
+.chuGiai, .loaisudung {
+    position: absolute;
+    background: #fff;
+    height: calc(100% - 10px);
+    top: 0px;
+    width: 383px;
+    left: -383px;
+    transition: all 0.5s;
+    display: flex;
+    flex-direction: column;
+    z-index: 999;
+    /*border: 1px solid rgba(0,0,0,.2);
+    border-radius: 4px;*/
+    overflow: hidden;
+}
+    .chuGiai.opened, .loaisudung.opened{
+        left: 0px;
+    }
+button.dieuKhienChuGiai {
+    /*display: none;*/
+    position: absolute;
+    top: 6px;
+    z-index: 998;
+    padding: 6px 12px;
+    left: 255px;
+    background: #eff5f7;
+    outline: none;
+    border: 1px solid #2198f16b;
+}
+button.btn_loaisudung {
+    display: none;
+    position: absolute;
+    top: 10px;
+    z-index: 998;
+    padding: 6px 12px;
+    left: 105px;
+    background: #eff5f7;
+    outline: none;
+    border: 1px solid #2198f16b;
+}
+.viewColor {
+    width: 50px;
+    height: 24px;
+    margin-right: 8px;
+}
+.listChuGiai .item, .list .item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+.list .item {
+    margin-bottom: 8px;
+}
+    .list .item > label {
+        font-weight:100;
+    }
+.list .viewColor {
+    width: 30px;
+    height: 20px;
+    margin-right: 8px;
+    margin-left: 10px;
+}
+button.close {
+    position: absolute;
+    top: 50%;
+    right: 9px;
+    transform: translateY(-50%);
+    color: #fff;
+    opacity: 0.5;
+}
+h5.tieuDe {
+    text-align: center;
+    font-weight: bold;
+}
+.phanTop {
+    background-color: #325287;
+    height: 35px;
+    width: 100%;
+    color: #fff;
+    position: relative;
+}
+.noiDung {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+}
+/*.listChuGiai, .list {
+    overflow-y: auto;
+}*/
+/*.listChuGiai {
+    height: calc(100% - 10px);
+}*/
+h5.tieuDeChuThich {
+    color: #00286a;
+    font-size: 16px;
+}
+@media(max-width: 450px) {
+    .chuGiai {
+        width: 260px;
+    }
+}
+
+.btn-filter-loaisudung {
+    width: 100%;
+    background-color: #2198F1;
+    color: #fff;
+    font-size: 14px;
+    border-color: #2198F1;
+    border-radius: 0px;
+}
+
+    .btn-filter-loaisudung:hover, .btn-filter-loaisudung:active, .btn-filter-loaisudung.hover {
+        background-color: #2198F1;
+        color: #fff;
+        font-size: 14px;
+    }
