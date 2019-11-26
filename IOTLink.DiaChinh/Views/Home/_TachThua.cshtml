@@ -1,0 +1,134 @@
+﻿@*<button class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Large modal</button>*@
+<div class="modal fade bs-example-modal-lg modal-tach-thua" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel"> Phương pháp giao hội xác định tọa độ điểm</h4>
+            </div>
+            <div class="modal-body">
+                <div class="menu-tach-thua">
+                    <ul>
+                        <li><a href="#home"><i class="fa fa-list-alt"></i> Giao hội cách đường thẳng</a></li>
+                        <li><a href="#news"><i class="fa fa-tachometer"></i> Giao hội thuận</a></li>
+                        <li><a href="#contact"><i class="fa fa-desktop"></i> Giao hội nghịch</a></li>
+                        <li><a href="#about"><i class="fa fa-list"></i> Giao hội hướng</a></li>
+                        <li><a href="#about"><i class="fa fa-pencil-square-o"></i> Giao hội dọc theo cạnh</a></li>
+                    </ul>
+                    <div class="table-point">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Phương thức</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Mark</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Jacob</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td colspan="2">Larry the Bird</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="button-tool">
+                        <button type="button" class="btn btn-default" title="Xóa toàn bộ điểm chia"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-default" title="Xem kết quả tách thửa"><i class="fa fa-play" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-default" title="Xóa kết quả tách thửa"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-default" title="Lưu kết quả"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <div class="map-tach-thua" id="madTachThua">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .modal-tach-thua {
+        width: 100%;
+        padding: 0px !important;
+    }
+
+        .modal-tach-thua .modal-dialog {
+            width: 100%;
+            padding: 5px;
+            margin: 0px;
+        }
+
+        .modal-tach-thua .modal-header {
+            position: relative;
+        }
+
+        .modal-tach-thua .modal-body {
+            height: calc(100vh - 70px);
+            display: flex;
+            padding: 0px !important;
+        }
+
+    .map-tach-thua {
+        height: 100%;
+        width: calc(100% - 240px);
+        background-color: #f1f1f1;
+    }
+
+    .menu-tach-thua {
+        width: 240px;
+        height: 100%;
+        border-right: 1px solid #c3c3c3;
+    }
+
+        .menu-tach-thua ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background-color: #f1f1f1;
+        }
+
+        .menu-tach-thua li a {
+            display: block;
+            color: #000;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+            .menu-tach-thua li a i {
+                font-size: 18px;
+            }
+            /* Change the link color on hover */
+            .menu-tach-thua li a:hover {
+                background-color: #48a0e2;
+                color: white;
+            }
+
+            .menu-tach-thua li a.active {
+                background-color: #48a0e2;
+                color: white;
+            }
+
+    .table-point {
+        max-height: calc(100% - 400px);
+        background-color:white;
+    }
+
+    .button-tool {
+        margin: 9px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+        .button-tool .btn-default {
+            width: 45px;
+            height: 40px;
+        }
+</style>
