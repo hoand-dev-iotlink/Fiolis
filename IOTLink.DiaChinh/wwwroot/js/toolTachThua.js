@@ -3,7 +3,7 @@
         x: 0,
         y: 0
     };
-    if (p[0] != undefined) {
+    if (p[0] !== undefined) {
         point.x = p[1];
         point.y = p[0];
     }
@@ -17,22 +17,10 @@ duongThangQua2Diem = function (A, B) {
     let b = pA.x - pB.x;
     let c = a * pA.x + b * pA.y;
     return {
-        a: a,
-        b: b,
-        c: c
+        a: a + 0,
+        b: b + 0,
+        c: c + 0
     };
-};
-//A,B,C,D: point or array[y,x]
-//return {x,y}
-giaoABvaCD = function (A, B, C, D) {
-    let pA = convertToPoint(A);
-    let pB = convertToPoint(B);
-    let pC = convertToPoint(C);
-    let pD = convertToPoint(D);
-    let d1 = duongThangQua2Diem(pA, pB);
-    let d2 = duongThangQua2Diem(pC, pD);
-    return giaoHaiDuong(d1, d2);
-
 };
 //d1,d2:{a,b,c}:ax+ by = c
 //return {x,y}
@@ -45,19 +33,31 @@ giaoHaiDuong = function (d1, d2) {
     }
     else {
         return {
-            x: Dx / D,
-            y: Dy / D
+            x: Dx / D + 0,
+            y: Dy / D + 0
         };
     }
 };
-giaoHaiDuongTron = function (A, rA, B, rB) {
+//A,B,C,D: point or array[y,x]
+//return {x,y}
+giaoHoiHuong = function (A, B, C, D) {
+    let pA = convertToPoint(A);
+    let pB = convertToPoint(B);
+    let pC = convertToPoint(C);
+    let pD = convertToPoint(D);
+    let d1 = duongThangQua2Diem(pA, pB);
+    let d2 = duongThangQua2Diem(pC, pD);
+    return giaoHaiDuong(d1, d2);
+
+};
+giaoHoiThuanTheoCanh = function (A, rA, B, rB) {
     let pA = convertToPoint(A);
     let pB = convertToPoint(B);
     let x0 = pA.x;
     let y0 = pA.y;
     let r0 = rA;
     let x1 = pB.x;
-    let y1 = pB.y; 
+    let y1 = pB.y;
     let r1 = rB;
     let a, dx, dy, d, h, rx, ry;
     let x2, y2;
@@ -104,7 +104,7 @@ giaoHaiDuongTron = function (A, rA, B, rB) {
     rx = -dy * (h / d);
     ry = dx * (h / d);
 
-/* Determine the absolute intersection points. */
+    /* Determine the absolute intersection points. */
     let xi = x2 + rx;
     let xi_prime = x2 - rx;
     let yi = y2 + ry;
@@ -121,4 +121,66 @@ giaoHaiDuongTron = function (A, rA, B, rB) {
         return [point1];
     }
     return [point1, point2];
+};
+giaoHoiDocTheoCanh = function (A, B, h, fromB = false) {
+    let pA = convertToPoint(A);
+    let pB = convertToPoint(B);
+    let vectorAB = {
+        x: pB.x - pA.x,
+        y: pB.y - pA.y
+    };
+    if (vectorAB.x === 0 && vectorAB.y === 0) {
+        return false;
+    }
+    AB = Math.sqrt(vectorAB.x * vectorAB.x + vectorAB.y * vectorAB.y);
+    let AC = h;
+    if (fromB) {
+        AC = AB + h;
+    }
+    let k = AC / AB;
+    let vectorAC = {
+        x: vectorAB.x * k,
+        y: vectorAB.y * k
+    };
+    return {
+        x: pA.x + vectorAC.x,
+        y: pA.y + vectorAC.y
+    };
+};
+giaoHoiCachDuongThang = function (A, B, C, D, cachAB, cachCD) {
+    let AB = duongThangQua2Diem(A, B);
+    let CD = duongThangQua2Diem(C, D);
+    let dAB = Math.sqrt(AB.a * AB.a + AB.b * AB.b);
+    let dCD = Math.sqrt(CD.a * CD.a + CD.b * CD.b);
+    let d1 = {
+        a: AB.a,
+        b: AB.b,
+        c: dAB * cachAB + AB.c
+    };
+    let d2 = {
+        a: AB.a,
+        b: AB.b,
+        c: dAB * cachAB * -1 + AB.c
+    };
+    let d3 = {
+        a: CD.a,
+        b: CD.b,
+        c: dCD * cachCD + CD.c
+    };
+    let d4 = {
+        a: CD.a,
+        b: CD.b,
+        c: dCD * cachCD * -1 + CD.c
+    };
+    let p1 = giaoHaiDuong(d1, d3);
+    let p2 = giaoHaiDuong(d1, d4);
+    let p3 = giaoHaiDuong(d2, d3);
+    let p4 = giaoHaiDuong(d2, d4);
+    let ps = [];
+    if (p1) {
+        return [p1, p2, p3, p4];
+    }
+    else {
+        return false;
+    }
 };
