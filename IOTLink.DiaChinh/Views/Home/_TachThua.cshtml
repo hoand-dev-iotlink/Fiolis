@@ -9,11 +9,11 @@
             <div class="modal-body">
                 <div class="menu-tach-thua">
                     <ul>
-                        <li><a href="#home"><i class="fa fa-list-alt"></i> Giao hội cách đường thẳng</a></li>
-                        <li><a href="#news"><i class="fa fa-tachometer"></i> Giao hội thuận</a></li>
-                        <li><a href="#contact"><i class="fa fa-desktop"></i> Giao hội nghịch</a></li>
-                        <li><a href="#about"><i class="fa fa-list"></i> Giao hội hướng</a></li>
-                        <li><a href="#about"><i class="fa fa-pencil-square-o"></i> Giao hội dọc theo cạnh</a></li>
+                        <li><a href="#" class="menu-cach-duong-thang"><i class="fa fa-list-alt"></i> Giao hội cách đường thẳng</a></li>
+                        <li><a href="#" class="menu-hoi-thuan"><i class="fa fa-tachometer"></i> Giao hội thuận</a></li>
+                        <li><a href="#" class="menu-hoi-nghich"><i class="fa fa-desktop"></i> Giao hội nghịch</a></li>
+                        <li><a href="#" class="menu-hoi-huong"><i class="fa fa-list"></i> Giao hội hướng</a></li>
+                        <li><a href="#" class="menu-doc-theo-canh"><i class="fa fa-pencil-square-o"></i> Giao hội dọc theo cạnh</a></li>
                     </ul>
                     <div class="table-point">
                         <table class="table table-hover">
@@ -47,7 +47,190 @@
                     </div>
                 </div>
                 <div class="map-tach-thua" id="madTachThua">
+                    <div class="footer-map-point col-xs-12 col-sm-12">
+                        <div class="header-point">
+                            <h4 class="title-giao-hoi">Giao hội</h4>
+                            <span class="btn-show-hide-point"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+                        </div>
+                        <div class="context-point">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12">
+                                            <div class="col-xs-12 col-sm-10">
+                                                <div class="form-group row">
+                                                    <div class="col-xs-12 col-sm-6">
+                                                        <label for="sel_GHDoc1" class="col-sm-4 control-label no-padding-right">Đỉnh A</label>
+                                                        <select class="col-sm-8" id="sel_GHCDTDinhA"></select>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6">
+                                                        <label for="sel_GHDoc2" class="col-sm-4 control-label no-padding-right">Đỉnh B</label>
+                                                        <select class="col-sm-8" id="sel_GHCDTDinhB"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-xs-12 col-sm-6">
+                                                        <label for="sel_GHDoc1" class="col-sm-4 control-label no-padding-right">Đỉnh C</label>
+                                                        <select class="col-sm-8" id="sel_GHCDTDinhC"></select>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6">
+                                                        <label for="sel_GHDoc2" class="col-sm-4 control-label no-padding-right">Đỉnh D</label>
+                                                        <select class="col-sm-8" id="sel_GHCDTDinhD"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-xs-12 col-sm-6">
+                                                        <label for="form-field-9" class="col-sm-4 control-label no-padding-right">Cách AB</label>
+                                                        <input type="text" class="col-sm-8 input-mask-distance" placeholder="Khoảng cách (m)" id="inp_CachAB">
+                                                    </div>
 
+                                                    <div class="col-xs-12 col-sm-6">
+                                                        <label for="form-field-9" class="col-sm-4 control-label no-padding-right">Cách CD</label>
+                                                        <input type="text" class="col-sm-8 input-mask-distance" placeholder="Khoảng cách (m)" id="inp_CachCD">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-xs-12 col-sm-6">
+                                                        <label for="form-field-9" class="col-sm-4 control-label no-padding-right">Cạnh A-C</label>
+                                                        <input type="text" class="col-sm-8 input-mask-distance" placeholder="Độ dài cạnh (m)" id="inp_CanhAC">
+                                                    </div>
+
+                                                    <div class="col-xs-12 col-sm-6">
+                                                        <label for="form-field-9" class="col-sm-4 control-label no-padding-right">Cạnh B-C</label>
+                                                        <input type="text" class="col-sm-8 input-mask-distance" placeholder="Độ dài cạnh (m)" id="inp_CanhBC">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-xs-12 col-sm-6">
+                                                        <label for="form-field-select-1" class="col-sm-4 control-label no-padding-right">Góc CAB</label>
+                                                        <input class="col-sm-8 input-mask-angle" type="text" id="inp_GocCAB" disabled="">
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6">
+                                                        <label for="form-field-select-1" class="col-sm-4 control-label no-padding-right">Góc CBA</label>
+                                                        <input class="col-sm-8 input-mask-angle" type="text" id="inp_GocCBA" disabled="">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-xs-12 col-sm-6">
+                                                        <label for="form-field-select-1" class="col-sm-4 control-label no-padding-right">Góc APB</label>
+                                                        <input class="col-sm-8 input-mask-angle" type="text" id="inp_GocAPB">
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6">
+                                                        <label for="form-field-select-1" class="col-sm-4 control-label no-padding-right">Góc APC</label>
+                                                        <input class="col-sm-8 input-mask-angle" type="text" id="inp_GocAPC">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <div class="col-xs-12 col-sm-4">
+                                                        <div class="control-group">
+
+
+                                                            <div class="radio">
+                                                                <label>
+                                                                    <input name="rad_tudiem" type="radio" class="ace" value="A">
+                                                                    <span class="lbl"> Từ điểm A</span>
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="radio">
+                                                                <label>
+                                                                    <input name="rad_tudiem" type="radio" class="ace" value="B">
+                                                                    <span class="lbl"> Từ điểm B</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-xs-12 col-sm-4">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input id="chk_GHThuan_RightSide" type="checkbox" class="ace" checked="">
+                                                                <span class="lbl"> Phía phải</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-xs-12 col-sm-2">
+                                                <div class="control-group">
+
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input name="rad_diem" type="radio" class="ace" value="1">
+                                                            <span class="lbl"> Điểm 1</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input name="rad_diem" type="radio" class="ace" value="2">
+                                                            <span class="lbl"> Điểm 2</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input name="rad_diem" type="radio" class="ace" value="3">
+                                                            <span class="lbl"> Điểm 3</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input name="rad_diem" type="radio" class="ace" value="4">
+                                                            <span class="lbl"> Điểm 4</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-2">
+                                                <div class="control-group">
+                                                    <label class="control-label bolder blue">Giao hội theo</label>
+
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input name="loaiGiaoHoiThuan" type="radio" class="ace" value="edge">
+                                                            <span class="lbl"> Cạnh</span>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input name="loaiGiaoHoiThuan" type="radio" class="ace" value="angle">
+                                                            <span class="lbl"> Góc</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions center">
+                                        <button type="button" class="btn btn-sm btn-warning" id="btn_Clear">
+                                            Làm lại
+                                            <i class="ace-icon fa fa-refresh icon-on-right bigger-110"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-warning" id="btn_Preview">
+                                            Xem thử
+                                            <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-success" id="btn_Submit">
+                                            Ghi nhận
+                                            <i class="ace-icon fa fa-plus icon-on-right bigger-110"></i>
+                                        </button>
+
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-2 col-md-4">
+                                    <div class="thumbnail search-thumbnail">
+                                        <img class="media-object" alt="100%x200" src="~/images/GiaoHoi/ghcachduongthang.png" data-holder-rendered="true" style="height: 100%; width: 100%; display: block;">
+                                        <div class="caption">
+                                            <p>Lấy ra điểm cách đường AB, CD lần lượt các khoảng là d1 và d2. Kết quả sẽ thu được là 4 điểm 1,2,3,4.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -87,38 +270,42 @@
         border-right: 1px solid #c3c3c3;
     }
 
-        .menu-tach-thua ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            background-color: #f1f1f1;
+    .map-tach-thua .modal-body {
+        position: relative;
+    }
+
+    .menu-tach-thua ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        background-color: #f1f1f1;
+    }
+
+    .menu-tach-thua li a {
+        display: block;
+        color: #000;
+        padding: 8px 16px;
+        text-decoration: none;
+    }
+
+        .menu-tach-thua li a i {
+            font-size: 18px;
+        }
+        /* Change the link color on hover */
+        .menu-tach-thua li a:hover {
+            background-color: #48a0e2;
+            color: white;
         }
 
-        .menu-tach-thua li a {
-            display: block;
-            color: #000;
-            padding: 8px 16px;
-            text-decoration: none;
+        .menu-tach-thua li a.active {
+            background-color: #48a0e2;
+            color: white;
         }
-
-            .menu-tach-thua li a i {
-                font-size: 18px;
-            }
-            /* Change the link color on hover */
-            .menu-tach-thua li a:hover {
-                background-color: #48a0e2;
-                color: white;
-            }
-
-            .menu-tach-thua li a.active {
-                background-color: #48a0e2;
-                color: white;
-            }
 
     .table-point {
         max-height: calc(100% - 400px);
-        background-color:white;
+        background-color: white;
     }
 
     .button-tool {
@@ -131,4 +318,524 @@
             width: 45px;
             height: 40px;
         }
+
+    .modal-body .footer-map-point {
+        position: absolute;
+        bottom: 0px;
+        z-index: 10;
+        background: white;
+        width: calc(100% - 240px);
+        padding: 0px;
+    }
+
+        .modal-body .footer-map-point .header-point {
+            display: flex;
+            justify-content: space-between;
+            height: 40px;
+            align-items: center;
+            padding: 0 25px;
+            background: #49aef9;
+            color: #fff;
+            font-size: 19px;
+        }
+
+    .footer-map-point .context-point {
+        padding: 12px;
+    }
+
+        .footer-map-point .context-point label {
+            font-size:14px;
+            font-weight:400;
+        }
+
+    .footer-map-point select {
+        border-radius: 0;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        color: #858585;
+        background-color: #FFF;
+        border: 1px solid #D5D5D5;
+        padding: 3px 4px;
+        height: 30px;
+    }
+
+    .footer-map-point input {
+        border-radius: 0 !important;
+        color: #858585;
+        background-color: #FFF;
+        border: 1px solid #D5D5D5;
+        padding: 5px 4px 6px;
+        font-size: 14px;
+        font-family: inherit;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        -webkit-transition-duration: .1s;
+        transition-duration: .1s;
+    }
+
+    .footer-map-point .form-actions {
+        display: flex;
+        background-color: #F5F5F5;
+        margin-bottom: 20px;
+        margin-top: 20px;
+        padding: 19px 20px 20px;
+        justify-content: center;
+    }
+
+        .footer-map-point .form-actions button {
+            border-radius: 0px;
+            padding: 7px 18px;
+            margin-left: 5px;
+        }
+
+    .footer-map-point .form-group input:disabled, .footer-map-point .form-group input[disabled] {
+        color: #848484 !important;
+        background-color: #EEE !important;
+    }
+
+
+
+
+
+
+
+
+
+    input[type=checkbox].ace, input[type=radio].ace {
+        opacity: 0;
+        position: absolute;
+        z-index: 1;
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+
+    label input[type=checkbox].ace, label input[type=radio].ace {
+        z-index: -100 !important;
+        width: 1px !important;
+        height: 1px !important;
+        clip: rect(1px,1px,1px,1px);
+        position: absolute;
+    }
+
+    input[type=checkbox].ace:checked, input[type=checkbox].ace:focus, input[type=radio].ace:checked, input[type=radio].ace:focus {
+        outline: 0 !important;
+    }
+
+    input[type=checkbox].ace + .lbl, input[type=radio].ace + .lbl {
+        position: relative;
+        display: inline-block;
+        margin: 0;
+        line-height: 20px;
+        min-height: 18px;
+        min-width: 18px;
+        font-weight: 400;
+        cursor: pointer;
+    }
+
+        input[type=checkbox].ace + .lbl::before, input[type=radio].ace + .lbl::before {
+            cursor: pointer;
+            font-family: fontAwesome;
+            font-weight: 400;
+            font-size: 12px;
+            color: #FFF;
+            content: "\a0";
+            background-color: #FAFAFA;
+            border: 1px solid #C8C8C8;
+            box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            border-radius: 0;
+            display: inline-block;
+            text-align: center;
+            height: 16px;
+            line-height: 14px;
+            min-width: 16px;
+            margin-right: 1px;
+            position: relative;
+            top: -1px;
+        }
+
+    input[type=checkbox].ace:checked + .lbl::before, input[type=radio].ace:checked + .lbl::before {
+        display: inline-block;
+        content: '\f00c';
+        color: #32A3CE;
+        background-color: #F5F8FC;
+        border-color: #ADB8C0;
+        box-shadow: 0 1px 2px rgba(0,0,0,.05),inset 0 -15px 10px -12px rgba(0,0,0,.05),inset 15px 10px -12px rgba(255,255,255,.1);
+    }
+
+    input[type=checkbox].ace + .lbl:hover::before, input[type=checkbox].ace:hover + .lbl::before, input[type=radio].ace + .lbl:hover::before, input[type=radio].ace:hover + .lbl::before {
+        border-color: #FF893C;
+    }
+
+    input[type=checkbox].ace:focus + .lbl::before, input[type=radio].ace:focus + .lbl::before {
+        border-color: #F59942;
+    }
+
+    input[type=checkbox].ace:active + .lbl::before, input[type=checkbox].ace:checked:active + .lbl::before, input[type=radio].ace:active + .lbl::before, input[type=radio].ace:checked:active + .lbl::before {
+        box-shadow: 0 1px 2px rgba(0,0,0,.05),inset 0 1px 3px rgba(0,0,0,.1);
+    }
+
+    input[type=checkbox].ace.ace-checkbox-2 + .lbl::before, input[type=radio].ace.ace-checkbox-2 + .lbl::before {
+        box-shadow: none;
+    }
+
+    input[type=checkbox].ace.ace-checkbox-2:checked + .lbl::before, input[type=radio].ace.ace-checkbox-2:checked + .lbl::before {
+        background-color: #F9A021;
+        border-color: #F9A021;
+        color: #FFF;
+    }
+
+    input[type=checkbox].ace.disabled + .lbl::before, input[type=checkbox].ace:disabled + .lbl::before, input[type=checkbox].ace[disabled] + .lbl::before, input[type=radio].ace.disabled + .lbl::before, input[type=radio].ace:disabled + .lbl::before, input[type=radio].ace[disabled] + .lbl::before {
+        background-color: #DDD !important;
+        border-color: #CCC !important;
+        box-shadow: none !important;
+        color: #BBB;
+    }
+
+    .checkbox label input[type=checkbox].ace + .lbl, .radio label input[type=radio].ace + .lbl {
+        margin-left: -10px;
+    }
+
+    input[type=radio].ace + .lbl::before {
+        border-radius: 100%;
+        font-size: 10px;
+        font-family: FontAwesome;
+        text-shadow: 0 0 1px #32A3CE;
+        line-height: 15px;
+        height: 17px;
+        min-width: 17px;
+    }
+
+    input[type=radio].ace:checked + .lbl::before {
+        content: "\f111";
+    }
+
+    input[type=checkbox].ace.input-lg + .lbl::before {
+        border-radius: 4px;
+        font-size: 16px;
+        height: 24px;
+        line-height: 21px;
+        min-width: 24px;
+        top: auto;
+    }
+
+    input[type=radio].ace.input-lg + .lbl::before {
+        font-size: 14px;
+        height: 24px;
+        line-height: 22px;
+        min-width: 24px;
+        top: auto;
+    }
+
+    input[type=checkbox].ace.ace-switch {
+        width: 55px;
+        height: 25px;
+    }
+
+        input[type=checkbox].ace.ace-switch + .lbl {
+            margin: 0 4px;
+            min-height: 24px;
+        }
+
+            input[type=checkbox].ace.ace-switch + .lbl::before {
+                font-family: 'Open Sans';
+                content: "ON\a0\a0\a0\a0\a0\a0\a0\a0\a0OFF";
+                color: #999;
+                text-shadow: 0 0 0 #999;
+                font-weight: 400;
+                font-size: 11px;
+                line-height: 17px;
+                height: 20px;
+                overflow: hidden;
+                border-radius: 12px;
+                background-color: #F5F5F5;
+                -webkit-box-shadow: inset 0 1px 1px 0 rgba(0,0,0,.15);
+                box-shadow: inset 0 1px 1px 0 rgba(0,0,0,.15);
+                border: 1px solid #CCC;
+                text-align: left;
+                float: left;
+                padding: 0;
+                width: 52px;
+                text-indent: -21px;
+                margin-right: 0;
+                -webkit-transition: text-indent .25s ease;
+                -o-transition: text-indent .25s ease;
+                transition: text-indent .25s ease;
+                top: auto;
+            }
+
+            input[type=checkbox].ace.ace-switch + .lbl::after {
+                font-family: 'Open Sans';
+                content: 'III';
+                font-size: 12px;
+                font-weight: 400;
+                letter-spacing: 0;
+                color: #AAA;
+                text-shadow: none;
+                background-color: #FFF;
+                border-radius: 100%;
+                width: 22px;
+                height: 22px;
+                line-height: 22px;
+                text-align: center;
+                position: absolute;
+                top: -2px;
+                left: -3px;
+                -webkit-box-shadow: 0 1px 1px 1px rgba(0,0,0,.3);
+                box-shadow: 0 1px 1px 1px rgba(0,0,0,.3);
+                -webkit-transition: left .25s ease;
+                -o-transition: left .25s ease;
+                transition: left .25s ease;
+            }
+
+        input[type=checkbox].ace.ace-switch:checked + .lbl::before {
+            text-indent: 8px;
+            color: #FFF;
+            text-shadow: 0 0 0 #FFF;
+            background-color: #8AB2C9;
+            border-color: #6A8CA8;
+        }
+
+        input[type=checkbox].ace.ace-switch:checked + .lbl::after {
+            left: 34px;
+            background-color: #FFF;
+            color: #98A0A5;
+        }
+
+        input[type=checkbox].ace.ace-switch.ace-switch-2 + .lbl::before {
+            content: "YES\a0\a0\a0\a0\a0\a0\a0\a0\a0NO";
+        }
+
+        input[type=checkbox].ace.ace-switch.ace-switch-3 + .lbl::after {
+            font-family: FontAwesome;
+            font-size: 13px;
+            line-height: 22px;
+            content: "\f00d";
+            top: -1px;
+            text-shadow: none;
+            padding: 0;
+            text-align: center;
+            color: #BBB;
+            letter-spacing: 0;
+        }
+
+        input[type=checkbox].ace.ace-switch.ace-switch-3:checked + .lbl::after {
+            content: "\f00c";
+            color: #8AB2C9;
+            text-shadow: none;
+        }
+
+        input[type=checkbox].ace.ace-switch.ace-switch-4, input[type=checkbox].ace.ace-switch.ace-switch-5 {
+            width: 60px;
+        }
+
+            input[type=checkbox].ace.ace-switch.ace-switch-4 + .lbl::before, input[type=checkbox].ace.ace-switch.ace-switch-5 + .lbl::before {
+                content: "ON\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0OFF";
+                font-size: 12px;
+                line-height: 21px;
+                height: 24px;
+                overflow: hidden;
+                border-radius: 12px;
+                background-color: #8B9AA3;
+                border: 1px solid #8B9AA3;
+                color: #FFF;
+                width: 56px;
+                text-shadow: 0 0 0 #FFF;
+                display: inline-block;
+                position: relative;
+                box-shadow: none;
+                -webkit-transition: all .25s ease;
+                -o-transition: all .25s ease;
+                transition: all .25s ease;
+            }
+
+            input[type=checkbox].ace.ace-switch.ace-switch-4 + .lbl::after, input[type=checkbox].ace.ace-switch.ace-switch-5 + .lbl::after {
+                content: 'III';
+                font-size: 11px;
+                position: absolute;
+                top: 2px;
+                left: 2px;
+                letter-spacing: 0;
+                width: 20px;
+                height: 20px;
+                line-height: 19px;
+                text-shadow: none !important;
+                color: #939393;
+                background-color: #FFF;
+                -webkit-transition: all .25s ease;
+                -o-transition: all .25s ease;
+                transition: all .25s ease;
+            }
+
+            input[type=checkbox].ace.ace-switch.ace-switch-4:checked + .lbl::before, input[type=checkbox].ace.ace-switch.ace-switch-5:checked + .lbl::before {
+                background-color: #468FCC;
+                border-color: #468FCC;
+            }
+
+            input[type=checkbox].ace.ace-switch.ace-switch-4:checked + .lbl::after, input[type=checkbox].ace.ace-switch.ace-switch-5:checked + .lbl::after {
+                left: 34px;
+                background-color: #FFF;
+                color: #848484;
+            }
+
+            input[type=checkbox].ace.ace-switch.ace-switch-5 + .lbl::before {
+                content: "YES\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0NO";
+            }
+
+            input[type=checkbox].ace.ace-switch.ace-switch-5:checked + .lbl::before {
+                text-indent: 8px;
+            }
+
+        input[type=checkbox].ace.ace-switch.ace-switch-6 + .lbl {
+            position: relative;
+        }
+
+            input[type=checkbox].ace.ace-switch.ace-switch-6 + .lbl::before {
+                font-family: FontAwesome;
+                content: "\f00d";
+                text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+                box-shadow: none;
+                border-width: 0;
+                font-weight: lighter;
+                font-size: 16px;
+                border-radius: 12px;
+                display: inline-block;
+                background-color: #888;
+                color: #F2F2F2;
+                width: 52px;
+                height: 22px;
+                line-height: 21px;
+                text-indent: 32px;
+                -webkit-transition: background .25s ease;
+                -o-transition: background .25s ease;
+                transition: background .25s ease;
+            }
+
+            input[type=checkbox].ace.ace-switch.ace-switch-6 + .lbl::after {
+                content: '';
+                text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+                position: absolute;
+                top: 2px;
+                left: 3px;
+                border-radius: 12px;
+                box-shadow: 0 -1px 0 rgba(0,0,0,.25);
+                width: 18px;
+                height: 18px;
+                text-align: center;
+                background-color: #F2F2F2;
+                border: 4px solid #F2F2F2;
+                -webkit-transition: left .25s ease;
+                -o-transition: left .25s ease;
+                transition: left .25s ease;
+            }
+
+        input[type=checkbox].ace.ace-switch.ace-switch-6:checked + .lbl::before {
+            content: "\f00c";
+            text-indent: 6px;
+            color: #FFF;
+            border-color: #B7D3E5;
+            background-color: #FF893C;
+        }
+
+        input[type=checkbox].ace.ace-switch.ace-switch-6:checked + .lbl::after {
+            left: 32px;
+            background-color: #FFF;
+            border: 4px solid #FFF;
+            text-shadow: 0 -1px 0 rgba(0,200,0,.25);
+        }
+
+        input[type=checkbox].ace.ace-switch.ace-switch-7 {
+            width: 75px;
+        }
+
+            input[type=checkbox].ace.ace-switch.ace-switch-7 + .lbl {
+                position: relative;
+            }
+
+                input[type=checkbox].ace.ace-switch.ace-switch-7 + .lbl::before {
+                    content: "OFF\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0ON";
+                    font-weight: bolder;
+                    font-size: 13px;
+                    background-color: #FFF;
+                    border: 2px solid #AAA;
+                    border-radius: 0;
+                    box-shadow: none;
+                    color: #AAA;
+                    width: 74px;
+                    height: 26px;
+                    line-height: 22px;
+                    overflow: hidden;
+                    text-indent: 5px;
+                    display: inline-block;
+                    position: relative;
+                    -webkit-transition: all .25s ease;
+                    -o-transition: all .25s ease;
+                    transition: all .25s ease;
+                }
+
+                input[type=checkbox].ace.ace-switch.ace-switch-7 + .lbl::after {
+                    content: '\f00d';
+                    font-family: FontAwesome;
+                    font-size: 16px;
+                    position: absolute;
+                    top: 3px;
+                    left: 39px;
+                    width: 32px;
+                    height: 20px;
+                    line-height: 18px;
+                    text-align: center;
+                    padding: 0;
+                    text-indent: 0;
+                    background-color: #AAA;
+                    color: #FFF;
+                    border-radius: 0;
+                    box-shadow: none;
+                    -webkit-transition: all .25s ease;
+                    -o-transition: all .25s ease;
+                    transition: all .25s ease;
+                }
+
+            input[type=checkbox].ace.ace-switch.ace-switch-7:checked + .lbl::before {
+                color: #468FCC;
+                background-color: #FFF;
+                text-indent: -28px;
+                border-color: #6FB3E0;
+            }
+
+            input[type=checkbox].ace.ace-switch.ace-switch-7:checked + .lbl::after {
+                left: 3px;
+                content: '\f00c';
+                background-color: #468FCC;
+                color: #FFF;
+            }
+
+        input[type=checkbox].ace.ace-switch + .lbl[data-lbl]::before {
+            content: attr(data-lbl);
+        }
+
+        input[type=checkbox].ace.ace-switch.btn-empty + .lbl::after {
+            content: "";
+        }
+
+        input[type=checkbox].ace.ace-switch.btn-rotate + .lbl::after {
+            content: "\2261";
+            line-height: 20px;
+            font-size: 17px;
+        }
+
+    input[type=checkbox].ace.ace-switch-4.btn-rotate + .lbl::after, input[type=checkbox].ace.ace-switch-5.btn-rotate + .lbl::after {
+        line-height: 17px;
+    }
+
+    input[type=checkbox].ace.ace-switch.btn-flat + .lbl::after, input[type=checkbox].ace.ace-switch.btn-flat + .lbl::before {
+        border-radius: 0 !important;
+    }
+
+    input[type=checkbox].ace.ace-switch.ace-switch-4 + .lbl::before, input[type=checkbox].ace.ace-switch.ace-switch-5 + .lbl::before {
+        text-indent: -24px;
+    }
+
+    input[type=checkbox].ace.ace-switch.ace-switch-4:checked + .lbl::before, input[type=checkbox].ace.ace-switch.ace-switch-5:checked + .lbl::before {
+        text-indent: 7px;
+    }
 </style>
