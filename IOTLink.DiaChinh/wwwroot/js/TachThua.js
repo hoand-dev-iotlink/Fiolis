@@ -7,7 +7,7 @@
     CONSTS: {},
     SELECTORS: {
         modalTachThua: ".modal-tach-thua",
-        btnTachThua: ".btn-tach-thua"
+        btnTachThua: ".btn-tach-thua",
     },
     init: function () {
         maptachthua = new map4d.Map(document.getElementById("madTachThua"), {
@@ -46,8 +46,9 @@
                 }, 1000);
             }, 1);
             $(TachThua.SELECTORS.modalTachThua).modal('show');
-            
         });
+        //$(document.getElementById("inp_CachAB")).inputmask('9{1,5}.9{1,5}');
+        //$(document.getElementById("inp_CachCD")).inputmask('9{1,5}.9{1,5}');
     },
     showTachThua: function (code,objectId) {
         $.ajax({
