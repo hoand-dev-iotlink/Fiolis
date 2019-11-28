@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="IOTPackages\**" />
+    <Content Remove="IOTPackages\**" />
+    <EmbeddedResource Remove="IOTPackages\**" />
+    <None Remove="IOTPackages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="wwwroot\lib\AdminLTE\bower_components\bootstrap-datepicker\css\bootstrap-datepicker.css" />
     <Content Include="wwwroot\lib\AdminLTE\bower_components\bootstrap-datepicker\css\bootstrap-datepicker.min.css" />
     <Content Include="wwwroot\lib\AdminLTE\bower_components\bootstrap-datepicker\css\bootstrap-datepicker.standalone.css" />
@@ -2156,14 +2163,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\IOTLink.ConvertDataVilis\IOTLink.ConvertDataVilis.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="gdalconst_csharp">
       <HintPath>bin\Debug\netcoreapp2.1\gdalconst_csharp.dll</HintPath>
     </Reference>
     <Reference Include="gdal_csharp">
       <HintPath>bin\Debug\netcoreapp2.1\gdal_csharp.dll</HintPath>
-    </Reference>
-    <Reference Include="IOTLink.ConvertDataVilis">
-      <HintPath>..\IOTLink.ConvertDataVilis\bin\Debug\IOTLink.ConvertDataVilis.dll</HintPath>
     </Reference>
     <Reference Include="ogr_csharp">
       <HintPath>bin\Debug\netcoreapp2.1\ogr_csharp.dll</HintPath>
