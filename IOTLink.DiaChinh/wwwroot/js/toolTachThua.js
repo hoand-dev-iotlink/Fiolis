@@ -1,16 +1,16 @@
-﻿convertToPoint = function (p) {
+﻿function convertToPoint(p) {
     let point = {
         x: 0,
         y: 0
     };
     if (p[0] !== undefined) {
-        point.x = p[1];
-        point.y = p[0];
+        point.x = p[0];
+        point.y = p[1];
     }
     return point;
-};
+}
 //return {a,b,c}: ax + by = c
-duongThangQua2Diem = function (A, B) {
+function duongThangQua2Diem(A, B) {
     let pA = convertToPoint(A);
     let pB = convertToPoint(B);
     let a = pB.y - pA.y;
@@ -21,10 +21,10 @@ duongThangQua2Diem = function (A, B) {
         b: b + 0,
         c: c + 0
     };
-};
+}
 //d1,d2:{a,b,c}:ax+ by = c
 //return {x,y}
-giaoHaiDuong = function (d1, d2) {
+function giaoHaiDuong(d1, d2) {
     let D = d1.a * d2.b - d2.a * d1.b;
     let Dx = d1.c * d2.b - d2.c * d1.b;
     let Dy = d1.a * d2.c - d2.a * d1.c;
@@ -37,10 +37,36 @@ giaoHaiDuong = function (d1, d2) {
             y: Dy / D + 0
         };
     }
-};
+}
+function gocDinhHuongVector(AB) {
+    if (AB.x === 0 && AB.y > 0) {
+        return Math.PI / 2;
+    }
+    if (AB.x === 0 && AB.y < 0) {
+        return -Math.PI / 2;
+    }
+    if (AB.y === 0 && AB.x > 0) {
+        return 0;
+    }
+    if (AB.y === 0 && AB.x < 0) {
+        return Math.PI;
+    }
+    if (AB.x > 0 && AB.y > 0) {
+        return Math.atan(Math.abs(AB.y / AB.x));
+    }
+    if (AB.x < 0 && AB.y > 0) {
+        return Math.PI - Math.atan(Math.abs(AB.y / AB.x));
+    }
+    if (AB.x < 0 && AB.y < 0) {
+        return Math.PI + Math.atan(Math.abs(AB.y / AB.x));
+    }
+    if (AB.x > 0 && AB.y < 0) {
+        return 2 * Math.PI - Math.atan(Math.abs(AB.y / AB.x));
+    }
+}
 //A,B,C,D: point or array[y,x]
 //return {x,y}
-giaoHoiHuong = function (A, B, C, D) {
+function giaoHoiHuong(A, B, C, D) {
     let pA = convertToPoint(A);
     let pB = convertToPoint(B);
     let pC = convertToPoint(C);
@@ -49,8 +75,8 @@ giaoHoiHuong = function (A, B, C, D) {
     let d2 = duongThangQua2Diem(pC, pD);
     return giaoHaiDuong(d1, d2);
 
-};
-giaoHoiThuanTheoCanh = function (A, rA, B, rB) {
+}
+function giaoHoiThuanTheoCanh(A, rA, B, rB) {
     let pA = convertToPoint(A);
     let pB = convertToPoint(B);
     let x0 = pA.x;
@@ -121,8 +147,8 @@ giaoHoiThuanTheoCanh = function (A, rA, B, rB) {
         return [point1];
     }
     return [point1, point2];
-};
-giaoHoiDocTheoCanh = function (A, B, h, fromB = false) {
+}
+function giaoHoiDocTheoCanh(A, B, h, fromB = false) {
     let pA = convertToPoint(A);
     let pB = convertToPoint(B);
     let vectorAB = {
@@ -146,8 +172,8 @@ giaoHoiDocTheoCanh = function (A, B, h, fromB = false) {
         x: pA.x + vectorAC.x,
         y: pA.y + vectorAC.y
     };
-};
-giaoHoiCachDuongThang = function (A, B, C, D, cachAB, cachCD) {
+}
+function giaoHoiCachDuongThang(A, B, C, D, cachAB, cachCD) {
     let AB = duongThangQua2Diem(A, B);
     let CD = duongThangQua2Diem(C, D);
     let dAB = Math.sqrt(AB.a * AB.a + AB.b * AB.b);
@@ -183,4 +209,37 @@ giaoHoiCachDuongThang = function (A, B, C, D, cachAB, cachCD) {
     else {
         return false;
     }
-};
+}
+function giaoHoiThuanTheoGoc(A, B, gocA, gocB) {
+    let pA = convertToPoint(A);
+    let pB = convertToPoint(B);
+    if (gocA + gocB >= Math.PI) {
+        return false;
+    }
+    let vectorAB = {
+        x: pB.x - pA.x,
+        y: pB.y - pA.y
+    };
+    AB = Math.sqrt(vectorAB.x * vectorAB.x + vectorAB.y + vectorAB.y);
+    let AP = Math.sin(gocB) * AB / Math.sin(gocA + gocB);
+    let BP = Math.sin(gocA) * AB / Math.sin(gocA + gocB);
+    //truong hop P ở bên trái B so với A
+    let x1A = pA.x + AP * Math.cos(gocDinhHuongVector(vectorAB) - gocA);
+    let y1A = pA.y + AP * Math.sin(gocDinhHuongVector(vectorAB) - gocA);
+    let x1B = pB.x + BP * Math.cos(gocDinhHuongVector(vectorAB) + Math.PI + gocB);
+    let y1B = pB.y + BP * Math.sin(gocDinhHuongVector(vectorAB) + Math.PI + gocB);
+    let p1 = {
+        x: (x1A + x1B) / 2,
+        y: (y1A + y1B) / 2
+    };
+    //truong hop P ở bên phải B so với A
+    let x2A = pA.x + AP * Math.cos(gocDinhHuongVector(vectorAB) + gocA);
+    let y2A = pA.y + AP * Math.sin(gocDinhHuongVector(vectorAB) + gocA);
+    let x2B = pB.x + BP * Math.cos(gocDinhHuongVector(vectorAB) + Math.PI - gocB);
+    let y2B = pB.y + BP * Math.sin(gocDinhHuongVector(vectorAB) + Math.PI - gocB);
+    let p2 = {
+        x: (x2A + x2B) / 2,
+        y: (y2A + y2B) / 2
+    };
+    return [p1, p2];
+}
