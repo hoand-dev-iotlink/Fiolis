@@ -88,7 +88,7 @@
         });
         $(TachThua.SELECTORS.modalTachThua).on('show.bs.modal', function () {
             $(TachThua.SELECTORS.menuCachDuongThang).trigger("click");
-
+            //test
         });
 
 
