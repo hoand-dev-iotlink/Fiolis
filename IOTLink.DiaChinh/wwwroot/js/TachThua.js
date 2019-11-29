@@ -88,10 +88,7 @@
         });
         $(TachThua.SELECTORS.modalTachThua).on('show.bs.modal', function () {
             $(TachThua.SELECTORS.menuCachDuongThang).trigger("click");
-            //TachThua.showHtmlGiaoHoi(1);
-            //setTimeout(function () {
-            //    TachThua.setEventChangeAllDiem(1);
-            //}, 1000);
+
         });
 
 
