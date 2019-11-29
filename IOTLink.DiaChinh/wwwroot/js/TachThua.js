@@ -41,7 +41,9 @@
         radioGiaoHoiThuan: "input[name='loaiGiaoHoiThuan']",
         radioGiaoHoiThuanCheck: "input[name='loaiGiaoHoiThuan']:checked",
         radioDiem: "input[name='rad_diem']",
-        titleGiaoHoi:".title-giao-hoi",
+        titleGiaoHoi: ".title-giao-hoi",
+        showHideForm: ".btn-show-hide-point",
+        formPointMap:".footer-map-point",
     },
     init: function () {
         maptachthua = new map4d.Map(document.getElementById("madTachThua"), {
@@ -84,10 +86,12 @@
         });
         $(TachThua.SELECTORS.modalTachThua).on('hide.bs.modal', function () {
             TachThua.removeMaker();
-            TachThua.removerOptionDiem([1,2,3,4])
+            TachThua.removerOptionDiem([1, 2, 3, 4]);
         });
         $(TachThua.SELECTORS.modalTachThua).on('show.bs.modal', function () {
-            $(TachThua.SELECTORS.menuCachDuongThang).trigger("click");
+            setTimeout(function () {
+                $(TachThua.SELECTORS.menuCachDuongThang).trigger("click");
+            }, 1000);
         });
 
 
@@ -125,6 +129,21 @@
         $(TachThua.SELECTORS.menuDocTheoCanh).on("click", function () {
             TachThua.showHtmlGiaoHoi(5);
             TachThua.setEventChangeAllDiem(5);
+        });
+        $(TachThua.SELECTORS.showHideForm).on("click", function () {
+            let hide = $(TachThua.SELECTORS.formPointMap).hasClass("footerHide");
+            if (hide) {
+                $(TachThua.SELECTORS.formPointMap).removeClass("footerHide");
+                $(TachThua.SELECTORS.formPointMap).addClass("footerShow");
+                $(this).find("i").removeClass("fa-chevron-up");
+                $(this).find("i").addClass("fa-chevron-down");
+            } else {
+                $(TachThua.SELECTORS.formPointMap).addClass("footerHide");
+                $(TachThua.SELECTORS.formPointMap).removeClass("footerShow");
+                $(this).find("i").removeClass("fa-chevron-down");
+                $(this).find("i").addClass("fa-chevron-up");
+            }
+               
         });
     },
     showTachThua: function (code, objectId) {
