@@ -238,12 +238,15 @@
     .modal-tach-thua {
         width: 100%;
         padding: 0px !important;
+        overflow: hidden !important;
+        height: 100%;
     }
 
         .modal-tach-thua .modal-dialog {
             width: 100%;
             padding: 5px;
             margin: 0px;
+            height: 100%;
         }
 
         .modal-tach-thua .modal-header {
@@ -251,7 +254,7 @@
         }
 
         .modal-tach-thua .modal-body {
-            height: calc(100vh - 70px);
+            height: calc(100vh - 56px);
             display: flex;
             padding: 0px !important;
         }
@@ -324,6 +327,7 @@
         background: white;
         width: calc(100% - 240px);
         padding: 0px;
+        height:390px
     }
 
         .modal-body .footer-map-point .header-point {
@@ -342,8 +346,8 @@
     }
 
         .footer-map-point .context-point label {
-            font-size:14px;
-            font-weight:400;
+            font-size: 14px;
+            font-weight: 400;
         }
 
     .footer-map-point select {
@@ -389,6 +393,62 @@
     .footer-map-point .form-group input:disabled, .footer-map-point .form-group input[disabled] {
         color: #848484 !important;
         background-color: #EEE !important;
+    }
+
+    .footerHide {
+        -webkit-animation-name: animationfooter; /* Safari 4.0 - 8.0 */
+        -webkit-animation-duration: 2s; /* Safari 4.0 - 8.0 */
+        animation-name: animationfooter;
+        animation-duration: 2s;
+        bottom: -350px !important;
+    }
+
+    .footerShow {
+        -webkit-animation-name: animationfooter1; /* Safari 4.0 - 8.0 */
+        -webkit-animation-duration: 2s; /* Safari 4.0 - 8.0 */
+        animation-name: animationfooter1;
+        animation-duration: 2s;
+        bottom: 0px;
+    }
+
+    @@keyframes animationfooter {
+        0% {
+            bottom: 0px;
+        }
+
+        100% {
+            bottom: -350px;
+        }
+    }
+
+    @@-webkit-keyframes animationfooter {
+        0% {
+            bottom: 0px;
+        }
+
+        100% {
+            bottom: -350px;
+        }
+    }
+
+    @@keyframes animationfooter1 {
+        0% {
+            bottom: -350px;
+        }
+
+        100% {
+            bottom: 0px
+        }
+    }
+
+    @@-webkit-keyframes animationfooter1 {
+        0% {
+            bottom: -350px;
+        }
+
+        100% {
+            bottom: 0px
+        }
     }
 
 
