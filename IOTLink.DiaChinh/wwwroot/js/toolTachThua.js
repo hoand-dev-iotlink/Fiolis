@@ -43,7 +43,7 @@ function gocDinhHuongVector(AB) {
         return Math.PI / 2;
     }
     if (AB.x === 0 && AB.y < 0) {
-        return -Math.PI / 2;
+        return 3 * Math.PI / 2;
     }
     if (AB.y === 0 && AB.x > 0) {
         return 0;
@@ -220,7 +220,7 @@ function giaoHoiThuanTheoGoc(A, B, gocA, gocB) {
         x: pB.x - pA.x,
         y: pB.y - pA.y
     };
-    AB = Math.sqrt(vectorAB.x * vectorAB.x + vectorAB.y + vectorAB.y);
+    AB = Math.sqrt(vectorAB.x * vectorAB.x + vectorAB.y * vectorAB.y);
     let AP = Math.sin(gocB) * AB / Math.sin(gocA + gocB);
     let BP = Math.sin(gocA) * AB / Math.sin(gocA + gocB);
     //truong hop P ở bên trái B so với A
@@ -242,4 +242,55 @@ function giaoHoiThuanTheoGoc(A, B, gocA, gocB) {
         y: (y2A + y2B) / 2
     };
     return [p1, p2];
+}
+function giaoHoiNghich(A, B, C, P1, P2) {
+    let pA = convertToPoint(A);
+    let pB = convertToPoint(B);
+    let pC = convertToPoint(C);
+    let vectorBA = {
+        x: pA.x - pB.x,
+        y: pA.y - pB.y
+    };
+    let vectorBC = {
+        x: pC.x - pB.x,
+        y: pC.y - pB.y
+    };
+    let gocB = Math.abs(gocDinhHuongVector(vectorBC) - gocDinhHuongVector(vectorBA));
+    if (gocB > Math.PI) {
+        gocB = 2 * Math.PI - gocB;
+    }
+    if (gocB === 0) {
+        return false;
+    }
+    let tongGocAvaC = 2 * Math.PI - gocB - P1 - P2;
+    if (tongGocAvaC <= 0) {
+        return false;
+    }
+    let AB = Math.sqrt(vectorBA.x * vectorBA.x + vectorBA.y * vectorBA.y);
+    let BC = Math.sqrt(vectorBC.x * vectorBC.x + vectorBC.y * vectorBC.y);
+    let tanU = AB * Math.sin(P2) / (BC * Math.sin(P1));
+    let hieuAvaC = 2 * Math.atan(Math.tan(tongGocAvaC / 2) * (1 - tanU) / (tanU + 1));
+    let gocA = (tongGocAvaC + hieuAvaC) / 2;
+    let gocC = (tongGocAvaC - hieuAvaC) / 2;
+    let gocB1 = Math.PI - P1 - gocA;
+    let gocB2 = Math.PI - P2 - gocC;
+    let hieu = gocDinhHuongVector(vectorBC) - gocDinhHuongVector(vectorBA);
+    if (hieu < -Math.PI||(0 < hieu && hieu < Math.PI)){
+        let p1 = giaoHoiThuanTheoGoc(A, B, gocA, gocB1)[0];
+        let p2 = giaoHoiThuanTheoGoc(B, C, gocB2, gocC)[0];
+        let p = {
+            x: (p1.x + p2.x) / 2,
+            y: (p1.y + p2.y) / 2
+        };
+        return [p];
+    }
+    if (hieu > Math.PI || (0 > hieu && hieu > -Math.PI)) {
+        let p1 = giaoHoiThuanTheoGoc(A, B, gocA, gocB1)[1];
+        let p2 = giaoHoiThuanTheoGoc(B, C, gocB2, gocC)[1];
+        let p = {
+            x: (p1.x + p2.x) / 2,
+            y: (p1.y + p2.y) / 2
+        };
+        return [p];
+    }
 }
