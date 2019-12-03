@@ -617,5 +617,147 @@
         if (check.includes(4) && select.length > 0) {
             $(TachThua.SELECTORS.selectDinhD).children().remove();
         }
-    }
+    },
+    checkPointOnLine: function (A,B,C) {
+        let AB = (B.y - A.y) / (B.x - A.x);
+        let AC = (B.y - C.y) / (B.x - C.x);
+        AB = Math.round(AB * 10000) / 10000;
+        AC = Math.round(AC * 10000) / 10000;
+        if ((A.x > B.x && A.x > C.x && C.x > B.x) || (B.x > A.x && B.x > C.x && C.x > A.x)) {
+            if ((A.y > B.y && A.y > C.y && C.y > B.y) || (B.y > A.y && B.y > C.y && C.y > A.y)) {
+                if (AB === AC) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    },
+    orderClockWise: function (listPoints) {
+        var listTemp = listPoints.slice(0);
+        var mX = 0;
+        var mY = 0;
+        $.each(listTemp, function (i, obj) {
+            mX = mX + obj.y;
+            mY = mY + obj.x;
+        });
+        mX = mX / listTemp.length;
+        mY = mY / listTemp.length;
+        listTemp.sort(function (a, b) {
+            let at1 = (Math.atan2(a.x - mY, a.y - mX));
+            let at2 = (Math.atan2(b.x - mY, b.y - mX));
+            return at1 - at2;
+        });
+        return listTemp;
+    },
+    checkListPointWithPolygon: function (listPoint, listDiem) {
+        if (listPoint.length > 1) {
+            var Polygon1 = [];
+            var Polygon2 = [];
+            let a, b, c;
+            let diem1 = false, diem2 = false;
+            for (var i = 0; i < listDiem.length; i++) {
+                //polygon1
+                if ((!diem1 && !diem2) || (diem1 && diem2)) {
+                    Polygon1.push(listDiem[i]);
+                }
+                //polygon 2
+                if (diem1 && !diem2) {
+                    Polygon2.push(listDiem[i]);
+                }
+                for (var j = 0; j < listPoint.length; j++) {
+                    a = listDiem[i].xy;
+                    if (i == listDiem.length - 1) {
+                        b = listDiem[0].xy;
+                    } else {
+                        b = listDiem[i + 1].xy;
+                    }
+                    c = listPoint[j];
+                    if (TachThua.checkPointOnLine(a, b, c)) {
+                        if (!diem2 && diem1) diem2 = true;
+                        if (!diem1) diem1 = true;
+                        
+                        break;
+                    }
+                }
+            }
+            console.log(Polygon1);
+            console.log(Polygon2);
+            var listpolygon1 = [];
+            for (var i = 0; i < Polygon1.length; i++) {
+                listpolygon1.push(Polygon1[i].xy);
+            }
+            var listpolygon2 = [];
+            for (var i = 0; i < Polygon2.length; i++) {
+                listpolygon2.push(Polygon2[i].xy);
+            }
+            for (var i = 0; i < listPoint.length; i++) {
+                listpolygon1.push(listPoint[i]);
+                listpolygon2.push(listPoint[i]);
+            }
+            var listPolygons = [];
+            listPolygons.push(TachThua.orderClockWise(listpolygon1));
+            listPolygons.push(TachThua.orderClockWise(listpolygon2));
+            console.log(listPolygons[0]);
+            console.log(listPolygons[2]);
+            return listPolygons
+        }
+    },
+    convertDataVN2000toWGS84: function (object) {
+        let data = {
+            code: ViewMap.CONSTS.codeDefault,
+            geometry: {
+                type: "Polygon",
+                coordinates: []
+            }
+        };
+        data.geometry.coordinates.push(object);
+        var result;
+        $.ajax({
+            type: "POST",
+            url: ViewMap.GLOBAL.url + "/v2/api/land/vn2000-wgs84?key=" + ViewMap.CONSTS.key,
+            data: JSON.stringify(data),
+            dataType: 'json',
+            contentType: 'application/json-patch+json',
+            async: false,
+            success: function (data) {
+                console.log(data);
+                result = data.result;
+                //if (data.result !== null && typeof data.result !== "undefined") {
+                //    if (data.result.features.length > 0) {
+                //        TachThua.GLOBAL.ThuaDat = data.result;
+                //        let path = TachThua.drawPolygon(TachThua.GLOBAL.ThuaDat);
+                //        //map.data.clear();
+                //        //ViewMap.drawThuaDat(data.result);
+                //    } else {
+                //        bootbox.alert("Phường/Xã này chưa có dữ liệu");
+                //    }
+                //} else {
+                //    bootbox.alert("Lỗi hệ thông");
+                //}
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                let messageErorr = AppCommon.getMessageErrorReuqest(jqXHR, errorThrown);
+                console.log(messageErorr);
+                ViewMap.showLoading(false);
+            }
+        });
+        return result;
+    },
+    showMultiPolygons: function () {
+        var listp = [{ "x": 1181000.3288308799, "y": 537085.5774804119 }, { "x": 1181035.395258569, "y": 537067.3979677357 }]
+        var list = TachThua.checkListPointWithPolygon(listp, TachThua.GLOBAL.listDiem);
+        var listWGS84 = [];
+        $.each(list, function (i, obj) {
+            let polygon = [];
+            for (var i = 0; i < obj.length; i++) {
+                let point = [];
+                point.push(obj[i].y);
+                point.push(obj[i].x);
+                polygon.push(point);
+            }
+            listWGS84.push(TachThua.convertDataVN2000toWGS84(polygon))
+        });
+        console.log(JSON.stringify(listWGS84));
+    },
+
 }
