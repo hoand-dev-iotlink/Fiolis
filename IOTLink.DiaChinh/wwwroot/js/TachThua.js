@@ -5,6 +5,7 @@
         path: null,
         listMarkerDiem: [],
         listDiem: [],
+        listPolygonTachThua:null,
         //listGiaoHoi: {
         //    giaohoicachduongthang: true,
         //    giaohoithuan: false,
@@ -43,7 +44,9 @@
         radioDiem: "input[name='rad_diem']",
         titleGiaoHoi: ".title-giao-hoi",
         showHideForm: ".btn-show-hide-point",
-        formPointMap:".footer-map-point",
+        formPointMap: ".footer-map-point",
+        viewResultTachThua: ".view-tach-thua",
+        clearResultTachThua: ".clear-result",
     },
     init: function () {
         maptachthua = new map4d.Map(document.getElementById("madTachThua"), {
@@ -93,8 +96,6 @@
                 $(TachThua.SELECTORS.menuCachDuongThang).trigger("click");
             }, 1000);
         });
-
-
         $(TachThua.SELECTORS.menuCachDuongThang).on("click", function () {
             TachThua.showHtmlGiaoHoi(1);
             TachThua.setEventChangeAllDiem(1);
@@ -144,6 +145,15 @@
                 $(this).find("i").addClass("fa-chevron-up");
             }
                
+        });
+        $(TachThua.SELECTORS.viewResultTachThua).on("click", function () {
+            TachThua.ShowHideAll(true);
+            var listp = [{ "x": 1181000.3288308799, "y": 537085.5774804119 }, { "x": 1181035.395258569, "y": 537067.3979677357 }]
+            TachThua.GLOBAL.listPolygonTachThua = TachThua.getPolygonsTachThua(listp);
+            TachThua.drawPolygonTachThua(TachThua.GLOBAL.listPolygonTachThua);
+        });
+        $(TachThua.SELECTORS.clearResultTachThua).on("click", function () {
+            TachThua.ShowHideAll(false);
         });
     },
     showTachThua: function (code, objectId) {
@@ -202,7 +212,7 @@
         //maptachthua.setCamera(camera);
     },
     convertCoordinate: function (data) {
-        if (data.geometry.type.toLocaleLowerCase() === "multipolygon") {
+        if (data.geometry.type.toLocaleLowerCase() === "multipolygon" || data.geometry.type.toLocaleLowerCase() === "polygon") {
             let count = data.geometry.coordinates[0].length;
             let path = [];
             for (var i = 0; i < count; i++) {
@@ -636,5 +646,177 @@
         if (check.includes(4) && select.length > 0) {
             $(TachThua.SELECTORS.selectDinhD).children().remove();
         }
+    },
+    checkPointOnLine: function (A,B,C) {
+        let AB = (B.y - A.y) / (B.x - A.x);
+        let AC = (B.y - C.y) / (B.x - C.x);
+        AB = Math.round(AB * 10000) / 10000;
+        AC = Math.round(AC * 10000) / 10000;
+        if ((A.x > B.x && A.x > C.x && C.x > B.x) || (B.x > A.x && B.x > C.x && C.x > A.x)) {
+            if ((A.y > B.y && A.y > C.y && C.y > B.y) || (B.y > A.y && B.y > C.y && C.y > A.y)) {
+                if (AB === AC) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    },
+    orderClockWise: function (listPoints) {
+        var listTemp = listPoints.slice(0);
+        var mX = 0;
+        var mY = 0;
+        $.each(listTemp, function (i, obj) {
+            mX = mX + obj.y;
+            mY = mY + obj.x;
+        });
+        mX = mX / listTemp.length;
+        mY = mY / listTemp.length;
+        listTemp.sort(function (a, b) {
+            let at1 = (Math.atan2(a.x - mY, a.y - mX));
+            let at2 = (Math.atan2(b.x - mY, b.y - mX));
+            return at1 - at2;
+        });
+        return listTemp;
+    },
+    checkListPointWithPolygon: function (listPoint, listDiem) {
+        if (listPoint.length > 1) {
+            var Polygon1 = [];
+            var Polygon2 = [];
+            let a, b, c;
+            let diem1 = false, diem2 = false;
+            for (var i = 0; i < listDiem.length; i++) {
+                //polygon1
+                if ((!diem1 && !diem2) || (diem1 && diem2)) {
+                    Polygon1.push(listDiem[i]);
+                }
+                //polygon 2
+                if (diem1 && !diem2) {
+                    Polygon2.push(listDiem[i]);
+                }
+                for (var j = 0; j < listPoint.length; j++) {
+                    a = listDiem[i].xy;
+                    if (i == listDiem.length - 1) {
+                        b = listDiem[0].xy;
+                    } else {
+                        b = listDiem[i + 1].xy;
+                    }
+                    c = listPoint[j];
+                    if (TachThua.checkPointOnLine(a, b, c)) {
+                        if (!diem2 && diem1) diem2 = true;
+                        if (!diem1) diem1 = true;
+                        
+                        break;
+                    }
+                }
+            }
+            console.log(Polygon1);
+            console.log(Polygon2);
+            var listpolygon1 = [];
+            for (var i = 0; i < Polygon1.length; i++) {
+                listpolygon1.push(Polygon1[i].xy);
+            }
+            var listpolygon2 = [];
+            for (var i = 0; i < Polygon2.length; i++) {
+                listpolygon2.push(Polygon2[i].xy);
+            }
+            for (var i = 0; i < listPoint.length; i++) {
+                listpolygon1.push(listPoint[i]);
+                listpolygon2.push(listPoint[i]);
+            }
+            var listPolygons = [];
+            listPolygons.push(TachThua.orderClockWise(listpolygon1));
+            listPolygons.push(TachThua.orderClockWise(listpolygon2));
+            console.log(listPolygons[0]);
+            console.log(listPolygons[2]);
+            return listPolygons
+        }
+    },
+    convertDataVN2000toWGS84: function (object) {
+        let data = {
+            code: ViewMap.CONSTS.codeDefault,
+            geometry: {
+                type: "Polygon",
+                coordinates: []
+            }
+        };
+        data.geometry.coordinates.push(object);
+        var result;
+        $.ajax({
+            type: "POST",
+            url: ViewMap.GLOBAL.url + "/v2/api/land/vn2000-wgs84?key=" + ViewMap.CONSTS.key,
+            data: JSON.stringify(data),
+            dataType: 'json',
+            contentType: 'application/json-patch+json',
+            async: false,
+            success: function (data) {
+                result = data.result;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                let messageErorr = AppCommon.getMessageErrorReuqest(jqXHR, errorThrown);
+                console.log(messageErorr);
+                ViewMap.showLoading(false);
+            }
+        });
+        return result;
+    },
+    getPolygonsTachThua: function (listpoint) {
+        var list = TachThua.checkListPointWithPolygon(listpoint, TachThua.GLOBAL.listDiem);
+        var listWGS84 = [];
+        $.each(list, function (i, obj) {
+            let polygon = [];
+            for (var i = 0; i < obj.length; i++) {
+                let point = [];
+                point.push(obj[i].y);
+                point.push(obj[i].x);
+                polygon.push(point);
+            }
+            listWGS84.push(TachThua.convertDataVN2000toWGS84(polygon))
+        });
+        return listWGS84;
+        //console.log(JSON.stringify(listWGS84));
+    },
+    ShowHideAll: function (check) {
+        if (check) {
+            TachThua.GLOBAL.polygon.setMap(null);
+            $.each(TachThua.GLOBAL.listMarkerDiem, function (i, obj) {
+                obj.markerPoint.setMap(null);
+                obj.markerTitelPoint.setMap(null);
+            });
+        }
+        else {
+            TachThua.GLOBAL.polygon.setMap(maptachthua);
+            $.each(TachThua.GLOBAL.listMarkerDiem, function (i, obj) {
+                obj.markerPoint.setMap(maptachthua);
+                obj.markerTitelPoint.setMap(maptachthua);
+            });
+        }
+    },
+    drawPolygonTachThua: function (list) {
+        for (var i = 0; i < list.length; i++) {
+            let feature = list[i].features;
+            for (var j = 0; j < feature.length; j++) {
+                if (feature[j].properties.info == "wgs84") {
+                    //let paths = TachThua.convertCoordinate(feature[j]);
+                    let paths = feature[j].geometry.coordinates;
+                    //let latlng0 = (paths[0])[0];
+                    paths[0].push(paths[0][0]);
+                    if (TachThua.GLOBAL.polygon !== null) {
+                        TachThua.GLOBAL.polygon.setMap(null);
+                    }
+                    let polygon = new map4d.Polygon({
+                        paths: paths,
+                        fillColor: "#0000ff",
+                        fillOpacity: 1,
+                        strokeColor: "#ea5252",
+                        strokeOpacity: 1.0,
+                        strokeWidth: 1,
+                        id:j
+                    });
+                    polygon.setMap(maptachthua);
+                    //TachThua.GLOBAL.path = paths;
+                }
+            }
+        }
     }
+
 }
