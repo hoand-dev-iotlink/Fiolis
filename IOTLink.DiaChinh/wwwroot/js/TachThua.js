@@ -5,6 +5,7 @@
         path: null,
         listMarkerDiem: [],
         listDiem: [],
+        listPolygonTachThua:null,
         //listGiaoHoi: {
         //    giaohoicachduongthang: true,
         //    giaohoithuan: false,
@@ -41,7 +42,9 @@
         radioGiaoHoiThuan: "input[name='loaiGiaoHoiThuan']",
         radioGiaoHoiThuanCheck: "input[name='loaiGiaoHoiThuan']:checked",
         radioDiem: "input[name='rad_diem']",
-        titleGiaoHoi:".title-giao-hoi",
+        titleGiaoHoi: ".title-giao-hoi",
+        viewResultTachThua: ".view-tach-thua",
+        clearResultTachThua:".clear-result",
     },
     init: function () {
         maptachthua = new map4d.Map(document.getElementById("madTachThua"), {
@@ -89,8 +92,6 @@
         $(TachThua.SELECTORS.modalTachThua).on('show.bs.modal', function () {
             $(TachThua.SELECTORS.menuCachDuongThang).trigger("click");
         });
-
-
         $(TachThua.SELECTORS.menuCachDuongThang).on("click", function () {
             TachThua.showHtmlGiaoHoi(1);
             TachThua.setEventChangeAllDiem(1);
@@ -125,6 +126,15 @@
         $(TachThua.SELECTORS.menuDocTheoCanh).on("click", function () {
             TachThua.showHtmlGiaoHoi(5);
             TachThua.setEventChangeAllDiem(5);
+        });
+        $(TachThua.SELECTORS.viewResultTachThua).on("click", function () {
+            TachThua.ShowHideAll(true);
+            var listp = [{ "x": 1181000.3288308799, "y": 537085.5774804119 }, { "x": 1181035.395258569, "y": 537067.3979677357 }]
+            TachThua.GLOBAL.listPolygonTachThua = TachThua.getPolygonsTachThua(listp);
+            TachThua.drawPolygonTachThua(TachThua.GLOBAL.listPolygonTachThua);
+        });
+        $(TachThua.SELECTORS.clearResultTachThua).on("click", function () {
+            TachThua.ShowHideAll(false);
         });
     },
     showTachThua: function (code, objectId) {
@@ -183,7 +193,7 @@
         //maptachthua.setCamera(camera);
     },
     convertCoordinate: function (data) {
-        if (data.geometry.type.toLocaleLowerCase() === "multipolygon") {
+        if (data.geometry.type.toLocaleLowerCase() === "multipolygon" || data.geometry.type.toLocaleLowerCase() === "polygon") {
             let count = data.geometry.coordinates[0].length;
             let path = [];
             for (var i = 0; i < count; i++) {
@@ -720,20 +730,7 @@
             contentType: 'application/json-patch+json',
             async: false,
             success: function (data) {
-                console.log(data);
                 result = data.result;
-                //if (data.result !== null && typeof data.result !== "undefined") {
-                //    if (data.result.features.length > 0) {
-                //        TachThua.GLOBAL.ThuaDat = data.result;
-                //        let path = TachThua.drawPolygon(TachThua.GLOBAL.ThuaDat);
-                //        //map.data.clear();
-                //        //ViewMap.drawThuaDat(data.result);
-                //    } else {
-                //        bootbox.alert("Phường/Xã này chưa có dữ liệu");
-                //    }
-                //} else {
-                //    bootbox.alert("Lỗi hệ thông");
-                //}
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 let messageErorr = AppCommon.getMessageErrorReuqest(jqXHR, errorThrown);
@@ -743,9 +740,8 @@
         });
         return result;
     },
-    showMultiPolygons: function () {
-        var listp = [{ "x": 1181000.3288308799, "y": 537085.5774804119 }, { "x": 1181035.395258569, "y": 537067.3979677357 }]
-        var list = TachThua.checkListPointWithPolygon(listp, TachThua.GLOBAL.listDiem);
+    getPolygonsTachThua: function (listpoint) {
+        var list = TachThua.checkListPointWithPolygon(listpoint, TachThua.GLOBAL.listDiem);
         var listWGS84 = [];
         $.each(list, function (i, obj) {
             let polygon = [];
@@ -757,7 +753,51 @@
             }
             listWGS84.push(TachThua.convertDataVN2000toWGS84(polygon))
         });
-        console.log(JSON.stringify(listWGS84));
+        return listWGS84;
+        //console.log(JSON.stringify(listWGS84));
     },
+    ShowHideAll: function (check) {
+        if (check) {
+            TachThua.GLOBAL.polygon.setMap(null);
+            $.each(TachThua.GLOBAL.listMarkerDiem, function (i, obj) {
+                obj.markerPoint.setMap(null);
+                obj.markerTitelPoint.setMap(null);
+            });
+        }
+        else {
+            TachThua.GLOBAL.polygon.setMap(maptachthua);
+            $.each(TachThua.GLOBAL.listMarkerDiem, function (i, obj) {
+                obj.markerPoint.setMap(maptachthua);
+                obj.markerTitelPoint.setMap(maptachthua);
+            });
+        }
+    },
+    drawPolygonTachThua: function (list) {
+        for (var i = 0; i < list.length; i++) {
+            let feature = list[i].features;
+            for (var j = 0; j < feature.length; j++) {
+                if (feature[j].properties.info == "wgs84") {
+                    //let paths = TachThua.convertCoordinate(feature[j]);
+                    let paths = feature[j].geometry.coordinates;
+                    //let latlng0 = (paths[0])[0];
+                    paths[0].push(paths[0][0]);
+                    if (TachThua.GLOBAL.polygon !== null) {
+                        TachThua.GLOBAL.polygon.setMap(null);
+                    }
+                    let polygon = new map4d.Polygon({
+                        paths: paths,
+                        fillColor: "#0000ff",
+                        fillOpacity: 1,
+                        strokeColor: "#ea5252",
+                        strokeOpacity: 1.0,
+                        strokeWidth: 1,
+                        id:j
+                    });
+                    polygon.setMap(maptachthua);
+                    //TachThua.GLOBAL.path = paths;
+                }
+            }
+        }
+    }
 
 }

@@ -7,5 +7,6 @@ GLOBAL: {
 
     },
     setEvent: function () {
-    }
+    },
+
 }
