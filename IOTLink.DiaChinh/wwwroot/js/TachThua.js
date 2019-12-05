@@ -5,14 +5,9 @@
         path: null,
         listMarkerDiem: [],
         listDiem: [],
-        listPolygonTachThua:null,
-        //listGiaoHoi: {
-        //    giaohoicachduongthang: true,
-        //    giaohoithuan: false,
-        //    giaohoinghich: false,
-        //    giaohoihuong: false,
-        //    giaohoidoctheocanh: false,
-        //}
+        listPolygonTachThua: null,
+        listDrawPolygon: [],
+        listInforUpdateTachThua:[],
     },
     CONSTS: {},
     SELECTORS: {
@@ -47,6 +42,8 @@
         formPointMap: ".footer-map-point",
         viewResultTachThua: ".view-tach-thua",
         clearResultTachThua: ".clear-result",
+        closeInforTachThua: ".header-infor span",
+        inforTachThua:".infor-Tach-Thua",
     },
     init: function () {
         maptachthua = new map4d.Map(document.getElementById("madTachThua"), {
@@ -155,6 +152,22 @@
         $(TachThua.SELECTORS.clearResultTachThua).on("click", function () {
             TachThua.ShowHideAll(false);
         });
+        $(TachThua.SELECTORS.closeInforTachThua).on("click", function () {
+            TachThua.showInforUpdateTachThua(false);
+        });
+
+        maptachthua.addListener("click", (args) => {
+            console.log(args);
+            TachThua.showInforUpdateTachThua(true);
+            //ViewMap.showHideMenuClick(false, null);
+            //ViewMap.removeSelectThuaDat();
+            //if (args != null && args.location != null) {
+            //    ViewMap.getConvertVN2000(args.location.lat, args.location.lng);
+            //    ViewMap.getLocationMap(args.location.lat, args.location.lng, true);
+            //    ViewMap.SetMarkerLocation(args.location.lat, args.location.lng, true);
+            //    ViewMap.showHideViewProperty(false);
+            //}
+        }, { polygon: true });
     },
     showTachThua: function (code, objectId) {
         $.ajax({
@@ -199,7 +212,8 @@
             fillOpacity: 0,
             strokeColor: "#ea5252",
             strokeOpacity: 1.0,
-            strokeWidth: 1
+            strokeWidth: 1,
+            userInteractionEnabled:false,
         });
         TachThua.GLOBAL.polygon.setMap(maptachthua);
         TachThua.GLOBAL.path = paths;
@@ -789,34 +803,88 @@
                 obj.markerPoint.setMap(maptachthua);
                 obj.markerTitelPoint.setMap(maptachthua);
             });
+            $.each(TachThua.GLOBAL.listDrawPolygon, function (i, obj) {
+                obj.setMap(null);
+            });
+            TachThua.GLOBAL.listDrawPolygon = [];
         }
     },
     drawPolygonTachThua: function (list) {
         for (var i = 0; i < list.length; i++) {
             let feature = list[i].features;
             for (var j = 0; j < feature.length; j++) {
-                if (feature[j].properties.info == "wgs84") {
-                    //let paths = TachThua.convertCoordinate(feature[j]);
+                if (feature[j].properties.info === "wgs84") {
                     let paths = feature[j].geometry.coordinates;
-                    //let latlng0 = (paths[0])[0];
                     paths[0].push(paths[0][0]);
                     if (TachThua.GLOBAL.polygon !== null) {
                         TachThua.GLOBAL.polygon.setMap(null);
                     }
                     let polygon = new map4d.Polygon({
                         paths: paths,
-                        fillColor: "#0000ff",
-                        fillOpacity: 1,
+                        fillColor: "#d8eefb",
+                        fillOpacity: 0.5,
                         strokeColor: "#ea5252",
                         strokeOpacity: 1.0,
                         strokeWidth: 1,
-                        id:j
                     });
+                    TachThua.GLOBAL.listDrawPolygon.push(polygon);
                     polygon.setMap(maptachthua);
-                    //TachThua.GLOBAL.path = paths;
+                    feature[j].properties.id = polygon.id;
                 }
             }
         }
-    }
-
+    },
+    showInforUpdateTachThua: function (check) {
+        if (check) {
+            $(TachThua.SELECTORS.inforTachThua).removeClass("headerHide");
+            $(TachThua.SELECTORS.inforTachThua).addClass("headerShow");
+        } else {
+            $(TachThua.SELECTORS.inforTachThua).addClass("headerHide");
+            $(TachThua.SELECTORS.inforTachThua).removeClass("headerShow");
+        }
+    },
+    setInforUpdateTachThua: function (id,maxa) {
+        if (TachThua.GLOBAL.listInforUpdateTachThua.length > 0) {
+            let check = TachThua.GLOBAL.listInforUpdateTachThua.filter(x => x.id === id);
+            if (typeof check !== "undefined" && check !== null) {
+                check = {
+                    id: id,
+                    objectId: 0,
+                    index: UpdateThuaDat.GLOBAL.KHSelected.properties.Index,
+                    uuid: id,
+                    thoiDiemBatDau: null,
+                    thoiDiemKetThuc: null,
+                    maXa: maxa,
+                    maDoiTuong: "",
+                    soHieuToBanDo: tobando,
+                    soThuTuThua: thua,
+                    soHieuToBanDoCu: tobandoold,
+                    soThuTuThuaCu: thuaold,
+                    dienTich: dientichnumber,
+                    dienTichPhapLy: dientichphaplynumber,
+                    kyHieuMucDichSuDung: khmucdichsudung,
+                    kyHieuDoiTuong: "",
+                    tenChu: tenchu,
+                    diaChi: diachi,
+                    daCapGCN: 0,
+                    tenChu2: "",
+                    namSinhC1: "",
+                    soHieuGCN: "",
+                    soVaoSo: "",
+                    ngayVaoSo: "",
+                    soBienNhan: 0,
+                    nguoiNhanHS: "",
+                    coQuanThuLy: "",
+                    loaiHS: "",
+                    maLienKet: "",
+                    shapeSTArea: 0,
+                    shapeSTLength: 0,
+                    shapeLength: 0,
+                    shapeArea: 0,
+                    geometry: UpdateThuaDat.GLOBAL.KHSelected.geometry,
+                    tags: {}
+                };
+            }
+        }
+    },
 }
