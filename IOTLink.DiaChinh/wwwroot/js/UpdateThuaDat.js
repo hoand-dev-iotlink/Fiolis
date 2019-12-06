@@ -272,7 +272,6 @@
                     $(ViewMap.SELECTORS.MucDichSuDung).text(propertie.KyHieuMucDichSuDung);
                     $(ViewMap.SELECTORS.NameMucDichSuDung).text(propertie.TenMucDichSuDung);
                     ViewMap.showHideViewProperty(true);
-
                 } else {
                     swal({
                         title: "Thông báo",

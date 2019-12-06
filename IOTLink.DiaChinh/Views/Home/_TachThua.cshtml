@@ -231,6 +231,7 @@
                     </div>
                 </div>
                 <div class="infor-Tach-Thua headerHide">
+                    <input type="text" value="" name="id" hidden />
                     <div class="header-infor">
                         <span><i class="fa fa-times-circle" title="Đóng" aria-hidden="true"></i></span>
                         <h4>Thông tin thửa đất</h4>
@@ -275,7 +276,6 @@
                         <label class="control-label col-md-5 col-xs-12 required">Mục đích sử dụng</label>
                         <div class="col-md-7 col-xs-12 form-group">
                             @Html.DropDownList("KH", new List<SelectListItem>(ViewBag.listofitem)@*, "--Chọn mục đích sử dụng--"*@, new { @id = "KH-listselectid", @class = "KH-select", autocomplete = "off" })
-                            @*<select multiple="multiple" class="multi-select" id="my_multi_select1" asp-items="(List<SelectListItem>)ViewBag.listofitem"></select>*@
                         </div>
                     </div>
                     <div class="row form-group">
@@ -290,6 +290,12 @@
                             <input type="text" id="text-update-diaChi" class="form-control form-style" placeholder="Địa chỉ" value="" />
                         </div>
                     </div>
+                    @*<div class="row form-group">*@
+                        <div class="btn-footer">
+                            <button type="button" class="btn btn-success btn-save-infor-temp">Cập nhật thông tin</button>
+                            <button type="button" class="btn btn-light btn-cancel">Hủy bỏ</button>
+                        </div>
+                    @*</div>*@
                 </div>
             </div>
         </div>
@@ -598,6 +604,19 @@
             right: 0px;
         }
     }
+    .modal-tach-thua .btn-footer {
+        /*position: absolute;*/
+        bottom: 0px;
+        width: 100%;
+        display: flex;
+    }
+
+        .modal-tach-thua .btn-footer button {
+            width: 50%;
+            border-radius: 0px;
+        }
+
+
 
 
         input[type=checkbox].ace, input[type=radio].ace {

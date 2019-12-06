@@ -71,7 +71,8 @@
     },
     SetEvent: function () {
         let eventClickPolygon = map.data.addListener("click", (args) => {
-            if (!ToolShape.GLOBAL.isStartArea &&  !ToolShape.GLOBAL.isStartDistance) {
+            let checkHopThua = (typeof HopThua !== "undefined" && typeof HopThua.GLOBAL !== "undefined" && typeof HopThua.GLOBAL.checkHopThua !== "undefined") ? HopThua.GLOBAL.checkHopThua:false;
+            if (!ToolShape.GLOBAL.isStartArea && !ToolShape.GLOBAL.isStartDistance && !checkHopThua) {
                 ViewMap.showHideMenuClick(false, null);
                 ViewMap.showHideMenu(false, null);
                 setTimeout(function () {
@@ -655,7 +656,6 @@
                 left: 10,
                 right: 10
             };
-
             for (var iz = 0; iz < Coordinates[0].length; iz++) {
                 latLngBounds.extend(Coordinates[0][iz]);
             }

@@ -239,6 +239,13 @@
             .detail-property-content .section-info {
                 margin: 0px;
             }
+
+            .detail-property-content .btn-hop-thua.active {
+                color: #fff !important;
+                background-color: #de2727 !important;
+                background-image: none;
+                border-color: #de2727 !important;
+            }
     </style>
     <style>
         /*style text search*/
@@ -662,6 +669,7 @@
     <script src="~/js/ChuGiai.js"></script>
     <script src="~/js/UpdateThuaDat.js"></script>
     <script src="~/js/TachThua.js"></script>
+    <script src="~/js/HopThua.js"></script>
     <script type="text/javascript">
 
         $(function () {
@@ -670,6 +678,7 @@
             ToolShape.init();
             UpdateThuaDat.init();
             TachThua.init();
+            HopThua.init();
         })
         function GetAllShapOnWardLatLng() {
             ViewMap.showThuaDatSelectSubdistrict();

@@ -7,15 +7,15 @@
         listDiem: [],
         listPolygonTachThua: null,
         listDrawPolygon: [],
-        listInforUpdateTachThua:[],
+        listInforUpdateTachThua: [],
     },
     CONSTS: {},
     SELECTORS: {
-        checkGiaoHoi:".giao-hoi",
+        checkGiaoHoi: ".giao-hoi",
         modalTachThua: ".modal-tach-thua",
         btnTachThua: ".btn-tach-thua",
         formGiaoHoi: ".form-giao-hoi",
-        noteGiaoHoi:".note-giao-hoi",
+        noteGiaoHoi: ".note-giao-hoi",
         menuCachDuongThang: ".menu-cach-duong-thang",
         menuHoiThuan: ".menu-hoi-thuan",
         menuHoiNghich: ".menu-hoi-nghich",
@@ -42,8 +42,21 @@
         formPointMap: ".footer-map-point",
         viewResultTachThua: ".view-tach-thua",
         clearResultTachThua: ".clear-result",
+        saveResultTachThua: ".save-tach-thua",
         closeInforTachThua: ".header-infor span",
-        inforTachThua:".infor-Tach-Thua",
+        inforTachThua: ".infor-Tach-Thua",
+        btnSaveInforTemp: ".btn-save-infor-temp",
+        inputIdInfor: "input[name='id']",
+        SoToUpdate: ".infor-Tach-Thua #text-update-soTo",
+        SoThuaUpdate: ".infor-Tach-Thua #text-update-soThua",
+        SoToUpdateOld: ".infor-Tach-Thua #text-update-soTo-old",
+        SoThuaUpdateOld: ".infor-Tach-Thua #text-update-soThua-old",
+        DienTichUpdate: ".infor-Tach-Thua #text-update-dienTich",
+        DienTichPhapLyUpdate: ".infor-Tach-Thua #text-update-dienTichPhapLy",
+        TenChuUpdate: ".infor-Tach-Thua #text-update-chuNha",
+        DiaChiUpdate: ".infor-Tach-Thua #text-update-diaChi",
+        KHList: '.infor-Tach-Thua #KH-listselectid',
+        focusInput: ".infor-Tach-Thua input",
     },
     init: function () {
         maptachthua = new map4d.Map(document.getElementById("madTachThua"), {
@@ -71,16 +84,16 @@
         $(TachThua.SELECTORS.btnTachThua).on("click", function () {
             let objectId = ViewMap.GLOBAL.ThuaDatSelect[0].ObjectId;
             //setTimeout(function () {
-                TachThua.showTachThua(ViewMap.CONSTS.codeDefault, objectId);
-                
-                setTimeout(function () {
-                    TachThua.fitBoundsThuaDat(TachThua.GLOBAL.path);
-                    var camera = maptachthua.getCamera();
-                    let zoom = camera.getZoom();
-                    camera.setZoom(zoom - 1);
-                    maptachthua.setCamera(camera);
-                    TachThua.setMarkerDiem(TachThua.GLOBAL.ThuaDat);
-                }, 1000);
+            TachThua.showTachThua(ViewMap.CONSTS.codeDefault, objectId);
+
+            setTimeout(function () {
+                TachThua.fitBoundsThuaDat(TachThua.GLOBAL.path);
+                var camera = maptachthua.getCamera();
+                let zoom = camera.getZoom();
+                camera.setZoom(zoom - 1);
+                maptachthua.setCamera(camera);
+                TachThua.setMarkerDiem(TachThua.GLOBAL.ThuaDat);
+            }, 1000);
             //}, 1);
             $(TachThua.SELECTORS.modalTachThua).modal('show');
         });
@@ -141,7 +154,7 @@
                 $(this).find("i").removeClass("fa-chevron-down");
                 $(this).find("i").addClass("fa-chevron-up");
             }
-               
+
         });
         $(TachThua.SELECTORS.viewResultTachThua).on("click", function () {
             TachThua.ShowHideAll(true);
@@ -155,18 +168,99 @@
         $(TachThua.SELECTORS.closeInforTachThua).on("click", function () {
             TachThua.showInforUpdateTachThua(false);
         });
+        $(TachThua.SELECTORS.btnSaveInforTemp).on("click", function () {
+            if (TachThua.checkFormInfor()) {
+                let id = $(TachThua.SELECTORS.inputIdInfor).val();
+                let maxa = TachThua.GLOBAL.ThuaDat.features[0].properties.MaXa;
+                TachThua.setInforUpdateTachThua(id, maxa);
+            }
+        });
+        $(TachThua.SELECTORS.focusInput).on("click", function () {
+            $(this).parent().removeClass("has-error");
+        });
+        $(TachThua.SELECTORS.saveResultTachThua).on("click", function () {
+            if (TachThua.GLOBAL.listPolygonTachThua !== null && TachThua.GLOBAL.listInforUpdateTachThua.length === TachThua.GLOBAL.listPolygonTachThua.length) {
+                let fromFeatures = TachThua.GLOBAL.ThuaDat.features[0].properties.info === "vn2000" ? TachThua.GLOBAL.ThuaDat.features[0] : TachThua.GLOBAL.ThuaDat.features[1];
+                let ThuaDatFrom = {
+                    id: fromFeatures.properties.Id,
+                    objectId: fromFeatures.properties.ObjectId,
+                    uuid: fromFeatures.properties.UUID,
+                    thoiDiemBatDau: fromFeatures.properties.ThoiDiemBatDau,
+                    thoiDiemKetThuc: fromFeatures.properties.ThoiDiemKetThuc,
+                    maXa: fromFeatures.properties.MaXa,
+                    maDoiTuong: fromFeatures.properties.MaDoiTuong,
+                    soHieuToBanDo: fromFeatures.properties.SoHieuToBanDo,
+                    soThuTuThua: fromFeatures.properties.SoThuTuThua,
+                    soHieuToBanDoCu: fromFeatures.properties.SoHieuToBanDoCu,
+                    soThuTuThuaCu: fromFeatures.properties.SoThuTuThuaCu,
+                    dienTich: fromFeatures.properties.DienTich,
+                    dienTichPhapLy: fromFeatures.properties.DienTichPhapLy,
+                    kyHieuMucDichSuDung: fromFeatures.properties.KyHieuMucDichSuDung,
+                    kyHieuDoiTuong: null,
+                    tenChu: fromFeatures.properties.TenChu,
+                    diaChi: fromFeatures.properties.DiaChi,
+                    daCapGCN: 0,
+                    tenChu2: fromFeatures.properties.TenChu2,
+                    namSinhC1: fromFeatures.properties.NamSinhC1,
+                    soHieuGCN: fromFeatures.properties.SoHieuGCN,
+                    soVaoSo: fromFeatures.properties.SoVaoSo,
+                    ngayVaoSo: fromFeatures.properties.NgayVaoSo,
+                    soBienNhan: fromFeatures.properties.SoBienNhan,
+                    nguoiNhanHS: fromFeatures.properties.NguoiNhanHS,
+                    coQuanThuLy: fromFeatures.properties.CoQuanThuLy,
+                    loaiHS: fromFeatures.properties.LoaiHS,
+                    maLienKet: fromFeatures.properties.MaLienKet,
+                    shapeSTArea: fromFeatures.properties.ShapeSTArea,
+                    shapeSTLength: fromFeatures.properties.ShapeSTLength,
+                    shapeLength: fromFeatures.properties.ShapeLength,
+                    shapeArea: fromFeatures.properties.ShapeArea,
+                    geometry: fromFeatures.geometry,
+                    tags: {}
+                }
+                let inforUpdate = {
+                    from: ThuaDatFrom,
+                    to: TachThua.GLOBAL.listInforUpdateTachThua
+                }
+                swal({
+                    title: "Thông báo",
+                    text: "Bạn có chắc chắn lưu thông tin và thửa đất đã tách thửa!",
+                    icon: "warning",
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Lưu lại",
+                    cancelButtonText: "Hủy bỏ",
+                    closeOnConfirm: false,
+                    closeOnCancel: false,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        TachThua.saveInforTachThua(inforUpdate);
+                        //swal("Cập nhật!", "Đã cập nhật thông tin thành công.", "success");
+                        //swal("Đã cập nhật thông tin thành công.", {
+                        //        icon: "success",
+                        //    });
+                        }
+                    });
+
+            } else {
+                swal({
+                    title: "Thông báo",
+                    text: "Chưa cập nhật thông tin đất!",
+                    icon: "warning",
+                    button: "Đóng",
+                }).then((value) => {
+                });
+            }
+        });
 
         maptachthua.addListener("click", (args) => {
-            console.log(args);
+            let id = args.polygon.id;
+            $(TachThua.SELECTORS.inputIdInfor).val(id);
+            TachThua.addRemoveInforTachThua(id);
             TachThua.showInforUpdateTachThua(true);
-            //ViewMap.showHideMenuClick(false, null);
-            //ViewMap.removeSelectThuaDat();
-            //if (args != null && args.location != null) {
-            //    ViewMap.getConvertVN2000(args.location.lat, args.location.lng);
-            //    ViewMap.getLocationMap(args.location.lat, args.location.lng, true);
-            //    ViewMap.SetMarkerLocation(args.location.lat, args.location.lng, true);
-            //    ViewMap.showHideViewProperty(false);
-            //}
+            $(TachThua.SELECTORS.formPointMap).addClass("footerHide");
+            $(TachThua.SELECTORS.formPointMap).removeClass("footerShow");
+            $(this).find("i").removeClass("fa-chevron-down");
+            $(this).find("i").addClass("fa-chevron-up");
         }, { polygon: true });
     },
     showTachThua: function (code, objectId) {
@@ -213,7 +307,7 @@
             strokeColor: "#ea5252",
             strokeOpacity: 1.0,
             strokeWidth: 1,
-            userInteractionEnabled:false,
+            userInteractionEnabled: false,
         });
         TachThua.GLOBAL.polygon.setMap(maptachthua);
         TachThua.GLOBAL.path = paths;
@@ -395,7 +489,7 @@
                             <div class="caption">
                                 <p>Từ hai đỉnh đã biết tọa độ cộng thêm hai số đo khác của tam giác giao hội, ta có thể tính được tọa độ điểm giao hội. Bài toán giao hội thuận luôn thu được hai kết quả: đỉnh C ở bên trái hay C' ở bên phải so với hướng cạnh gốc AB.</p>
                             </div>`;
-                
+
                 $(TachThua.SELECTORS.formGiaoHoi).append(html);
                 $(TachThua.SELECTORS.noteGiaoHoi).append(note);
                 $(TachThua.SELECTORS.inputCachAC).inputmask('9{1,5}.9{1,5}');
@@ -437,7 +531,7 @@
                                 <div class="caption">
                                     <p>Từ ba đỉnh đã biết tọa độ cộng thêm hai số đo góc từ điểm giao hội P ngắm về ABC, ta xác định được tọa độ điểm giao hội P. Góc giao hội sử dụng để tính toán là các góc ngược chiều kim đồng hồ.</p>
                                 </div>`
-                
+
                 $(TachThua.SELECTORS.formGiaoHoi).append(html);
                 $(TachThua.SELECTORS.noteGiaoHoi).append(note);
                 $(TachThua.SELECTORS.inputGocAPB).inputmask('9{1,3}º9{1,2}\'9{1,2}.9{1,2}"');
@@ -472,7 +566,7 @@
                             <div class="caption">
                                 <p>Điểm kết quả là giao điểm của hai đường thẳng AB và CD.</p>
                             </div>`;
-                
+
                 $(TachThua.SELECTORS.formGiaoHoi).append(html);
                 $(TachThua.SELECTORS.noteGiaoHoi).append(note);
                 $(TachThua.SELECTORS.titleGiaoHoi).text("Giao hội hướng")
@@ -514,7 +608,7 @@
             let point84 = data.features[0].geometry.coordinates[0];
             let point2000 = data.features[1].geometry.coordinates[0];
             for (var i = 0; i < point84.length; i++) {
-                for (var j = 0; j < point84[i].length-1; j++) {
+                for (var j = 0; j < point84[i].length - 1; j++) {
                     let lat = point84[i][j][1];
                     let lng = point84[i][j][0];
                     let markerPoint = new map4d.Marker({
@@ -525,7 +619,7 @@
                     });
                     //thêm marker vào map
                     markerPoint.setMap(maptachthua);
-                    let countPoint = (i+j+1).toString();
+                    let countPoint = (i + j + 1).toString();
                     let markerTitelPoint = new map4d.Marker({
                         position: { lat: lat, lng: lng },
                         anchor: [0.5, 1],
@@ -552,7 +646,7 @@
                         },
                         latlng: {
                             lat: lat,
-                            lng:lng
+                            lng: lng
                         }
                     }
                     TachThua.GLOBAL.listDiem.push(diem);
@@ -580,20 +674,20 @@
                 let pointStart = pointselect == 0 ? listDiem[listDiem.length - 1].id : listDiem[pointselect - 1].id;
                 let pointEnd = pointselect == (listDiem.length - 1) ? listDiem[0].id : listDiem[pointselect + 1].id;
                 let listDinhB = [pointStart, pointEnd];
-                TachThua.removerOptionDiem([2,3,4])
-                html = TachThua.getHtmlSelectDiem(listDinhB,false);
+                TachThua.removerOptionDiem([2, 3, 4])
+                html = TachThua.getHtmlSelectDiem(listDinhB, false);
                 $(TachThua.SELECTORS.selectDinhB).append(html);
             } else {
                 TachThua.removerOptionDiem([2, 3, 4])
-                html = TachThua.getHtmlSelectDiem(listSelectPoint,true);
+                html = TachThua.getHtmlSelectDiem(listSelectPoint, true);
                 $(TachThua.SELECTORS.selectDinhB).append(html);
             }
         });
-        if (check == 1 || check==3 || check == 4) {
+        if (check == 1 || check == 3 || check == 4) {
             $(TachThua.SELECTORS.selectDinhB).change(function () {
                 TachThua.removerOptionDiem([3, 4])
                 listSelectPoint.push(Number($(this).val()));
-                html = TachThua.getHtmlSelectDiem(listSelectPoint,true);
+                html = TachThua.getHtmlSelectDiem(listSelectPoint, true);
                 $(TachThua.SELECTORS.selectDinhC).append(html);
             });
         }
@@ -620,11 +714,11 @@
             });
         }
     },
-    getHtmlSelectDiem: function (listPointSelected,check) {
+    getHtmlSelectDiem: function (listPointSelected, check) {
         let str = '<option selected>- Chọn điểm -</option>';
         if (TachThua.GLOBAL.listDiem != null && TachThua.GLOBAL.listDiem.length > 0) {
             let list = TachThua.GLOBAL.listDiem;
-            
+
             for (var i = 0; i < list.length; i++) {
                 if (check) {
                     if (listPointSelected.includes(list[i].id) == false) {
@@ -642,7 +736,7 @@
             //        str += '<option value="' + obj.id + '">' + obj.name + '</option>';
             //    }
             //}
-            
+
         }
         return str;
     },
@@ -661,7 +755,7 @@
             $(TachThua.SELECTORS.selectDinhD).children().remove();
         }
     },
-    checkPointOnLine: function (A,B,C) {
+    checkPointOnLine: function (A, B, C) {
         let AB = (B.y - A.y) / (B.x - A.x);
         let AC = (B.y - C.y) / (B.x - C.x);
         AB = Math.round(AB * 10000) / 10000;
@@ -718,7 +812,7 @@
                     if (TachThua.checkPointOnLine(a, b, c)) {
                         if (!diem2 && diem1) diem2 = true;
                         if (!diem1) diem1 = true;
-                        
+
                         break;
                     }
                 }
@@ -807,6 +901,7 @@
                 obj.setMap(null);
             });
             TachThua.GLOBAL.listDrawPolygon = [];
+            TachThua.GLOBAL.listInforUpdateTachThua = [];
         }
     },
     drawPolygonTachThua: function (list) {
@@ -831,6 +926,10 @@
                     polygon.setMap(maptachthua);
                     feature[j].properties.id = polygon.id;
                 }
+                if (feature[j].properties.info === "vn2000") {
+                    let paths = feature[j].geometry.coordinates;
+                    paths[0].push(paths[0][0]);
+                }
             }
         }
     },
@@ -843,48 +942,141 @@
             $(TachThua.SELECTORS.inforTachThua).removeClass("headerShow");
         }
     },
-    setInforUpdateTachThua: function (id,maxa) {
-        if (TachThua.GLOBAL.listInforUpdateTachThua.length > 0) {
-            let check = TachThua.GLOBAL.listInforUpdateTachThua.filter(x => x.id === id);
-            if (typeof check !== "undefined" && check !== null) {
-                check = {
-                    id: id,
-                    objectId: 0,
-                    index: UpdateThuaDat.GLOBAL.KHSelected.properties.Index,
-                    uuid: id,
-                    thoiDiemBatDau: null,
-                    thoiDiemKetThuc: null,
-                    maXa: maxa,
-                    maDoiTuong: "",
-                    soHieuToBanDo: tobando,
-                    soThuTuThua: thua,
-                    soHieuToBanDoCu: tobandoold,
-                    soThuTuThuaCu: thuaold,
-                    dienTich: dientichnumber,
-                    dienTichPhapLy: dientichphaplynumber,
-                    kyHieuMucDichSuDung: khmucdichsudung,
-                    kyHieuDoiTuong: "",
-                    tenChu: tenchu,
-                    diaChi: diachi,
-                    daCapGCN: 0,
-                    tenChu2: "",
-                    namSinhC1: "",
-                    soHieuGCN: "",
-                    soVaoSo: "",
-                    ngayVaoSo: "",
-                    soBienNhan: 0,
-                    nguoiNhanHS: "",
-                    coQuanThuLy: "",
-                    loaiHS: "",
-                    maLienKet: "",
-                    shapeSTArea: 0,
-                    shapeSTLength: 0,
-                    shapeLength: 0,
-                    shapeArea: 0,
-                    geometry: UpdateThuaDat.GLOBAL.KHSelected.geometry,
-                    tags: {}
-                };
+    addRemoveInforTachThua: function (id) {
+        let check = TachThua.GLOBAL.listInforUpdateTachThua.find(x => x.id.toString() === id.toString());
+        if (typeof check !== "undefined" && check !== null && check.soThuTuThua > 0) {
+            $(TachThua.SELECTORS.SoToUpdate).val(check.soHieuToBanDo);
+            $(TachThua.SELECTORS.SoThuaUpdate).val(check.soThuTuThua);
+            $(TachThua.SELECTORS.SoToUpdateOld).val(check.soHieuToBanDoCu);
+            $(TachThua.SELECTORS.SoThuaUpdateOld).val(check.soThuTuThuaCu);
+            $(TachThua.SELECTORS.DienTichUpdate).val(check.dienTich);
+            $(TachThua.SELECTORS.DienTichPhapLyUpdate).val(check.dienTichPhapLy);
+            $(TachThua.SELECTORS.TenChuUpdate).val(check.tenChu);
+            $(TachThua.SELECTORS.DiaChiUpdate).val(check.diaChi);
+            $(TachThua.SELECTORS.KHList).val(check.kyHieuMucDichSuDung);
+        } else {
+            let propertie = TachThua.GLOBAL.ThuaDat.features[0].properties;
+            $(TachThua.SELECTORS.SoToUpdate).val(propertie.SoHieuToBanDo);
+            $(TachThua.SELECTORS.SoThuaUpdate).val(0);
+            $(TachThua.SELECTORS.SoToUpdateOld).val(0);
+            $(TachThua.SELECTORS.SoThuaUpdateOld).val(0);
+            $(TachThua.SELECTORS.DienTichUpdate).val(0);
+            $(TachThua.SELECTORS.DienTichPhapLyUpdate).val(0);
+            $(TachThua.SELECTORS.TenChuUpdate).val(propertie.TenChu);
+            $(TachThua.SELECTORS.DiaChiUpdate).val(propertie.DiaChi);
+            $(TachThua.SELECTORS.KHList).val(propertie.KyHieuMucDichSuDung);
+        }
+    },
+    setInforUpdateTachThua: function (id, maxa) {
+        let check;
+        check = TachThua.GLOBAL.listInforUpdateTachThua.find(x => x.id.toString() === id.toString());
+        if (TachThua.GLOBAL.listInforUpdateTachThua.length > 0 && typeof check !== "undefined" && check !== null) {
+
+            //if () {
+            check.soHieuToBanDo = Number($(TachThua.SELECTORS.SoToUpdate).val());
+            check.soThuTuThua = Number($(TachThua.SELECTORS.SoThuaUpdate).val());
+            check.soHieuToBanDoCu = Number($(TachThua.SELECTORS.SoToUpdateOld).val());
+            check.soThuTuThuaCu = Number($(TachThua.SELECTORS.SoThuaUpdateOld).val());
+            check.dienTich = Number($(TachThua.SELECTORS.DienTichUpdate).val());
+            check.dienTichPhapLy = Number($(TachThua.SELECTORS.DienTichPhapLyUpdate).val());
+            check.kyHieuMucDichSuDung = $(TachThua.SELECTORS.KHList).val();
+            check.tenChu = $(TachThua.SELECTORS.TenChuUpdate).val();
+            check.diaChi = $(TachThua.SELECTORS.DiaChiUpdate).val();
+            check.geometry = TachThua.getGeometryById(id);
+            //}
+        } else {
+            check = {
+                id: id,
+                objectId: 0,
+                uuid: id,
+                thoiDiemBatDau: null,
+                thoiDiemKetThuc: null,
+                maXa: maxa,
+                maDoiTuong: "",
+                soHieuToBanDo: Number($(TachThua.SELECTORS.SoToUpdate).val()),
+                soThuTuThua: Number($(TachThua.SELECTORS.SoThuaUpdate).val()),
+                soHieuToBanDoCu: Number($(TachThua.SELECTORS.SoToUpdateOld).val()),
+                soThuTuThuaCu: Number($(TachThua.SELECTORS.SoThuaUpdateOld).val()),
+                dienTich: Number($(TachThua.SELECTORS.DienTichUpdate).val()),
+                dienTichPhapLy: Number($(TachThua.SELECTORS.DienTichPhapLyUpdate).val()),
+                kyHieuMucDichSuDung: $(TachThua.SELECTORS.KHList).val(),
+                kyHieuDoiTuong: "",
+                tenChu: $(TachThua.SELECTORS.TenChuUpdate).val(),
+                diaChi: $(TachThua.SELECTORS.DiaChiUpdate).val(),
+                daCapGCN: 0,
+                tenChu2: "",
+                namSinhC1: "",
+                soHieuGCN: "",
+                soVaoSo: "",
+                ngayVaoSo: "",
+                soBienNhan: 0,
+                nguoiNhanHS: "",
+                coQuanThuLy: "",
+                loaiHS: "",
+                maLienKet: "",
+                shapeSTArea: 0,
+                shapeSTLength: 0,
+                shapeLength: 0,
+                shapeArea: 0,
+                geometry: TachThua.getGeometryById(id),
+                tags: {}
+            };
+            TachThua.GLOBAL.listInforUpdateTachThua.push(check);
+        }
+    },
+    getGeometryById: function (id) {
+        let list = TachThua.GLOBAL.listPolygonTachThua;
+        let geometry;
+        for (var i = 0; i < list.length; i++) {
+            let listfeature = list[i].features;
+            if ((typeof listfeature[0].properties.id !== "undefined" && listfeature[0].properties.id.toString() === id) ||
+                (typeof listfeature[1].properties.id !== "undefined" && listfeature[1].properties.id.toString() === id)) {
+                geometry = listfeature[0].properties.info === "vn2000" ? listfeature[0].geometry : listfeature[1].geometry;
+                break;
             }
         }
+        return geometry;
+    },
+    checkFormInfor: function () {
+        let check = true;
+        let SoThua = $(TachThua.SELECTORS.SoThuaUpdate).val();
+        if (!validateText(SoThua, "number", 0, 0) || SoThua === "0") { insertError($(TachThua.SELECTORS.SoThuaUpdate), "other"); check = false; }
+        let SoTo = $(TachThua.SELECTORS.SoToUpdate).val();
+        if (!validateText(SoTo, "number", 0, 0) || SoTo === "0") { insertError($(TachThua.SELECTORS.SoToUpdate), "other"); check = false; }
+        let DienTichUpdate = $(TachThua.SELECTORS.DienTichUpdate).val();
+        if (!validateText(DienTichUpdate, "number", 0, 0) || DienTichUpdate === "0") { insertError($(TachThua.SELECTORS.DienTichUpdate), "other"); check = false; }
+        let DienTichPhapLyUpdate = $(TachThua.SELECTORS.DienTichPhapLyUpdate).val();
+        if (!validateText(DienTichPhapLyUpdate, "number", 0, 0) || DienTichPhapLyUpdate === "0") { insertError($(TachThua.SELECTORS.DienTichPhapLyUpdate), "other"); check = false; }
+        let TenChuUpdate = $(TachThua.SELECTORS.TenChuUpdate).val();
+        if (!validateText(TenChuUpdate, "text", 0, 0)) { insertError($(TachThua.SELECTORS.TenChuUpdate), "other"); check = false; }
+        return check;
+    },
+    saveInforTachThua: function (data) {
+        $.ajax({
+            type: "POST",
+            url: ViewMap.GLOBAL.url + "/v2/api/land/tach-thua?key=" + ViewMap.CONSTS.key,
+            data: JSON.stringify(data),
+            dataType: 'json',
+            async: false,
+            contentType: 'application/json-patch+json',
+            success: function (data) {
+                if (data.code == "ok") {
+                    swal({
+                        title: "Thông báo",
+                        text: "Cập nhật thông tin thửa đất thành công!",
+                        icon: "success",
+                        button: "Đóng",
+                    }).then((value) => {
+                        //UpdateThuaDat.updateThuaDat(parseInt(tobando), parseInt(thua));
+                        //$(UpdateThuaDat.SELECTORS.modalUpdate).modal('hide');
+                    });
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                let messageErorr = AppCommon.getMessageErrorReuqest(jqXHR, errorThrown);
+                console.log(messageErorr);
+                ViewMap.showLoading(false);
+            }
+        });
     },
 }
