@@ -63,7 +63,7 @@
             accessKey: "208e1c99aa440d8bc2847aafa3bc0669",
         });
         map.setTileUrl("http://61.28.233.229:8080/all/2d/{z}/{x}/{y}.png");
-        map.setTileUrl("http://61.28.233.229:8080/all/2d/{z}/{x}/{y}.png", true);
+        map.setTileUrl("http://61.28.233.229:8080/all/3d/{z}/{x}/{y}.png", true);
         map.setPlacesEnabled(false);
         setTimeout(function () { ViewMap.getThuaDatbyCode(ViewMap.CONSTS.codeDefault), map.data.setMinZoom(13) }, 1);
 
@@ -75,10 +75,10 @@
             if (!ToolShape.GLOBAL.isStartArea && !ToolShape.GLOBAL.isStartDistance && !checkHopThua) {
                 ViewMap.showHideMenuClick(false, null);
                 ViewMap.showHideMenu(false, null);
-                setTimeout(function () {
-                    let obj = args.feature;
-                    ViewMap.setSelectThuaDat(obj);
-                }, 1);
+                //setTimeout(function () {
+                //    let obj = args.feature;
+                //    ViewMap.setSelectThuaDat(obj);
+                //}, 1);
                 setTimeout(function () {
                     ViewMap.getInforThuaDat(args.location.lat, args.location.lng);
                 }, 1);
@@ -207,10 +207,7 @@
 
         $(ViewMap.SELECTORS.searchtext).click(function () {
             var ele = document.getElementById('id-search-text');
-            //ele.innerHTML = "aaa";
-            //var text = ele.value;
             ele.focus();
-            //ele.setSelectionRange(text.length, text.length);
         });
 
         $(ViewMap.SELECTORS.searchtext).blur(function () {
@@ -226,14 +223,6 @@
         $(ViewMap.SELECTORS.searchtext).mouseout(function () {
             $(ViewMap.SELECTORS.searchtext).attr('placeholder', 'Số thửa, Số tờ');
         });
-        //$(ViewMap.SELECTORS.searchtext).click(function () {
-        //    $(ViewMap.SELECTORS.clearinputid).css({ "display": "block" });
-        //});
-
-        //$(ViewMap.SELECTORS.searchtext).blur(function () {
-        //    $(ViewMap.SELECTORS.clearinputid).css({ "display": "none" });
-        //});
-
         $(ViewMap.SELECTORS.searchtext).keyup(function (evt) {
             var text = $(this).val();
             var splittext = text.split(',');
@@ -271,28 +260,20 @@
     setSelectThuaDat: function (data) {
         ViewMap.removeSelectThuaDat();
         if (ViewMap.GLOBAL.ThuaDatSelect == null) {
-            geometry = data.getGeometry();
-            properties = Object.assign({}, data.getProperties());
-            properties.stroke = "#4461ea";
-            properties["fill-opacity"] = 1;
-            //ViewMap.GLOBAL.ThuaDatSelect = map.data.add({ id: "thuadatselect", geometry: geometry, properties: properties });
-            let Coordinates = ViewMap.getCoordinates(geometry);
+            geometry = data.geometry;
+            //properties = Object.assign({}, data.getProperties());
+            //properties.stroke = "#4461ea";
+            //properties["fill-opacity"] = 1;
+            let Coordinates = ViewMap.getCoordinatesSearch(geometry);
             let ListPolyline = [];
             for (var i = 0; i < Coordinates.length; i++) {
-                //let polygonOption = map4d.PolygonOptions = {
-                //    paths: Coordinates[i],
-                //    //fillColor: "#0000ff",
-                //    strokeOpacity: 1,
-                //    strokeWidth: 5,
-                //    strokeColor: "#0c0ce8",
-                //}
                 polyline = new map4d.Polyline({
                     path: Coordinates[i],
                     strokeColor: "#00ffff",
                     strokeOpacity: 1.0,
                     strokeWidth: 2,
                 });
-                polyline["ObjectId"] = properties.ObjectId;
+                polyline["ObjectId"] = data.properties.ObjectId;
                 polyline.setMap(map);
                 ListPolyline.push(polyline);
             }
@@ -301,7 +282,6 @@
     },
     //remove select thua dat
     removeSelectThuaDat: function () {
-        //map.data.remove(ViewMap.GLOBAL.ThuaDatSelect);
         if (typeof ViewMap.GLOBAL.ThuaDatSelect != "undefined" && ViewMap.GLOBAL.ThuaDatSelect != null && ViewMap.GLOBAL.ThuaDatSelect.length > 0)
             $.each(ViewMap.GLOBAL.ThuaDatSelect, function (i, obj) {
                 obj.setMap(null);
@@ -423,6 +403,7 @@
         });
     },
     getThuaDatbyCode: function (code) {
+        ViewMap.showHideViewProperty(false);
         ViewMap.showLoading(true);
         $.ajax({
             type: "GET",
@@ -437,6 +418,7 @@
                         map.data.clear();
                         ViewMap.drawThuaDat(data.result);
                         ViewMap.showLoading(false);
+                        ViewMap.CONSTS.codeDefault = code;
                     } else {
                         ViewMap.showLoading(false);
                         bootbox.alert("Phường/Xã này chưa có dữ liệu");
@@ -468,10 +450,20 @@
     },
     //show all thua dat ơ phuong
     showThuaDatSelectSubdistrict: function () {
-        let code = ViewMap.GLOBAL.location.data[ViewMap.GLOBAL.location.data.length - 1].code;
-
-        setTimeout(function () { ViewMap.getThuaDatbyCode(code) });
+        ViewMap.CONSTS.codeDefault = ViewMap.GLOBAL.location.data[ViewMap.GLOBAL.location.data.length - 1].code;
+        setTimeout(function () { ViewMap.getThuaDatbyCode(ViewMap.CONSTS.codeDefault) });
         ViewMap.showHideMenu(false, null);
+
+        //// style selected
+        let id = ViewMap.GLOBAL.location.data[ViewMap.GLOBAL.location.data.length - 1].id;
+        if (MenuLeft.GLOBAL.idSelect != null && MenuLeft.GLOBAL.idSelect != '') {
+            var elementold = document.getElementById(MenuLeft.GLOBAL.idSelect);
+            elementold.style.background = '';
+        }
+        $("[data-code=" + ViewMap.CONSTS.codeDefault + "]").css('background', '');
+        var element = document.getElementById(id);
+        element.style.background = 'rgba(33, 152, 241, 0.3)';
+        MenuLeft.GLOBAL.idSelect = id;
     },
     //show hide loading
     showLoading: function (isCheck) {
@@ -520,6 +512,7 @@
                     $(ViewMap.SELECTORS.MucDichSuDung).text(propertie.KyHieuMucDichSuDung);
                     $(ViewMap.SELECTORS.NameMucDichSuDung).text(propertie.TenMucDichSuDung);
                     ViewMap.showHideViewProperty(true);
+                    ViewMap.setSelectThuaDat(data.result.features[0]);
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -632,13 +625,6 @@
             let Coordinates = ViewMap.getCoordinatesSearch(geometry);
             let ListPolyline = [];
             for (var i = 0; i < Coordinates.length; i++) {
-                //let polygonOption = map4d.PolygonOptions = {
-                //    paths: Coordinates[i],
-                //    //fillColor: "#0000ff",
-                //    strokeOpacity: 1,
-                //    strokeWidth: 5,
-                //    strokeColor: "#0c0ce8",
-                //}
                 polyline = new map4d.Polyline({
                     path: Coordinates[i],
                     strokeColor: "#00ffff",
@@ -666,11 +652,18 @@
     //get coordinates geometry data map of search
     getCoordinatesSearch: function (geometry) {
         let data = [];
-        let lenght = geometry.coordinates[0].length;
-        for (var i = 0; i < lenght; i++) {
-            let datatemp = geometry.coordinates[0][i];
-            data.push(datatemp);
+        if (geometry.type === "Polygon") {
+            let lenght = geometry.coordinates.length;
+            return geometry.coordinates;
         }
-        return data;
+        if (geometry.type === "MultiPolygon") {
+            let lenght = geometry.coordinates[0].length;
+            for (var i = 0; i < lenght; i++) {
+                let datatemp = geometry.coordinates[0][i];
+                data.push(datatemp);
+            }
+            return data;
+        }
+        
     }
 };

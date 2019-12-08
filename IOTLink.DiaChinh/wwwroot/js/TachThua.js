@@ -7,13 +7,6 @@
         listDiem: [],
         listKetQuaGhiNhan:[],
         maptachthua: null,
-        //listGiaoHoi: {
-        //    giaohoicachduongthang: true,
-        //    giaohoithuan: false,
-        //    giaohoinghich: false,
-        //    giaohoihuong: false,
-        //    giaohoidoctheocanh: false,
-        //}
         listPolygonTachThua: null,
         listDrawPolygon: [],
         listInforUpdateTachThua: [],
@@ -55,6 +48,7 @@
         viewResultTachThua: ".view-tach-thua",
         clearResultTachThua: ".clear-result",
         saveResultTachThua: ".save-tach-thua",
+        clearAllPoint:".clear-all-point",
         closeInforTachThua: ".header-infor span",
         inforTachThua: ".infor-Tach-Thua",
         btnSaveInforTemp: ".btn-save-infor-temp",
@@ -170,10 +164,24 @@
 
         });
         $(TachThua.SELECTORS.viewResultTachThua).on("click", function () {
-            TachThua.ShowHideAll(true);
-            var listp = [{ "x": 1181000.3288308799, "y": 537085.5774804119 }, { "x": 1181035.395258569, "y": 537067.3979677357 }]
-            TachThua.GLOBAL.listPolygonTachThua = TachThua.getPolygonsTachThua(listp);
-            TachThua.drawPolygonTachThua(TachThua.GLOBAL.listPolygonTachThua);
+            if (TachThua.GLOBAL.listKetQuaGhiNhan.length > 1) {
+                
+                var listp = [];
+                for (var i = 0; i < TachThua.GLOBAL.listKetQuaGhiNhan.length; i++) {
+                    let objVN2000 = TachThua.GLOBAL.listKetQuaGhiNhan[i].diem2000;
+                    let xy = {
+                        x: objVN2000[1],
+                        y: objVN2000[0]
+                    };
+                    listp.push(xy);
+                }
+                //var listp = [{ "x": 1181000.3288308799, "y": 537085.5774804119 }, { "x": 1181035.395258569, "y": 537067.3979677357 }]
+                TachThua.GLOBAL.listPolygonTachThua = TachThua.getPolygonsTachThua(listp);
+                if (TachThua.GLOBAL.listPolygonTachThua.length > 0) {
+                    TachThua.drawPolygonTachThua(TachThua.GLOBAL.listPolygonTachThua);
+                    TachThua.ShowHideAll(true);
+                }
+            }
         });
         $(TachThua.SELECTORS.clearResultTachThua).on("click", function () {
             TachThua.ShowHideAll(false);
@@ -192,7 +200,7 @@
             $(this).parent().removeClass("has-error");
         });
         $(TachThua.SELECTORS.saveResultTachThua).on("click", function () {
-            if (TachThua.GLOBAL.listPolygonTachThua !== null && TachThua.GLOBAL.listInforUpdateTachThua.length === TachThua.GLOBAL.listPolygonTachThua.length) {
+            if (TachThua.GLOBAL.listPolygonTachThua !== null && TachThua.GLOBAL.listInforUpdateTachThua.length === TachThua.GLOBAL.listPolygonTachThua.length && TachThua.GLOBAL.listInforUpdateTachThua.length > 0) {
                 let fromFeatures = TachThua.GLOBAL.ThuaDat.features[0].properties.info === "vn2000" ? TachThua.GLOBAL.ThuaDat.features[0] : TachThua.GLOBAL.ThuaDat.features[1];
                 let ThuaDatFrom = {
                     id: fromFeatures.properties.Id,
@@ -238,13 +246,8 @@
                     title: "Thông báo",
                     text: "Bạn có chắc chắn lưu thông tin và thửa đất đã tách thửa!",
                     icon: "warning",
-                    //confirmButtonClass: "btn-danger",
-                    //confirmButtonText: "Lưu lại",
-                    //cancelButtonText: "Hủy bỏ",
-                    //closeOnConfirm: false,
-                    //closeOnCancel: false,
                     buttons: [
-                        'Hủy bỏ',
+                        'Hủy',
                         'Lưu lại'
                     ],
                     dangerMode: true,
@@ -263,6 +266,10 @@
                 }).then((value) => {
                 });
             }
+        });
+        $(TachThua.SELECTORS.clearAllPoint).on("click", function () {
+            TachThua.GLOBAL.listKetQuaGhiNhan = [];
+            updateListGhiNhan();
         });
 
         maptachthua.addListener("click", (args) => {
@@ -885,7 +892,7 @@
                 point.push(obj[i].x);
                 polygon.push(point);
             }
-            listWGS84.push(TachThua.convertDataVN2000toWGS84(polygon))
+            listWGS84.push(TachThua.convertDataVN2000toWGS84(polygon));
         });
         return listWGS84;
         //console.log(JSON.stringify(listWGS84));
