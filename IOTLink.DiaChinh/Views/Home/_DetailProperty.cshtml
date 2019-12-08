@@ -70,8 +70,8 @@
                     <div class="row tool-map">
                         <h3 class="title1">Công cụ bản đồ</h3>
                         @*<div class="tool-map-button">
-                            <button type="button" class="btn btn-primary"><i class="fa fa-file-code-o" aria-hidden="true"></i></button><label>Trích xuất KML</label>
-                        </div>*@
+                                <button type="button" class="btn btn-primary"><i class="fa fa-file-code-o" aria-hidden="true"></i></button><label>Trích xuất KML</label>
+                            </div>*@
                         <div class="tool-map-button">
                             <button type="button" class="btn btn-primary btn-export-file"><i class="fa fa-file-archive-o" aria-hidden="true"></i></button><label>Trích xuất file</label>
                         </div>
@@ -81,95 +81,27 @@
                         <div class="tool-map-button">
                             <button type="button" class="btn btn-primary btn-update-file"><i class="fa fa-upload" aria-hidden="true"></i></button><label>Nhập dữ liệu từ textfile</label>
                         </div>
-                         <div class="tool-map-button">
+                        <div class="tool-map-button">
                             <button type="button" class="btn btn-primary btn-update-shape"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button><label>Cập nhập thuộc tính thửa đất</label>
                         </div>
                         <div class="tool-map-button">
                             <button type="button" class="btn btn-primary btn-tach-thua"><i class="fa fa-map-o" aria-hidden="true"></i></button><label>Tách thửa</label>
                         </div>
                         <div class="tool-map-button">
-                            <button type="button" class="btn btn-primary btn-hop-thua"><i class="fa fa-map-o" aria-hidden="true"></i></button><label>Hợp thửa</label>
-                        </div>
-                        <div class="tool-map-button">
                             <button type="button" class="btn btn-primary btn-bien-tap"><i class="fa fa-map-o" aria-hidden="true"></i></button><label>Biên tập</label>
                         </div>
+                        <div>
+                            <hr />
+                            <h3>Hợp thửa đất</h3>
+                        </div>
+                        <div class="tool-map-button group-hop-thua">
+                            <button type="button" class="btn btn-primary btn-hop-thua"><i class="fa fa-map-o" aria-hidden="true"></i>Hợp thửa</button>
+                            <button type="button" class="btn btn-success btn-save-hop-thua" disabled><i class="fa fa-map-o" aria-hidden="true"></i>Lưu lại</button>
+                            <button type="button" class="btn btn-danger btn-huy-hop-thua" disabled><i class="fa fa-map-o" aria-hidden="true"></i>Hủy bỏ</button>
+                        </div>
                     </div>
-                    @*<div class="row tool-map">
-                        <h3 class="title1">C</h3>
-                        <div class="tool-map-button">
-                            <button type="button" class="btn btn-primary"><i class="fa fa-file-code-o" aria-hidden="true"></i></button><label>Trích xuất KML</label>
-                        </div>
-                        <div class="tool-map-button">
-                            <button type="button" class="btn btn-primary"><i class="fa fa-file-code-o" aria-hidden="true"></i></button><label>Trích xuất shapefile</label>
-                        </div>
-                        <div class="tool-map-button">
-                            <button type="button" class="btn btn-primary"><i class="fa fa-file-code-o" aria-hidden="true"></i></button><label>In ấn</label>
-                        </div>
-                        <div class="tool-map-button">
-                            <button type="button" class="btn btn-primary"><i class="fa fa-file-code-o" aria-hidden="true"></i></button><label>Nhập dữ liệu từ textfile</label>
-                        </div>
-                    </div>*@
                 </div>
-
             </div>
-            <!--Section info-->
-            @*<h3 class="title1">Thông tin tiêu chí quy hoạch</h3>
-                <div class="section section-info">
-                    <div class="row">
-                        <div class="form-group col-md-12 form-common-infor">
-                            <label class="col-md-6">Diện tích:</label>
-                            <span class="col-md-6"><span class="DientichQH">100</span>m<sup>2</sup></span>
-                        </div>
-                        <div class="form-group col-md-12 form-common-infor">
-                            <label class="col-md-6">Hệ số sử dụng đất:</label>
-                            <span class="col-md-6"><span class="HSSDQH">100</span></span>
-                        </div>
-                        <div class="form-group col-md-12 form-common-infor">
-                            <label class="col-md-6">Quy định chiều cao:</label>
-                            <span class="col-md-6"><span class="ChieuCaoQH">100</span>m</span>
-                        </div>
-                        <div class="form-group col-md-12 form-common-infor">
-                            <label class="col-md-6">Mật độ xây dựng</label>
-                            <span class="col-md-6"><span class="MatDoQH">100</span>%</span>
-                        </div>
-                        <div class="form-group col-md-12 form-common-infor">
-                            <label class="col-md-6">Dân số</label>
-                            <span class="col-md-6"><span class="DanSoQH">100</span></span>
-                        </div>
-                        <div class="form-group col-md-12 form-common-infor">
-                            <label class="col-md-6">Kí hiệu</label>
-                            <span class="col-md-6"><span class="KiHieuQH">L1</span></span>
-                        </div>
-                    </div>
-                </div>
-                <!--End navigation section-->
-                <h3 class="title1">Thông tin tiêu chí hiện trạng</h3>
-                <div class="section section-info">
-                    <div class="row">
-                        <div class="row">
-                            <div class="form-group col-md-12 form-common-infor">
-                                <label class="col-md-6">Diện tích:</label>
-                                <span class="col-md-6"><span class="Dientich">0</span>m<sup>2</sup></span>
-                            </div>
-                            <div class="form-group col-md-12 form-common-infor">
-                                <label class="col-md-6">Hệ số sử dụng đất:</label>
-                                <span class="col-md-6"><span class="HSSD">0</span></span>
-                            </div>
-                            <div class="form-group col-md-12 form-common-infor">
-                                <label class="col-md-6">Quy định chiều cao:</label>
-                                <span class="col-md-6"><span class="ChieuCao">0</span>m</span>
-                            </div>
-                            <div class="form-group col-md-12 form-common-infor">
-                                <label class="col-md-6">Mật độ xây dựng</label>
-                                <span class="col-md-6"><span class="MatDo">0</span>%</span>
-                            </div>
-                            <div class="form-group col-md-12 form-common-infor">
-                                <label class="col-md-6">Dân số</label>
-                                <span class="col-md-6"><span class="DanSo">0</span></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>*@
         </div>
     </div>
 </div>
@@ -261,11 +193,33 @@
         background-color: #2198F1;
         border-color: #2198F1;
     }
-    .tool-map-button{
-        margin-bottom:5px;
+
+    .tool-map-button {
+        margin-bottom: 5px;
     }
-    .tool-map-button label{
-        margin-left:10px;
-    }
+
+        .tool-map-button label {
+            margin-left: 10px;
+        }
+
+        .tool-map-button.group-hop-thua {
+            width: 100px;
+            display: flex;
+        }
+
+            .tool-map-button.group-hop-thua button {
+                width: 100%;
+                margin-right: 5px;
+            }
+
+            .tool-map-button.group-hop-thua .btn-save-hop-thua {
+                background-color: #00a65a !important;
+                border-color: #008d4c !important;
+            }
+
+            .tool-map-button.group-hop-thua .btn-huy-hop-thua {
+                background-color: #dd4b39 !important;
+                border-color: #d73925 !important;
+            }
 </style>
 

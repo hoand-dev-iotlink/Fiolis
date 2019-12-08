@@ -503,8 +503,9 @@
                 key: ViewMap.CONSTS.key
             },
             success: function (data) {
-                console.log(data);
-                if (data.code == "ok" && data.result != null && data.result.features.length > 0) {
+                //console.log(data);
+                if (data.code === "ok" && data.result !== null && data.result.features.length > 0) {
+                    ViewMap.GLOBAL.commonData = data.result;
                     let propertie = data.result.features[0].properties;
                     $(ViewMap.SELECTORS.MaXa).text(propertie.MaXa);
                     $(ViewMap.SELECTORS.TenChu).text(propertie.TenChu);

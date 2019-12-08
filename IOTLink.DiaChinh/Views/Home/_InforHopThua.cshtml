@@ -1,0 +1,110 @@
+﻿<div class="modal form-infor-hop-thua">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header" style="padding-bottom:0;">
+                <h4 class="modal-title">Cập nhật thông tin hợp thửa</h4>
+                <button type="button" id="close-modal" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row form-group">
+                    <label class="control-label col-md-4 col-xs-12 required">Số hiệu tờ bản đồ</label>
+                    <div class="col-md-8 col-xs-12">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <input type="number" id="text-update-soTo" class="form-control form-style" placeholder="Số hiệu tờ bản đồ" value="0" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="control-label col-md-4 col-xs-12 required">Số thứ tự thửa</label>
+                    <div class="col-md-8 col-xs-12">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <input type="number" id="text-update-soThua" class="form-control form-style" placeholder="Số thứ tự thửa" value="0" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="control-label col-md-4 col-xs-12 required">Tờ bản đồ cũ</label>
+                    <div class="col-md-8 col-xs-12">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <input type="number" id="text-update-soTo-old" class="form-control form-style" placeholder="Tờ bản đồ cũ" value="0" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="control-label col-md-4 col-xs-12 required">Thửa cũ</label>
+                    <div class="col-md-8 col-xs-12">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <input type="number" id="text-update-soThua-old" class="form-control form-style" placeholder="Thửa cũ" value="0" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="control-label col-md-4 col-xs-12 required">Diện tích</label>
+                    <div class="col-md-8 col-xs-12">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <input type="text" id="text-update-dienTich" class="form-control form-style" placeholder="Diện tích" value="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="control-label col-md-4 col-xs-12 required">Diện tích pháp lý</label>
+                    <div class="col-md-8 col-xs-12">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <input type="text" id="text-update-dienTichPhapLy" class="form-control form-style" placeholder="Diện tích pháp lý" value="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="control-label col-md-4 col-xs-12 required">Mục đích sử dụng</label>
+                    <div class="col-md-8 col-xs-12">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                @Html.DropDownList("KH", new List<SelectListItem>(ViewBag.listofitem)@*, "--Chọn mục đích sử dụng--"*@, new { @id = "KH-listselectid", @class = "KH-select", autocomplete = "off" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="control-label col-md-4 col-xs-12 required">Tên chủ</label>
+                    <div class="col-md-8 col-xs-12">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <input type="text" id="text-update-chuNha" class="form-control form-style" placeholder="Tên chủ sở hữu" value="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="control-label col-md-4 col-xs-12 required">Địa chỉ</label>
+                    <div class="col-md-8 col-xs-12">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <input type="text" id="text-update-diaChi" class="form-control form-style" placeholder="Địa chỉ" value="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy bỏ</button>
+                <button type="button" class="btn btn-primary btn-infor-hop-thua">Lưu hợp thửa</button>
+            </div>
+        </div>
+    </div>
+</div>

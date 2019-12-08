@@ -216,31 +216,31 @@
                     shapeArea: fromFeatures.properties.ShapeArea,
                     geometry: fromFeatures.geometry,
                     tags: {}
-                }
+                };
                 let inforUpdate = {
                     from: ThuaDatFrom,
                     to: TachThua.GLOBAL.listInforUpdateTachThua
-                }
+                };
                 swal({
                     title: "Thông báo",
                     text: "Bạn có chắc chắn lưu thông tin và thửa đất đã tách thửa!",
                     icon: "warning",
-                    confirmButtonClass: "btn-danger",
-                    confirmButtonText: "Lưu lại",
-                    cancelButtonText: "Hủy bỏ",
-                    closeOnConfirm: false,
-                    closeOnCancel: false,
+                    //confirmButtonClass: "btn-danger",
+                    //confirmButtonText: "Lưu lại",
+                    //cancelButtonText: "Hủy bỏ",
+                    //closeOnConfirm: false,
+                    //closeOnCancel: false,
+                    buttons: [
+                        'Hủy bỏ',
+                        'Lưu lại'
+                    ],
                     dangerMode: true,
                 }).then((willDelete) => {
                     if (willDelete) {
+                        console.log("tach thưa:", JSON.stringify(inforUpdate));
                         TachThua.saveInforTachThua(inforUpdate);
-                        //swal("Cập nhật!", "Đã cập nhật thông tin thành công.", "success");
-                        //swal("Đã cập nhật thông tin thành công.", {
-                        //        icon: "success",
-                        //    });
-                        }
-                    });
-
+                    }
+                });
             } else {
                 swal({
                     title: "Thông báo",
@@ -275,6 +275,7 @@
             async: true,
             success: function (data) {
                 if (data.result !== null && typeof data.result !== "undefined") {
+                    console.log("lodat-select:", JSON.stringify(data.result));
                     if (data.result.features.length > 0) {
                         TachThua.GLOBAL.ThuaDat = data.result;
                         let path = TachThua.drawPolygon(TachThua.GLOBAL.ThuaDat);
@@ -284,7 +285,7 @@
                         bootbox.alert("Phường/Xã này chưa có dữ liệu");
                     }
                 } else {
-                    bootbox.alert("Lỗi hệ thông");
+                    bootbox.alert("Lỗi hệ thống");
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -590,6 +591,25 @@
                                     <label for="form-field-9" class="col-sm-4 control-label no-padding-right">Khoảng cách</label>
                                     <input type="text" class="col-sm-8 input-mask-distance" placeholder="Khoảng cách (m)" id="inp_KhoangCach">
                                 </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-xs-12 col-sm-2">
+                                    <div class="control-group">
+                                        <div class="radio">
+                                            <label>
+                                                <input name="rad_tudiem" type="radio" class="ace" value="A">
+                                                <span class="lbl"> Từ điểm A</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="radio">
+                                            <label>
+                                                <input name="rad_tudiem" type="radio" class="ace" value="B">
+                                                <span class="lbl"> Từ điểm B</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div></div>`;
                 note = `<img class="media-object" alt="100%x200" src="/images/GiaoHoi/ghdoctheocanh.png" data-holder-rendered="true" style="width: 75%; display: block;">
                             <div class="caption">
@@ -803,7 +823,7 @@
                 }
                 for (var j = 0; j < listPoint.length; j++) {
                     a = listDiem[i].xy;
-                    if (i == listDiem.length - 1) {
+                    if (i === listDiem.length - 1) {
                         b = listDiem[0].xy;
                     } else {
                         b = listDiem[i + 1].xy;
@@ -836,7 +856,7 @@
             listPolygons.push(TachThua.orderClockWise(listpolygon2));
             console.log(listPolygons[0]);
             console.log(listPolygons[2]);
-            return listPolygons
+            return listPolygons;
         }
     },
     convertDataVN2000toWGS84: function (object) {
@@ -971,8 +991,6 @@
         let check;
         check = TachThua.GLOBAL.listInforUpdateTachThua.find(x => x.id.toString() === id.toString());
         if (TachThua.GLOBAL.listInforUpdateTachThua.length > 0 && typeof check !== "undefined" && check !== null) {
-
-            //if () {
             check.soHieuToBanDo = Number($(TachThua.SELECTORS.SoToUpdate).val());
             check.soThuTuThua = Number($(TachThua.SELECTORS.SoThuaUpdate).val());
             check.soHieuToBanDoCu = Number($(TachThua.SELECTORS.SoToUpdateOld).val());
@@ -983,7 +1001,12 @@
             check.tenChu = $(TachThua.SELECTORS.TenChuUpdate).val();
             check.diaChi = $(TachThua.SELECTORS.DiaChiUpdate).val();
             check.geometry = TachThua.getGeometryById(id);
-            //}
+            swal({
+                title: "Thông báo",
+                text: "Cập nhật thông tin thành công!",
+                icon: "success",
+                button: "Đóng",
+            });
         } else {
             check = {
                 id: id,
@@ -1022,6 +1045,12 @@
                 tags: {}
             };
             TachThua.GLOBAL.listInforUpdateTachThua.push(check);
+            swal({
+                title: "Thông báo",
+                text: "Cập nhật thông tin thành công!",
+                icon: "success",
+                button: "Đóng",
+            });
         }
     },
     getGeometryById: function (id) {
@@ -1060,7 +1089,7 @@
             async: false,
             contentType: 'application/json-patch+json',
             success: function (data) {
-                if (data.code == "ok") {
+                if (data.code === "ok") {
                     swal({
                         title: "Thông báo",
                         text: "Cập nhật thông tin thửa đất thành công!",
