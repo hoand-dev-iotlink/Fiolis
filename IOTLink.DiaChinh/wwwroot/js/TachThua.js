@@ -5,6 +5,8 @@
         path: null,
         listMarkerDiem: [],
         listDiem: [],
+        listKetQuaGhiNhan:[],
+        maptachthua: null,
         //listGiaoHoi: {
         //    giaohoicachduongthang: true,
         //    giaohoithuan: false,
@@ -40,7 +42,10 @@
         inputKhoangCach: "#inp_KhoangCach",
         radioGiaoHoiThuan: "input[name='loaiGiaoHoiThuan']",
         radioGiaoHoiThuanCheck: "input[name='loaiGiaoHoiThuan']:checked",
+        radioTuDiem: "input[name='rad_tudiem']",
+        radioTuDiemCheck: "input[name='rad_tudiem']:checked",
         radioDiem: "input[name='rad_diem']",
+        radioDiemCheck: "input[name='rad_diem']:checked",
         titleGiaoHoi: ".title-giao-hoi",
         showHideForm: ".btn-show-hide-point",
         formPointMap:".footer-map-point",
@@ -57,6 +62,7 @@
             controlOptions: map4d.ControlOptions.TOP_RIGHT,
             accessKey: "208e1c99aa440d8bc2847aafa3bc0669",
         });
+        TachThua.GLOBAL.maptachthua = maptachthua
         maptachthua.setTileUrl("http://61.28.233.229:8080/all/2d/{z}/{x}/{y}.png");
         maptachthua.setTileUrl("http://61.28.233.229:8080/all/2d/{z}/{x}/{y}.png", true);
         maptachthua.setPlacesEnabled(false);
@@ -267,31 +273,7 @@
                                 </div>
                             </div></div>
                             <div class="col-xs-12 col-sm-2">
-                                <div class="control-group">
-                                    <div class="radio">
-                                        <label>
-                                            <input name="rad_diem" type="radio" class="ace" value="1">
-                                            <span class="lbl"> Điểm 1</span>
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input name="rad_diem" type="radio" class="ace" value="2">
-                                            <span class="lbl"> Điểm 2</span>
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input name="rad_diem" type="radio" class="ace" value="3">
-                                            <span class="lbl"> Điểm 3</span>
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input name="rad_diem" type="radio" class="ace" value="4">
-                                            <span class="lbl"> Điểm 4</span>
-                                        </label>
-                                    </div>
+                                <div class="chon-diem">
                                 </div>
                             </div>`;
                 note = `<img class="media-object" alt="100%x200" src="/images/GiaoHoi/ghcachduongthang.png" data-holder-rendered="true" style="width: 100%; display: block;">
@@ -306,7 +288,7 @@
                 break;
             case 2:
                 // giao hội thuận
-                html = `<div class="col-xs-12 col-sm-10"><div class="form-group row">
+                html = `<div class="col-xs-12 col-sm-8"><div class="form-group row">
                             <input type="text" class="giao-hoi" value="giaohoithuan" style="display:none" />
                             <div class="col-xs-12 col-sm-6">
                                 <label for="sel_GHDoc1" class="col-sm-4 control-label no-padding-right">Đỉnh A</label>
@@ -337,19 +319,9 @@
                                 <label for="form-field-select-1" class="col-sm-4 control-label no-padding-right">Góc CBA</label>
                                 <input class="col-sm-8 input-mask-angle" type="text" id="inp_GocCBA" disabled="">
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-xs-12 col-sm-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input id="chk_GHThuan_RightSide" type="checkbox" class="ace" checked="">
-                                        <span class="lbl"> Phía phải</span>
-                                    </label>
-                                </div>
-                            </div>
                         </div></div>
                         <div class="col-xs-12 col-sm-2">
-                            <div class="control-group">
+                            <div class="phuong-thuc-giao-hoi-thuan">
                                 <label class="control-label bolder blue">Giao hội theo</label>
 
                                 <div class="radio">
@@ -365,6 +337,10 @@
                                         <span class="lbl"> Góc</span>
                                     </label>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-2">
+                            <div class="chon-diem">
                             </div>
                         </div>`;
                 note = `<img class="media-object"  alt="100%x200" src="/images/GiaoHoi/ghthuan.png" data-holder-rendered="true" style="width: 75%; display: block;">
@@ -383,7 +359,7 @@
             case 3:
                 // giao hội nghịch
                 html = `<div class="col-xs-12 col-sm-10"><div class="form-group row">
-                            <input type="text" class="giao-hoi" value="giaohoinghịch" style="display:none" />
+                            <input type="text" class="giao-hoi" value="giaohoinghich" style="display:none" />
                             <div class="col-xs-12 col-sm-6">
                                 <label for="sel_GHDoc1" class="col-sm-4 control-label no-padding-right">Đỉnh A</label>
                                 <select class="col-sm-8" id="sel_GHCDTDinhA"></select>
@@ -408,7 +384,11 @@
                                 <label for="form-field-select-1" class="col-sm-4 control-label no-padding-right">Góc APC</label>
                                 <input class="col-sm-8 input-mask-angle" type="text" id="inp_GocAPC">
                             </div>
-                        </div></div>`;
+                        </div></div>
+                        <div class="col-xs-12 col-sm-2">
+                            <div class="chon-diem">
+                            </div>
+                        </div>`;
                 note = `<img class="media-object"  alt="100%x200" src="/images/GiaoHoi/GiaoHoiNghich_3DiemGoc.png" data-holder-rendered="true" style="width: 60%; display: block;">
                                 <div class="caption">
                                     <p>Từ ba đỉnh đã biết tọa độ cộng thêm hai số đo góc từ điểm giao hội P ngắm về ABC, ta xác định được tọa độ điểm giao hội P. Góc giao hội sử dụng để tính toán là các góc ngược chiều kim đồng hồ.</p>
@@ -471,6 +451,25 @@
                                 <div class="col-xs-12 col-sm-6">
                                     <label for="form-field-9" class="col-sm-4 control-label no-padding-right">Khoảng cách</label>
                                     <input type="text" class="col-sm-8 input-mask-distance" placeholder="Khoảng cách (m)" id="inp_KhoangCach">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-xs-12 col-sm-2">
+                                    <div class="control-group">
+                                        <div class="radio">
+                                            <label>
+                                                <input name="rad_tudiem" type="radio" class="ace" value="A" checked>
+                                                <span class="lbl"> Từ điểm A</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="radio">
+                                            <label>
+                                                <input name="rad_tudiem" type="radio" class="ace" value="B">
+                                                <span class="lbl"> Từ điểm B</span>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div></div>`;
                 note = `<img class="media-object" alt="100%x200" src="/images/GiaoHoi/ghdoctheocanh.png" data-holder-rendered="true" style="width: 75%; display: block;">

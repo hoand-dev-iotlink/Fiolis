@@ -3,11 +3,22 @@
         x: 0,
         y: 0
     };
-    if (p[0] !== undefined) {
-        point.x = p[0];
-        point.y = p[1];
+    if (p[0] !== undefined && p[1] !== undefined) {
+        point.x = p[1];
+        point.y = p[0];
+        return point;
     }
-    return point;
+    return p;
+}
+function convertPointTo2000(p) {
+    return [p.y, p.x];
+}
+function convertListPointTo2000(list) {
+    let result = [];
+    for (let i = 0; i < list.length; i++) {
+        result.push(convertPointTo2000(list[i]));
+    }
+    return result;
 }
 //return {a,b,c}: ax + by = c
 function duongThangQua2Diem(A, B) {
@@ -73,7 +84,7 @@ function giaoHoiHuong(A, B, C, D) {
     let pD = convertToPoint(D);
     let d1 = duongThangQua2Diem(pA, pB);
     let d2 = duongThangQua2Diem(pC, pD);
-    return giaoHaiDuong(d1, d2);
+    return [giaoHaiDuong(d1, d2)];
 
 }
 function giaoHoiThuanTheoCanh(A, rA, B, rB) {
@@ -168,10 +179,10 @@ function giaoHoiDocTheoCanh(A, B, h, fromB = false) {
         x: vectorAB.x * k,
         y: vectorAB.y * k
     };
-    return {
+    return [{
         x: pA.x + vectorAC.x,
         y: pA.y + vectorAC.y
-    };
+    }];
 }
 function giaoHoiCachDuongThang(A, B, C, D, cachAB, cachCD) {
     let AB = duongThangQua2Diem(A, B);
@@ -243,7 +254,7 @@ function giaoHoiThuanTheoGoc(A, B, gocA, gocB) {
     };
     return [p1, p2];
 }
-function giaoHoiNghich(A, B, C, P1, P2) {
+function giaoHoiNghich2GocNho(A, B, C, P1, P2) {
     let pA = convertToPoint(A);
     let pB = convertToPoint(B);
     let pC = convertToPoint(C);
@@ -255,10 +266,9 @@ function giaoHoiNghich(A, B, C, P1, P2) {
         x: pC.x - pB.x,
         y: pC.y - pB.y
     };
-    let gocB = Math.abs(gocDinhHuongVector(vectorBC) - gocDinhHuongVector(vectorBA));
-    if (gocB > Math.PI) {
-        gocB = 2 * Math.PI - gocB;
-    }
+    let AB = doanThang(A, B);
+    let BC = doanThang(B, C);
+    let gocB = gocDiemGiua(A, B, C);
     if (gocB === 0) {
         return false;
     }
@@ -266,8 +276,7 @@ function giaoHoiNghich(A, B, C, P1, P2) {
     if (tongGocAvaC <= 0) {
         return false;
     }
-    let AB = Math.sqrt(vectorBA.x * vectorBA.x + vectorBA.y * vectorBA.y);
-    let BC = Math.sqrt(vectorBC.x * vectorBC.x + vectorBC.y * vectorBC.y);
+    let p;
     let tanU = AB * Math.sin(P2) / (BC * Math.sin(P1));
     let hieuAvaC = 2 * Math.atan(Math.tan(tongGocAvaC / 2) * (1 - tanU) / (tanU + 1));
     let gocA = (tongGocAvaC + hieuAvaC) / 2;
@@ -275,22 +284,133 @@ function giaoHoiNghich(A, B, C, P1, P2) {
     let gocB1 = Math.PI - P1 - gocA;
     let gocB2 = Math.PI - P2 - gocC;
     let hieu = gocDinhHuongVector(vectorBC) - gocDinhHuongVector(vectorBA);
-    if (hieu < -Math.PI||(0 < hieu && hieu < Math.PI)){
+    if (hieu <= -Math.PI || (0 < hieu && hieu <= Math.PI)) {
         let p1 = giaoHoiThuanTheoGoc(A, B, gocA, gocB1)[0];
         let p2 = giaoHoiThuanTheoGoc(B, C, gocB2, gocC)[0];
-        let p = {
+        p = {
             x: (p1.x + p2.x) / 2,
             y: (p1.y + p2.y) / 2
         };
-        return [p];
     }
     if (hieu > Math.PI || (0 > hieu && hieu > -Math.PI)) {
         let p1 = giaoHoiThuanTheoGoc(A, B, gocA, gocB1)[1];
         let p2 = giaoHoiThuanTheoGoc(B, C, gocB2, gocC)[1];
-        let p = {
+        p = {
             x: (p1.x + p2.x) / 2,
             y: (p1.y + p2.y) / 2
         };
+    }
+    let gocP1 = gocDiemGiua(A, p, B);
+    let gocP2 = gocDiemGiua(B, p, C);
+    let saiso1 = Math.abs(gocP1 - P1);
+    let saiso2 = Math.abs(gocP2 - P2);
+    let saisoChuan = 5 * Math.PI / 180;
+    if (saiso1 > saisoChuan || saiso2 > saisoChuan) {
+        p = false;
+    }
+    let pPhay;
+    let gocBPhay = 2 * Math.PI - gocB;
+    if (P1 + P2 <= gocB) {
+        let tongGocAvaCPhay = 2 * Math.PI - gocBPhay - P1 - P2;
+        if (tongGocAvaCPhay <= 0) {
+            pPhay = false;
+        }
+        else {
+            let tanUPhay = AB * Math.sin(P2) / (BC * Math.sin(P1));
+            let hieuAvaCPhay = 2 * Math.atan(Math.tan(tongGocAvaCPhay / 2) * (1 - tanUPhay) / (tanUPhay + 1));
+            let gocAPhay = (tongGocAvaCPhay + hieuAvaCPhay) / 2;
+            let gocCPhay = (tongGocAvaCPhay - hieuAvaCPhay) / 2;
+            let gocB1Phay = Math.PI - P1 - gocAPhay;
+            let gocB2Phay = Math.PI - P2 - gocCPhay;
+            let hieuPhay = gocDinhHuongVector(vectorBC) - gocDinhHuongVector(vectorBA);
+            if (hieuPhay <= -Math.PI || (0 < hieuPhay && hieuPhay <= Math.PI)) {
+                let p1 = giaoHoiThuanTheoGoc(A, B, gocAPhay, gocB1Phay)[1];
+                let p2 = giaoHoiThuanTheoGoc(B, C, gocB2Phay, gocCPhay)[1];
+                pPhay = {
+                    x: (p1.x + p2.x) / 2,
+                    y: (p1.y + p2.y) / 2
+                };
+            }
+            if (hieuPhay > Math.PI || (0 > hieuPhay && hieuPhay > -Math.PI)) {
+                let p1 = giaoHoiThuanTheoGoc(A, B, gocAPhay, gocB1Phay)[0];
+                let p2 = giaoHoiThuanTheoGoc(B, C, gocB2Phay, gocCPhay)[0];
+                pPhay = {
+                    x: (p1.x + p2.x) / 2,
+                    y: (p1.y + p2.y) / 2
+                };
+            }
+        }
+    }
+    else {
+        pPhay = false;
+    }
+    if (pPhay) {
+        let gocP1Phay = gocDiemGiua(A, pPhay, B);
+        let gocP2Phay = gocDiemGiua(B, pPhay, C);
+        let saiso1Phay = Math.abs(gocP1Phay - P1);
+        let saiso2Phay = Math.abs(gocP2Phay - P2);
+        if (saiso1Phay > saisoChuan || saiso2Phay > saisoChuan) {
+            pPhay = false;
+        }
+    }
+    if (p && pPhay) {
+        return [p, pPhay];
+    }
+    if (p) {
         return [p];
     }
+    if (pPhay) {
+        return [pPhay];
+    }
+    return false;
+}
+function giaoHoiNghich(A, B, C, gocAPB, gocAPC) {
+    let listP1 = giaoHoiNghich2GocNho(B, A, C, gocAPB, gocAPC);
+    let listP2 = false;
+    if (gocAPC > gocAPB) {
+        listP2 = giaoHoiNghich2GocNho(A, B, C, gocAPB, gocAPC - gocAPB);
+    }
+    if (gocAPC < gocAPB) {
+        listP2 = giaoHoiNghich2GocNho(B, C, A, gocAPB - gocAPC, gocAPC);
+    }
+    if (listP1 && listP2) {
+        return listP1.concat(listP2);
+    }
+    if (listP1) {
+        return listP1;
+    }
+    if (listP2) {
+        return listP2;
+    }
+    return false;
+}
+function vector(A, B) {
+    let pA = convertToPoint(A);
+    let pB = convertToPoint(B);
+    return {
+        x: pB.x - pA.x,
+        y: pB.y - pA.y
+    };
+}
+function doanThang(A, B) {
+    let vect = vector(A, B);
+    return Math.sqrt(vect.x * vect.x + vect.y * vect.y);
+}
+function gocTamGiac(A, B, C) {
+    let pA = convertToPoint(A);
+    let pB = convertToPoint(B);
+    let pC = convertToPoint(C);
+    let gocB = gocDiemGiua(A, B, C);
+    let gocA = gocDiemGiua(C, A, B);
+    let gocC = Math.PI - gocA - gocC;
+    return [gocA, gocB, gocC];
+}
+function gocDiemGiua(A, B, C) {
+    let vectorBC = vector(B, C);
+    let vectorBA = vector(B, A);
+    let gocB = Math.abs(gocDinhHuongVector(vectorBC) - gocDinhHuongVector(vectorBA));
+    if (gocB > Math.PI) {
+        gocB = 2 * Math.PI - gocB;
+    }
+    return gocB;
 }
