@@ -148,9 +148,19 @@
                     from: listPolygonHopThua,
                     to: HopThuaTo
                 };
-                console.log(JSON.stringify(formHopThua));
+                //console.log(JSON.stringify(formHopThua));
                 HopThua.updateHopThua(formHopThua);
             }
+        });
+        $(HopThua.SELECTORS.formInforHopThua).on('hide.bs.modal', function () {
+            $(HopThua.SELECTORS.SoToUpdate).val(0);
+            $(HopThua.SELECTORS.SoThuaUpdate).val(0);
+            $(HopThua.SELECTORS.SoToUpdateOld).val(0);
+            $(HopThua.SELECTORS.SoThuaUpdateOld).val(0);
+            $(HopThua.SELECTORS.DienTichUpdate).val(0);
+            $(HopThua.SELECTORS.DienTichPhapLyUpdate).val(0);
+            $(HopThua.SELECTORS.TenChuUpdate).val("");
+            $(HopThua.SELECTORS.DiaChiUpdate).val("");
         });
     },
     getInforThuaDat: function (lat, lng) {
@@ -252,12 +262,18 @@
     },
     getCoordinatesSearch: function (geometry) {
         let data = [];
-        let lenght = geometry.coordinates[0].length;
-        for (var i = 0; i < lenght; i++) {
-            let datatemp = geometry.coordinates[0][i];
-            data.push(datatemp);
+        if (geometry.type === "Polygon") {
+            let lenght = geometry.coordinates.length;
+            return geometry.coordinates;
         }
-        return data;
+        if (geometry.type === "MultiPolygon") {
+            let lenght = geometry.coordinates[0].length;
+            for (var i = 0; i < lenght; i++) {
+                let datatemp = geometry.coordinates[0][i];
+                data.push(datatemp);
+            }
+            return data;
+        }
     },
     orderClockWiseVN2000: function (listPoints) {
         var listTemp = listPoints.slice(0);
@@ -320,6 +336,7 @@
                         icon: "success",
                         button: "Đóng",
                     }).then((value) => {
+                        $(HopThua.SELECTORS.formInforHopThua).modal("hide");
                     });
                 }
             },
@@ -337,9 +354,9 @@
         let SoTo = $(HopThua.SELECTORS.SoToUpdate).val();
         if (!validateText(SoTo, "number", 0, 0) || SoTo === "0") { insertError($(HopThua.SELECTORS.SoToUpdate), "other"); check = false; }
         let DienTichUpdate = $(HopThua.SELECTORS.DienTichUpdate).val();
-        if (!validateText(DienTichUpdate, "number", 0, 0) || DienTichUpdate === "0") { insertError($(HopThua.SELECTORS.DienTichUpdate), "other"); check = false; }
+        if (!validateText(DienTichUpdate, "float", 0, 0) || DienTichUpdate === "0") { insertError($(HopThua.SELECTORS.DienTichUpdate), "other"); check = false; }
         let DienTichPhapLyUpdate = $(HopThua.SELECTORS.DienTichPhapLyUpdate).val();
-        if (!validateText(DienTichPhapLyUpdate, "number", 0, 0) || DienTichPhapLyUpdate === "0") { insertError($(HopThua.SELECTORS.DienTichPhapLyUpdate), "other"); check = false; }
+        if (!validateText(DienTichPhapLyUpdate, "float", 0, 0) || DienTichPhapLyUpdate === "0") { insertError($(HopThua.SELECTORS.DienTichPhapLyUpdate), "other"); check = false; }
         let TenChuUpdate = $(HopThua.SELECTORS.TenChuUpdate).val();
         if (!validateText(TenChuUpdate, "text", 0, 0)) { insertError($(HopThua.SELECTORS.TenChuUpdate), "other"); check = false; }
         return check;

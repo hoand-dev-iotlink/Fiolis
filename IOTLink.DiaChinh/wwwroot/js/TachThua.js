@@ -107,6 +107,9 @@
         $(TachThua.SELECTORS.modalTachThua).on('hide.bs.modal', function () {
             TachThua.removeMaker();
             TachThua.removerOptionDiem([1, 2, 3, 4]);
+            TachThua.ShowHideAll(false);
+            TachThua.GLOBAL.listKetQuaGhiNhan = [];
+            updateListGhiNhan();
         });
         $(TachThua.SELECTORS.modalTachThua).on('show.bs.modal', function () {
             setTimeout(function () {
@@ -271,7 +274,6 @@
             TachThua.GLOBAL.listKetQuaGhiNhan = [];
             updateListGhiNhan();
         });
-
         maptachthua.addListener("click", (args) => {
             let id = args.polygon.id;
             $(TachThua.SELECTORS.inputIdInfor).val(id);
@@ -831,8 +833,8 @@
                     }
                 }
             }
-            console.log(Polygon1);
-            console.log(Polygon2);
+            //console.log(Polygon1);
+            //console.log(Polygon2);
             var listpolygon1 = [];
             for (var i = 0; i < Polygon1.length; i++) {
                 listpolygon1.push(Polygon1[i].xy);
@@ -848,8 +850,8 @@
             var listPolygons = [];
             listPolygons.push(TachThua.orderClockWise(listpolygon1));
             listPolygons.push(TachThua.orderClockWise(listpolygon2));
-            console.log(listPolygons[0]);
-            console.log(listPolygons[2]);
+            //console.log(listPolygons[0]);
+            //console.log(listPolygons[2]);
             return listPolygons;
         }
     },
@@ -958,12 +960,13 @@
     },
     addRemoveInforTachThua: function (id) {
         let check = TachThua.GLOBAL.listInforUpdateTachThua.find(x => x.id.toString() === id.toString());
+        let area = TachThua.getAreaPolygonTachThua(id);
         if (typeof check !== "undefined" && check !== null && check.soThuTuThua > 0) {
             $(TachThua.SELECTORS.SoToUpdate).val(check.soHieuToBanDo);
             $(TachThua.SELECTORS.SoThuaUpdate).val(check.soThuTuThua);
             $(TachThua.SELECTORS.SoToUpdateOld).val(check.soHieuToBanDoCu);
             $(TachThua.SELECTORS.SoThuaUpdateOld).val(check.soThuTuThuaCu);
-            $(TachThua.SELECTORS.DienTichUpdate).val(check.dienTich);
+            $(TachThua.SELECTORS.DienTichUpdate).val(area);
             $(TachThua.SELECTORS.DienTichPhapLyUpdate).val(check.dienTichPhapLy);
             $(TachThua.SELECTORS.TenChuUpdate).val(check.tenChu);
             $(TachThua.SELECTORS.DiaChiUpdate).val(check.diaChi);
@@ -972,9 +975,9 @@
             let propertie = TachThua.GLOBAL.ThuaDat.features[0].properties;
             $(TachThua.SELECTORS.SoToUpdate).val(propertie.SoHieuToBanDo);
             $(TachThua.SELECTORS.SoThuaUpdate).val(0);
-            $(TachThua.SELECTORS.SoToUpdateOld).val(0);
-            $(TachThua.SELECTORS.SoThuaUpdateOld).val(0);
-            $(TachThua.SELECTORS.DienTichUpdate).val(0);
+            $(TachThua.SELECTORS.SoToUpdateOld).val(propertie.SoHieuToBanDo);
+            $(TachThua.SELECTORS.SoThuaUpdateOld).val(propertie.SoThuTuThua);
+            $(TachThua.SELECTORS.DienTichUpdate).val(area);
             $(TachThua.SELECTORS.DienTichPhapLyUpdate).val(0);
             $(TachThua.SELECTORS.TenChuUpdate).val(propertie.TenChu);
             $(TachThua.SELECTORS.DiaChiUpdate).val(propertie.DiaChi);
@@ -1067,9 +1070,9 @@
         let SoTo = $(TachThua.SELECTORS.SoToUpdate).val();
         if (!validateText(SoTo, "number", 0, 0) || SoTo === "0") { insertError($(TachThua.SELECTORS.SoToUpdate), "other"); check = false; }
         let DienTichUpdate = $(TachThua.SELECTORS.DienTichUpdate).val();
-        if (!validateText(DienTichUpdate, "number", 0, 0) || DienTichUpdate === "0") { insertError($(TachThua.SELECTORS.DienTichUpdate), "other"); check = false; }
+        if (!validateText(DienTichUpdate, "float", 0, 0) || DienTichUpdate === "0") { insertError($(TachThua.SELECTORS.DienTichUpdate), "other"); check = false; }
         let DienTichPhapLyUpdate = $(TachThua.SELECTORS.DienTichPhapLyUpdate).val();
-        if (!validateText(DienTichPhapLyUpdate, "number", 0, 0) || DienTichPhapLyUpdate === "0") { insertError($(TachThua.SELECTORS.DienTichPhapLyUpdate), "other"); check = false; }
+        if (!validateText(DienTichPhapLyUpdate, "float", 0, 0) || DienTichPhapLyUpdate === "0") { insertError($(TachThua.SELECTORS.DienTichPhapLyUpdate), "other"); check = false; }
         let TenChuUpdate = $(TachThua.SELECTORS.TenChuUpdate).val();
         if (!validateText(TenChuUpdate, "text", 0, 0)) { insertError($(TachThua.SELECTORS.TenChuUpdate), "other"); check = false; }
         return check;
@@ -1101,5 +1104,52 @@
                 ViewMap.showLoading(false);
             }
         });
+    },
+    getAreaPolygonTachThua: function (id) {
+        let list = TachThua.GLOBAL.listPolygonTachThua;
+        let obj;
+        for (var i = 0; i < list.length; i++) {
+            obj = (typeof list[i].features[0].properties.id !== "undefined" && list[i].features[0].properties.id == id) ? list[i] : ((typeof list[i].features[1].properties.id !== "undefined" && list[i].features[1].properties.id == id) ? list[i]:null);
+            if (typeof obj !== "undefined" && obj !== null) {
+                obj = (obj.features[0].properties.info === "vn2000") ? obj.features[0] : obj.features[1];
+                break;
+            }
+        }
+        if (typeof obj !== "undefined" && obj !== null) {
+            if (obj.geometry.type.toLowerCase() === "polygon") {
+                let point = {
+                    points: obj.geometry.coordinates[0]
+                }
+                return Math.abs(TachThua.calculateAreaPolygonVN2000(point));
+            }
+            if (obj.geometry.type.toLowerCase() === "MultiPolygon") {
+                let point = {
+                    points: obj.geometry.coordinates[0][0]
+                }
+                return Math.abs(TachThua.calculateAreaPolygonVN2000(point));
+            }
+        }
+    },
+    calculateAreaPolygonVN2000: function (data) {
+        let res = 0;
+        $.ajax({
+            type: "POST",
+            url: ViewMap.GLOBAL.url + "/v2/api/land/calculate?key=" + ViewMap.CONSTS.key,
+            data: JSON.stringify(data),
+            dataType: 'json',
+            async: false,
+            contentType: 'application/json-patch+json',
+            success: function (data) {
+                if (data.code === "ok") {
+                    res = Math.round(data.result.area.value * 100) / 100;
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                let messageErorr = AppCommon.getMessageErrorReuqest(jqXHR, errorThrown);
+                console.log(messageErorr);
+                ViewMap.showLoading(false);
+            }
+        });
+        return res;
     },
 }
