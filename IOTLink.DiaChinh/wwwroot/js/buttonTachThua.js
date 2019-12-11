@@ -330,7 +330,7 @@ function convertVN2000ToWGS84(listPoint, callback) {
         async: true,
         contentType: "application/json",
         data: JSON.stringify({
-            code: ViewMap.CONSTS.codeDefault,
+            code: TachThua.GLOBAL.codeMaXaThuaDat,
             geometry: {
                 type: "MultiPoint",
                 coordinates: convertListPointTo2000(listPoint)

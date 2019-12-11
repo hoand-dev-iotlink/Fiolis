@@ -10,6 +10,7 @@
         listPolygonTachThua: null,
         listDrawPolygon: [],
         listInforUpdateTachThua: [],
+        codeMaXaThuaDat:"",
     },
     CONSTS: {},
     SELECTORS: {
@@ -89,11 +90,15 @@
             $(this).addClass("active");
         });
         $(TachThua.SELECTORS.btnTachThua).on("click", function () {
-            let objectId = ViewMap.GLOBAL.ThuaDatSelect[0].ObjectId;
-            //setTimeout(function () {
-            TachThua.showTachThua(ViewMap.CONSTS.codeDefault, objectId);
-
+            TachThua.GLOBAL.codeMaXaThuaDat = ViewMap.GLOBAL.commonData.features[0].properties.MaXa;
+            let soto = ViewMap.GLOBAL.commonData.features[0].properties.SoHieuToBanDo;
+            let sothua = ViewMap.GLOBAL.commonData.features[0].properties.SoThuTuThua;
+            TachThua.showTachThua(TachThua.GLOBAL.codeMaXaThuaDat, soto, sothua);
             setTimeout(function () {
+                if (TachThua.GLOBAL.path === null) {
+                    let feature = TachThua.GLOBAL.ThuaDat.features[0];
+                    TachThua.GLOBAL.path = TachThua.convertCoordinate(feature);
+                }
                 TachThua.fitBoundsThuaDat(TachThua.GLOBAL.path);
                 var camera = maptachthua.getCamera();
                 let zoom = camera.getZoom();
@@ -101,7 +106,6 @@
                 maptachthua.setCamera(camera);
                 TachThua.setMarkerDiem(TachThua.GLOBAL.ThuaDat);
             }, 1000);
-            //}, 1);
             $(TachThua.SELECTORS.modalTachThua).modal('show');
         });
         $(TachThua.SELECTORS.modalTachThua).on('hide.bs.modal', function () {
@@ -285,24 +289,24 @@
             $(this).find("i").addClass("fa-chevron-up");
         }, { polygon: true });
     },
-    showTachThua: function (code, objectId) {
+    showTachThua: function (code, soto,sothua) {
         $.ajax({
             type: "GET",
             url: ViewMap.GLOBAL.url + "/v2/api/land/find-info",
             data: {
                 code: code,
-                objectId: objectId,
+                soTo: soto,
+                soThua: sothua,
+                //objectId: objectId,
                 key: ViewMap.CONSTS.key
             },
-            async: true,
+            async: false,
             success: function (data) {
                 if (data.result !== null && typeof data.result !== "undefined") {
                     console.log("lodat-select:", JSON.stringify(data.result));
                     if (data.result.features.length > 0) {
                         TachThua.GLOBAL.ThuaDat = data.result;
                         let path = TachThua.drawPolygon(TachThua.GLOBAL.ThuaDat);
-                        //map.data.clear();
-                        //ViewMap.drawThuaDat(data.result);
                     } else {
                         bootbox.alert("Phường/Xã này chưa có dữ liệu");
                     }
@@ -343,15 +347,20 @@
         //maptachthua.setCamera(camera);
     },
     convertCoordinate: function (data) {
-        if (data.geometry.type.toLocaleLowerCase() === "multipolygon" || data.geometry.type.toLocaleLowerCase() === "polygon") {
-            let count = data.geometry.coordinates[0].length;
-            let path = [];
-            for (var i = 0; i < count; i++) {
-                let datatemp = data.geometry.coordinates[0][i];
-                path.push(datatemp);
-            }
-            return path;
+        let res = [];
+        if (data.geometry.type.toLocaleLowerCase() === "polygon") {
+            //let lenght = data.geometry.coordinates.length;
+            return data.geometry.coordinates;
         }
+        if (data.geometry.type.toLocaleLowerCase() === "multipolygon") {
+            let lenght = data.geometry.coordinates[0].length;
+            for (var i = 0; i < lenght; i++) {
+                let datatemp = data.geometry.coordinates[0][i];
+                res.push(datatemp);
+            }
+            return res;
+        }
+
     },
     fitBoundsThuaDat: function (data) {
         let latLngBounds = new map4d.LatLngBounds();
@@ -620,9 +629,9 @@
     setMarkerDiem: function (data) {
         TachThua.GLOBAL.listDiem = [];
         let check = data.features[0].geometry.type;
+        let point84 = (data.features[0].properties.info == "wgs84") ? data.features[0].geometry.coordinates[0] : data.features[1].geometry.coordinates[0];
+        let point2000 = (data.features[1].properties.info == "vn2000") ? data.features[1].geometry.coordinates[0] : data.features[0].geometry.coordinates[0];
         if (check.toLowerCase() === "multipolygon") {
-            let point84 = data.features[0].geometry.coordinates[0];
-            let point2000 = data.features[1].geometry.coordinates[0];
             for (var i = 0; i < point84.length; i++) {
                 for (var j = 0; j < point84[i].length - 1; j++) {
                     let lat = point84[i][j][1];
@@ -667,6 +676,51 @@
                     }
                     TachThua.GLOBAL.listDiem.push(diem);
                 }
+            }
+        }
+        if (check.toLowerCase() === "polygon") {
+            for (var j = 0; j < point84.length - 1; j++) {
+                let lat = point84[j][1];
+                let lng = point84[j][0];
+                let markerPoint = new map4d.Marker({
+                    position: { lat: lat, lng: lng },
+                    icon: new map4d.Icon(10, 10, "/images/iconPoint.png"),
+                    anchor: [0.5, 0.5],
+                    //title: name
+                });
+                //thêm marker vào map
+                markerPoint.setMap(maptachthua);
+                let countPoint = (j + 1).toString();
+                let markerTitelPoint = new map4d.Marker({
+                    position: { lat: lat, lng: lng },
+                    anchor: [0.5, 1],
+                    visible: true,
+                    label: new map4d.MarkerLabel({ text: countPoint, color: "ff0000", fontSize: 13 }),
+                    icon: new map4d.Icon(32, 32, "")
+                });
+                //thêm marker vào map
+                markerTitelPoint.setMap(maptachthua);
+                let marker = {
+                    markerPoint: markerPoint,
+                    markerTitelPoint: markerTitelPoint
+                };
+                TachThua.GLOBAL.listMarkerDiem.push(marker);
+                //add diem
+                let xVN2000 = point2000[j][1];
+                let yVN2000 = point2000[j][0];
+                let diem = {
+                    id: Number(countPoint),
+                    name: "Điểm " + countPoint,
+                    xy: {
+                        x: xVN2000,
+                        y: yVN2000
+                    },
+                    latlng: {
+                        lat: lat,
+                        lng: lng
+                    }
+                }
+                TachThua.GLOBAL.listDiem.push(diem);
             }
         }
     },
@@ -857,7 +911,7 @@
     },
     convertDataVN2000toWGS84: function (object) {
         let data = {
-            code: ViewMap.CONSTS.codeDefault,
+            code: TachThua.GLOBAL.codeMaXaThuaDat,
             geometry: {
                 type: "Polygon",
                 coordinates: []
