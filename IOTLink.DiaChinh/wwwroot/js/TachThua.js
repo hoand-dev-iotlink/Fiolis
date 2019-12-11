@@ -10,7 +10,9 @@
         listPolygonTachThua: null,
         listDrawPolygon: [],
         listInforUpdateTachThua: [],
-        codeMaXaThuaDat:"",
+        codeMaXaThuaDat: "",
+        polylineGhiNhan: null,
+        listSortKetQuaGhiNhan:[],
     },
     CONSTS: {},
     SELECTORS: {
@@ -64,6 +66,8 @@
         DiaChiUpdate: ".infor-Tach-Thua #text-update-diaChi",
         KHList: '.infor-Tach-Thua #KH-listselectid',
         focusInput: ".infor-Tach-Thua input",
+        pointGhiNhan: "#pointGhiNhan",
+        pointGhiNhanChild: "#pointGhiNhan tr",
     },
     init: function () {
         maptachthua = new map4d.Map(document.getElementById("madTachThua"), {
@@ -81,10 +85,16 @@
         maptachthua.setTileUrl("http://61.28.233.229:8080/all/2d/{z}/{x}/{y}.png");
         maptachthua.setTileUrl("http://61.28.233.229:8080/all/2d/{z}/{x}/{y}.png", true);
         maptachthua.setPlacesEnabled(false);
+        maptachthua.setTileFeatureVisible(false, false)
         //$(TachThua.SELECTORS.modalTachThua).modal({ backdrop: 'static', keyboard: false });
         TachThua.setEvent();
     },
     setEvent: function () {
+        $(TachThua.SELECTORS.pointGhiNhan).sortable({
+            stop: function (event, ui) {
+                TachThua.sortPointResult();
+            }
+        });
         $('.menu-tach-thua ul li a').click(function () {
             $('li a').removeClass("active");
             $(this).addClass("active");
@@ -172,7 +182,6 @@
         });
         $(TachThua.SELECTORS.viewResultTachThua).on("click", function () {
             if (TachThua.GLOBAL.listKetQuaGhiNhan.length > 1) {
-                
                 var listp = [];
                 for (var i = 0; i < TachThua.GLOBAL.listKetQuaGhiNhan.length; i++) {
                     let objVN2000 = TachThua.GLOBAL.listKetQuaGhiNhan[i].diem2000;
@@ -187,7 +196,23 @@
                 if (TachThua.GLOBAL.listPolygonTachThua.length > 0) {
                     TachThua.drawPolygonTachThua(TachThua.GLOBAL.listPolygonTachThua);
                     TachThua.ShowHideAll(true);
+                } else {
+                    swal({
+                        title: "Thông báo",
+                        text: "Điểm không hợp lệ để tách thửa!",
+                        icon: "warning",
+                        buttons: "Đóng",
+                        dangerMode: true,
+                    })
                 }
+            } else {
+                swal({
+                    title: "Thông báo",
+                    text: "Số điểm quá ít để tách thửa!",
+                    icon: "warning",
+                    buttons: "Đóng",
+                    dangerMode: true,
+                })
             }
         });
         $(TachThua.SELECTORS.clearResultTachThua).on("click", function () {
@@ -856,6 +881,23 @@
         });
         return listTemp;
     },
+    orderClockWiseWGS84: function  (listPoints) {
+        var listTemp = listPoints.slice(0);
+        var mX = 0;
+        var mY = 0;
+        $.each(listTemp, function (i, obj) {
+            mX = mX + obj[0];//obj.lng;
+            mY = mY + obj[1];//obj.lat;
+        });
+        mX = mX / listTemp.length;
+        mY = mY / listTemp.length;
+        listTemp.sort(function (a, b) {
+            let at1 = (Math.atan2(a[1] - mY, a[0] - mX));//(Math.atan2(a.lat - mY, a.lng - mX));
+            let at2 = (Math.atan2(b[1] - mY, b[0] - mX));//(Math.atan2(b.lat - mY, b.lng - mX));
+            return at1 - at2;
+        });
+        return listTemp;
+    },
     checkListPointWithPolygon: function (listPoint, listDiem) {
         if (listPoint.length > 1) {
             var Polygon1 = [];
@@ -882,31 +924,46 @@
                     if (TachThua.checkPointOnLine(a, b, c)) {
                         if (!diem2 && diem1) diem2 = true;
                         if (!diem1) diem1 = true;
-
                         break;
                     }
                 }
             }
-            //console.log(Polygon1);
-            //console.log(Polygon2);
-            var listpolygon1 = [];
-            for (var i = 0; i < Polygon1.length; i++) {
-                listpolygon1.push(Polygon1[i].xy);
+            if ((diem1 && diem2)) {
+                //console.log(listpolygon1);
+                //console.log(listpolygon2);
+                var listpolygon1 = [];
+                for (var i = 0; i < Polygon1.length; i++) {
+                    listpolygon1.push(Polygon1[i].xy);
+                }
+                var listpolygon2 = [];
+                for (var i = 0; i < Polygon2.length; i++) {
+                    listpolygon2.push(Polygon2[i].xy);
+                }
+
+                if (TachThua.GLOBAL.listSortKetQuaGhiNhan.length > 0) {
+                    $.each(TachThua.GLOBAL.listSortKetQuaGhiNhan, function (i, obj) {
+                        //let point = listPoint[obj];
+                        listpolygon1.push(listPoint[obj]);
+                        listpolygon2.push(listPoint[obj]);
+                        //path.push(point)
+                    });
+                } else {
+                    for (var i = 0; i < listPoint.length; i++) {
+                        listpolygon1.push(listPoint[i]);
+                        listpolygon2.push(listPoint[i]);
+                    }
+                }
+                
+                var listPolygons = [];
+                listPolygons.push(listpolygon1);
+                listPolygons.push(listpolygon2);
+                //listPolygons.push(TachThua.orderClockWise(listpolygon1));
+                //listPolygons.push(TachThua.orderClockWise(listpolygon2));
+                //console.log(listPolygons[0]);
+                //console.log(listPolygons[1]);
+                return listPolygons;
             }
-            var listpolygon2 = [];
-            for (var i = 0; i < Polygon2.length; i++) {
-                listpolygon2.push(Polygon2[i].xy);
-            }
-            for (var i = 0; i < listPoint.length; i++) {
-                listpolygon1.push(listPoint[i]);
-                listpolygon2.push(listPoint[i]);
-            }
-            var listPolygons = [];
-            listPolygons.push(TachThua.orderClockWise(listpolygon1));
-            listPolygons.push(TachThua.orderClockWise(listpolygon2));
-            //console.log(listPolygons[0]);
-            //console.log(listPolygons[2]);
-            return listPolygons;
+            return [];
         }
     },
     convertDataVN2000toWGS84: function (object) {
@@ -948,7 +1005,11 @@
                 point.push(obj[i].x);
                 polygon.push(point);
             }
-            listWGS84.push(TachThua.convertDataVN2000toWGS84(polygon));
+            let polygonconvert = TachThua.convertDataVN2000toWGS84(polygon);
+            //let coordinates = (polygonconvert.features[0].properties.info == "wgs84") ? polygonconvert.features[0].geometry.coordinates[0] : polygonconvert.features[1].geometry.coordinates[0]
+            //console.log(TachThua.orderClockWiseWGS84(coordinates));
+            //TachThua.orderClockWiseWGS84(coordinates);
+            listWGS84.push(polygonconvert);
         });
         return listWGS84;
         //console.log(JSON.stringify(listWGS84));
@@ -1205,5 +1266,37 @@
             }
         });
         return res;
+    },
+    sortPointResult: function () {
+        TachThua.GLOBAL.listSortKetQuaGhiNhan = [];
+        $(TachThua.SELECTORS.pointGhiNhanChild).each(function () {
+            let id = $(this).find("th").attr("data-id");
+            if (typeof id !== "undefined" && id !== null) {
+                TachThua.GLOBAL.listSortKetQuaGhiNhan.push(Number(id));
+            }
+        })
+        if (TachThua.GLOBAL.listSortKetQuaGhiNhan.length > 1) {
+            TachThua.drawPolylineDiem(TachThua.GLOBAL.listSortKetQuaGhiNhan);
+        }
+    },
+    drawPolylineDiem: function (listSort) {
+        if (TachThua.GLOBAL.polylineGhiNhan !== null) {
+            TachThua.GLOBAL.polylineGhiNhan.setMap(null);
+            TachThua.GLOBAL.polylineGhiNhan=null;
+        }
+        let path = [];
+        $.each(listSort, function (i,obj) {
+            let point = TachThua.GLOBAL.listKetQuaGhiNhan[obj].diem84;
+            path.push(point)
+        });
+        TachThua.GLOBAL.polylineGhiNhan = new map4d.Polyline({
+            path: path,
+            visible: true,
+            strokeColor: "#3dab21",
+            strokeWidth: 2,
+            strokeOpacity: 1,
+            closed: false
+        });
+        TachThua.GLOBAL.polylineGhiNhan.setMap(maptachthua);
     },
 }

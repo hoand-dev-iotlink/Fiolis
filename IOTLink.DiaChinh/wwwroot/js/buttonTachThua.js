@@ -306,7 +306,7 @@ function updateListGhiNhan() {
         }
         html += `
             <tr>
-                <th scope="row">${i + 1}</th>
+                <th scope="row" data-id="${i}">${i + 1}</th>
                 <td>${phuongThuc}</td>
             </tr>
         `;

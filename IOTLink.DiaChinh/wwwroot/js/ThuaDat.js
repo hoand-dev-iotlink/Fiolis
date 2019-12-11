@@ -4,11 +4,16 @@
         location: null,
         url: "https://api-fiolis.map4d.vn",
         commonData: {},
-        lstSearch: null
+        lstSearch: null,
+        latLngDefault: {
+            lat: 10.678087311284315, lng: 105.08063708265138
+        },
+        zoomDefault: 16
     },
     CONSTS: {
         codeDefault: "001001003003",
         key: "8bd33b7fd36d68baa96bf446c84011da",
+        MinDefault: 18,
     },
     SELECTORS: {
         menuright: ".menu-right",
@@ -46,14 +51,14 @@
         MucDichSuDungSearch: "#text-search-MDSuDung",
         TenChuSearch: "#text-search-chuNha",
         DiaChiSearch: "#text-search-diaChi",
-        listSearchAdv: "#list-search-adv"
+        listSearchAdv: "#list-search-adv",
+        lstSelectSearch: '#lstSelectSearch-adv'
     },
     init: function () {
         document.oncontextmenu = document.body.oncontextmenu = function () { return false; }
         map = new map4d.Map(document.getElementById("map"), {
-            zoom: 15,
-            //center: { lat: 16.074340234841884, lng: 108.2358471048052 },
-            center: { lat: 10.678087311284315, lng: 105.08063708265138 },
+            zoom: ViewMap.GLOBAL.zoomDefault,
+            center: ViewMap.GLOBAL.latLngDefault,
             geolocate: true,
             minZoom: 3,
             maxZoom: 22,
@@ -65,27 +70,33 @@
         map.setTileUrl("http://61.28.233.229:8080/all/2d/{z}/{x}/{y}.png");
         map.setTileUrl("http://61.28.233.229:8080/all/3d/{z}/{x}/{y}.png", true);
         map.setPlacesEnabled(false);
-        setTimeout(function () { ViewMap.getThuaDatbyCode(ViewMap.CONSTS.codeDefault), map.data.setMinZoom(13) }, 1);
-
+        //setTimeout(function () { ViewMap.getThuaDatbyCode(ViewMap.CONSTS.codeDefault), map.data.setMinZoom(13) }, 1);
+        
         ViewMap.SetEvent();
     },
     SetEvent: function () {
         let eventClickPolygon = map.data.addListener("click", (args) => {
-            let checkHopThua = (typeof HopThua !== "undefined" && typeof HopThua.GLOBAL !== "undefined" && typeof HopThua.GLOBAL.checkHopThua !== "undefined") ? HopThua.GLOBAL.checkHopThua:false;
-            if (!ToolShape.GLOBAL.isStartArea && !ToolShape.GLOBAL.isStartDistance && !checkHopThua) {
-                ViewMap.showHideMenuClick(false, null);
-                ViewMap.showHideMenu(false, null);
-                //setTimeout(function () {
-                //    let obj = args.feature;
-                //    ViewMap.setSelectThuaDat(obj);
-                //}, 1);
-                setTimeout(function () {
-                    ViewMap.getInforThuaDat(args.location.lat, args.location.lng);
-                }, 1);
+            let camera = map.getCamera();
+            let zoomCurrent = camera.getZoom();
+            if (ViewMap.CONSTS.MinDefault <= zoomCurrent) {
+                if (!ToolShape.GLOBAL.isStartArea && !ToolShape.GLOBAL.isStartDistance) {
+                    ViewMap.showHideMenuClick(false, null);
+                    ViewMap.showHideMenu(false, null);
+                    setTimeout(function () {
+                        ViewMap.getInforThuaDat(args.location.lat, args.location.lng);
+                    }, 1);
+                }
+            } else {
+                swal({
+                    title: "Thông báo",
+                    text: "Bạn cần phải zoom to hơn nữa để hiển thị chi tiết lô đất",
+                    icon: "warning",
+                    button: "Đóng",
+                })
             }
         });
         map.addListener("rightClick", (args) => {
-            ViewMap.showHideMenu(true, args.pixel);
+            //ViewMap.showHideMenu(true, args.pixel);
             ViewMap.showHideMenuClick(false, null);
             ViewMap.removeSelectThuaDat();
             ViewMap.getLocationMap(args.location.lat, args.location.lng, false);
@@ -128,12 +139,10 @@
             var splittext = text.split(',');
             if (splittext.length === 2) {
                 $(ViewMap.SELECTORS.advSearch).removeClass("advSearchIndex");
-                ViewMap.getInfoSearch(splittext[0], splittext[1], "", "", "");
+                ViewMap.getInfoSearch(splittext[0], splittext[1], "", "", "", ViewMap.CONSTS.codeDefault);
                 $(ViewMap.SELECTORS.SoToSearch).val(parseInt(splittext[0]));
                 $(ViewMap.SELECTORS.SoThuaSearch).val(parseInt(splittext[1]));
             }
-            //$(ViewMap.SELECTORS.tooltiptext).css({ "visibility": "hidden" });
-
         });
 
         $(ViewMap.SELECTORS.tooltipsearchadvance).click(function () {
@@ -143,11 +152,11 @@
             var chuNha = $(ViewMap.SELECTORS.TenChuSearch).val();
             var MDSuDung = $(ViewMap.SELECTORS.MucDichSuDungSearch).val();
             if ((soTo > 0 && soThua > 0) || (soTo !== "" && soThua !== "")) {
-                ViewMap.getInfoSearch(soTo, soThua, diaChi, chuNha, MDSuDung);
+                ViewMap.getInfoSearch(soTo, soThua, diaChi, chuNha, MDSuDung, $(ViewMap.SELECTORS.lstSelectSearch).val());
                 return;
             } else {
                 if (diaChi !== "" || chuNha !== "" || MDSuDung !== "") {
-                    ViewMap.getInfoSearch(soTo, soThua, diaChi, chuNha, MDSuDung);
+                    ViewMap.getInfoSearch(soTo, soThua, diaChi, chuNha, MDSuDung, $(ViewMap.SELECTORS.lstSelectSearch).val());
                     return;
                 }
             }
@@ -175,6 +184,8 @@
             $(ViewMap.SELECTORS.MucDichSuDungSearch).val(null);
             $(ViewMap.SELECTORS.TenChuSearch).val(null);
             $(ViewMap.SELECTORS.DiaChiSearch).val(null);
+            $(ViewMap.SELECTORS.lstSelectSearch).val(ViewMap.CONSTS.codeDefault);
+
             if (!$(ViewMap.SELECTORS.advSearch).hasClass("advSearchIndex")) {
                 $(ViewMap.SELECTORS.advSearch).addClass("advSearchIndex");
             } else {
@@ -360,6 +371,7 @@
             type: "GET",
             url: ViewMap.GLOBAL.url + "/v2/api/admin-level/latlng",
             data: { lat: lat, lng: lng, key: ViewMap.CONSTS.key },
+            async: false,
             success: function (data) {
                 if (data.result.length > 0) {
                     let str = "";
