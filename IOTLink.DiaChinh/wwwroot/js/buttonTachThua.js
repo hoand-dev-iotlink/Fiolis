@@ -312,6 +312,7 @@ function updateListGhiNhan() {
         `;
     }
     $(buttonTachThua.selector.listGhiNhan).html(html);
+    TachThua.removeDrawPolylineDiem();
 }
 function getGocRadian(val) {
     if (val === "") {
