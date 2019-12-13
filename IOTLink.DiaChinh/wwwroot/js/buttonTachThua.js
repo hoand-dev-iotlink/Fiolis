@@ -306,12 +306,13 @@ function updateListGhiNhan() {
         }
         html += `
             <tr>
-                <th scope="row">${i + 1}</th>
+                <th scope="row" data-id="${i}">${i + 1}</th>
                 <td>${phuongThuc}</td>
             </tr>
         `;
     }
     $(buttonTachThua.selector.listGhiNhan).html(html);
+    TachThua.removeDrawPolylineDiem();
 }
 function getGocRadian(val) {
     if (val === "") {
@@ -330,7 +331,7 @@ function convertVN2000ToWGS84(listPoint, callback) {
         async: true,
         contentType: "application/json",
         data: JSON.stringify({
-            code: ViewMap.CONSTS.codeDefault,
+            code: TachThua.GLOBAL.codeMaXaThuaDat,
             geometry: {
                 type: "MultiPoint",
                 coordinates: convertListPointTo2000(listPoint)
