@@ -7,6 +7,7 @@
             error: ""
         },
         listMarker: [],
+        listMarkerGhiNhan: []
     },
     selector: {
         xemThu: "#btn_Preview",
@@ -14,7 +15,7 @@
         error: ".error",
         ghiNhan: "#btn_Submit",
         notification: ".notification",
-        listGhiNhan:".table-point tbody"
+        listGhiNhan: ".table-point tbody"
     },
     reset: function () {
         $(buttonTachThua.selector.error).remove();
@@ -226,7 +227,7 @@ $(function () {
                                 <div class="radio">
                                     <label>
                                         <input name="rad_diem" type="radio" class="ace" value="${i}">
-                                        <span class="lbl"> Điểm ${i+1}</span>
+                                        <span class="lbl"> Điểm ${i + 1}</span>
                                     </label>
                                 </div>
                             `
@@ -245,7 +246,7 @@ $(function () {
                      <p class="text-danger">Không có điểm nào để ghi nhận!</p>
                  </div>
              `);
-        }  
+        }
         if (buttonTachThua.global.list84.length === 1) {
             let phuongThuc = $(TachThua.SELECTORS.checkGiaoHoi).val();
             let a = {
@@ -278,17 +279,18 @@ $(function () {
                     </div>
                 `);
             }
-        }   
+        }
     });
 });
 function updateListGhiNhan() {
     $(buttonTachThua.selector.listGhiNhan).children().remove();
     let html = "";
+    removeMarkerGhinhans();
     for (let i = 0; i < TachThua.GLOBAL.listKetQuaGhiNhan.length; i++) {
         let phuongThuc = "";
         switch (TachThua.GLOBAL.listKetQuaGhiNhan[i].phuongThuc) {
             case "giaohoicachduongthang":
-                phuongThuc ="Giao hội cách đường thẳng"
+                phuongThuc = "Giao hội cách đường thẳng"
                 break
             case "giaohoithuan":
                 phuongThuc = "Giao hội thuận"
@@ -297,7 +299,7 @@ function updateListGhiNhan() {
                 phuongThuc = "Giao hội nghịch"
                 break
             case "giaohoihuong":
-                phuongThuc ="Giao hội hướng"
+                phuongThuc = "Giao hội hướng"
                 break
             case "giaohoidoctheocanh":
                 phuongThuc = "Giao hội dọc theo cạnh"
@@ -310,6 +312,17 @@ function updateListGhiNhan() {
                 <td>${phuongThuc}</td>
             </tr>
         `;
+        let marker = new map4d.Marker({
+            position: TachThua.GLOBAL.listKetQuaGhiNhan[i].diem84,
+            anchor: [0.5, 0.5],
+            visible: true,
+            labelAnchor: [0.5, -1],
+            label: new map4d.MarkerLabel({ text: "Giao điểm " + (i + 1), color: "ff0000", fontSize: 13 }),
+            icon: new map4d.Icon(10, 10, "/images/iconPoint.png"),
+        });
+        //thêm marker vào map
+        marker.setMap(TachThua.GLOBAL.maptachthua);
+        buttonTachThua.global.listMarkerGhiNhan.push(marker);
     }
     $(buttonTachThua.selector.listGhiNhan).html(html);
     TachThua.removeDrawPolylineDiem();
@@ -352,4 +365,10 @@ function removeMarkers() {
         buttonTachThua.global.listMarker[i].setMap(null);
     }
     buttonTachThua.global.listMarker = [];
+}
+function removeMarkerGhinhans() {
+    for (let i = 0; i < buttonTachThua.global.listMarkerGhiNhan.length; i++) {
+        buttonTachThua.global.listMarkerGhiNhan[i].setMap(null);
+    }
+    buttonTachThua.global.listMarkerGhiNhan = [];
 }
