@@ -79,7 +79,7 @@
             let camera = map.getCamera();
             let zoomCurrent = camera.getZoom();
             if (ViewMap.CONSTS.MinDefault <= zoomCurrent) {
-                if (!ToolShape.GLOBAL.isStartArea && !ToolShape.GLOBAL.isStartDistance) {
+                if (!ToolShape.GLOBAL.isStartArea && !ToolShape.GLOBAL.isStartDistance && !HopThua.GLOBAL.checkHopThua) {
                     ViewMap.showHideMenuClick(false, null);
                     ViewMap.showHideMenu(false, null);
                     setTimeout(function () {
